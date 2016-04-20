@@ -8,6 +8,6 @@ Starting from a formal JSON configuration describing a list of inputs (that can 
 # Usage
 
 Two different usages are possible:
-- using the whole json-gui component
-- using single components for declaring single input fields.
+1- using the whole json-gui component
+2- using single components for declaring single input fields.
 
