@@ -51,18 +51,18 @@ Moreover some components need some other library dependencies:
 -  ```datetime``` component needs [```moment.js```](http://momentjs.com/) dependencie.
 -  ```domains``` component need [```Google Map Drawing Api```](https://developers.google.com/maps/documentation/javascript/examples/drawing-tools) dependencie.
 
-You can install the first dependencies with bower:
+You can install the first two dependencies with bower:
 
 ```
 bower install ng-file-upload --save
 bower install moment --save
 ```
-while to include the Google Map drawing Api, you only have to load them in your HTML file:
+while to include the Google Map Drawing Api, you only have to load them in your HTML file:
 
 ```
 <script type="text/javascript"
   src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=drawing">
 </script>
 ```
-replacing ```YOUR_API_KEY``` with an API_KEY, that you can retrieve from [here](https://developers.google.com/maps/documentation/javascript/get-api-key)
+replacing ```YOUR_API_KEY``` with an API_KEY, that you can retrieve from [here](https://developers.google.com/maps/documentation/javascript/get-api-key).
 
