@@ -49,7 +49,7 @@ This module need some dependencies:
 Moreover some components need some other library dependencies:
 -  ```fileupload``` component needs [```ng-file-upload```](https://github.com/danialfarid/ng-file-upload) dependencie.
 -  ```datetime``` component needs [```moment.js```](http://momentjs.com/) dependencie.
--  ```domains``` component need [```Google Map Drawing Api```](https://developers.google.com/maps/documentation/javascript/examples/drawing-tools) dependencie.
+-  ```domains``` component need [```Google Maps Drawing Api```](https://developers.google.com/maps/documentation/javascript/examples/drawing-tools) dependencie.
 
 You can install the first two dependencies with bower:
 
@@ -57,7 +57,7 @@ You can install the first two dependencies with bower:
 bower install ng-file-upload --save
 bower install moment --save
 ```
-while to include the Google Map Drawing Api, you only have to load them in your HTML file:
+while to include the Google Maps Drawing Api, you only have to load them in your HTML file:
 
 ```
 <script type="text/javascript"
@@ -66,3 +66,4 @@ while to include the Google Map Drawing Api, you only have to load them in your 
 ```
 replacing ```YOUR_API_KEY``` with an API_KEY, that you can retrieve from [here](https://developers.google.com/maps/documentation/javascript/get-api-key).
 
+NOTE: If you install Json-gui with bower, it will also install all of these dependencies, except the Google Maps Drawing Apis
