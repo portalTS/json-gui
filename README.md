@@ -67,4 +67,4 @@ while to include the Google Maps Drawing Api, you only have to load them in your
 replacing ```YOUR_API_KEY``` with an API_KEY, that you can retrieve from [here](https://developers.google.com/maps/documentation/javascript/get-api-key).
 
 ### NOTES
-If you install Json-gui with bower, it will also install all of these dependencies, except the Google Maps Drawing Apis
+If you install Json-gui with bower, it will also install all of these dependencies, except the Google Maps Drawing Api.
