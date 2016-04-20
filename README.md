@@ -25,7 +25,8 @@ In both cases, you have to include two files in your HTML:
 ```
 The project also contains a basic usage example:
 
-the ```index.html``` file includes a ```json-gui``` tag, that is getting the data from the ```json/wrf-arw.json``` file.
+the ```index.html``` file includes a ```json-gui``` tag, that is getting the data from the ```json/wrf-arw.json``` file, as can be
+shown in the ```js/mainController.js``` file.
 
 # Usage
 
