@@ -1,7 +1,7 @@
 {
-  "modelName": "Wrf-arw",
+  "name": "Wrf-arw",
   "dbName": "wrf_arw",
-  "modelType": "Meteo",
+  "type": "Meteo",
   "parametersCategories": [
       {"name":"Domain", "value":1},
       {"name":"Time Control", "value":2},
