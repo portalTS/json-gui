@@ -18,7 +18,7 @@ In order to use this component, you only have to add the corresponding tag to yo
 ```
 <json-gui data="data"></json-gui>
 ```
-In 'data'
+In ```data```
 
 ### Single components
 
