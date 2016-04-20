@@ -1,0 +1,24 @@
+.group-name{
+    padding:5px;
+    font-size:20px;
+    background: #5C4383;
+    color:#cdbfe3;
+}
+.group-parameters{
+    background: white;
+    padding-bottom:100px;
+}
+#nav li a{
+    color:#cdbfe3;
+}
+
+#nav li.active a{
+    color: #5C4383;
+    border-left:3px solid #5C4383;
+}
+.group-container{
+    margin: 0px !important;
+}
+.groups{
+    padding: 0px !important;
+}

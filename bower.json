@@ -1,0 +1,28 @@
+{
+  "name": "portalModels",
+  "version": "0.0.1",
+  "authors": [
+    "Gabriele Zereik <gabrielezereik@gmail.com>"
+  ],
+  "description": "model",
+  "main": "",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "model"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ng-file-upload": "~9.0.16",
+    "moment": "~2.13.0"
+  }
+}

@@ -1,0 +1,36 @@
+<div class="container-fluid" id="model-container">
+    <div class="row">
+        <div class="col-xs-12 col-md-10 groups">
+            <div ng-repeat="group in data.parametersCategories">
+                <div class="row group-container">
+                    <div class="group-name" id="group{{group.value}}">
+                        {{group.name}}
+                    </div>
+                    <div class="group-parameters col-xs-12">
+                        <div ng-repeat="(key, value) in hashToArray(pars)">
+                            <integer ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='integer'" parameters="pars[value]" dependencies = "dep[value]"></integer>
+                            <float ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='float'" parameters="pars[value]" dependencies = "dep[value]"></float>
+                            <datetime ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='datetime'" parameters="pars[value]" dependencies = "dep[value]"></datetime>
+                            <select-parameter ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='select'" parameters="pars[value]" dependencies =" dep[value]"></select-parameter>
+                            <text-parameter ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='text'" parameters="pars[value]" dependencies = "dep[value]"></text-parameter>
+                            <domains  ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='domains'" parameters="pars[value]" dependencies = "dep[value]"></domains>
+                            <fileupload  ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='fileupload'" parameters="pars[value]" dependencies = "dep[value]"></fileupload>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2" id="scrollspy" style="padding-left:0px">
+            <ul id="nav" class="nav hidden-xs hidden-sm" style="margin-top:20px;width:100%;padding-left:10px; border-left:1px solid #dedede;">
+                <li ng-repeat="group in data.parametersCategories">
+                    <a href="#group{{group.value}}">{{group.name}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-4  col-md-2 col-md-offset-5">
+            <button ng-click="generateNamelist()" class="btn btn-success">Generate Namelist</button>
+        </div>
+    </div>
+</div>

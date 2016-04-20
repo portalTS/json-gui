@@ -1,0 +1,33 @@
+<!doctype html>
+<html ng-app="app">
+    <head>
+        <!-- BASIC DEPENDENCIES -->
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+        <!-- DEPENDENCIE FOR FILEUPLOAD  -->
+        <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+
+        <!-- DEPENDENCIE FOR DATES -->
+        <script src="bower_components/moment/min/moment.min.js"></script>
+
+        <!-- DEPENDENCIE FOR DOMAINS. ADD YOUR API-KEY -->
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=drawing"></script>
+
+        <!-- BOOTSTRAP DEPENDENCIES -->
+        <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+
+        <!-- LIB DEPENDENCIES -->
+        <script src="dist/json-gui.js"></script>
+        <link rel="stylesheet" href="dist/json-gui.css"/>
+
+        <script src="js/mainController.js"></script>
+
+    </head>
+    <body>
+        <div ng-controller="modelController">
+            <json-gui data="data"></json-gui>
+        </div>
+    </body>
+</html>

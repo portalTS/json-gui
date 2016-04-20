@@ -1,0 +1,123 @@
+{
+  "modelName": "Wrf-arw",
+  "dbName": "wrf_arw",
+  "modelType": "Meteo",
+  "parametersCategories": [
+      {"name":"Domain", "value":1},
+      {"name":"Time Control", "value":2},
+      {"name":"Run Option", "value":3},
+      {"name":"Physics Option", "value":4},
+      {"name":"Diffusion and Dynamic Options", "value":5},
+      {"name":"Submit", "value":6}
+  ],
+  "parameters": [
+    {
+        "parameterType":"float",
+        "value":54,
+        "displayName":"Grid Spacing",
+        "dbName": "grid_spacing",
+        "dependenciesNames":["parental_grid_ratio"],
+        "computedResult":"(function(){return scope.pars['grid_spacing'].value*3;}())",
+        "parameterCategory":3,
+        "isValid" : "return function v(parameters, dependencies){var retObject = {};if(parameters.value<dependencies['parental_grid_ratio'].value){retObject.valid= false; retObject.message=parameters.displayName+' must be greater then '+dependencies['parental_grid_ratio'].displayName;}  else retObject.valid= true; return retObject;}"
+    }, 
+    { "parameterType":"datetime",
+      "value":"Mon Oct 26 2015 00:00:00 GMT+0100 (CET)",
+      "displayName":"Start time",
+      "dbName": "start_time",
+      "dependenciesNames":["end_time"],
+      "parameterCategory":2,
+      "hasDate": true,
+      "hasTime":true,
+      "computedResult":"(function(){return scope.pars['start_time'].value;}())",
+      "isValid" :"return function v(parameters, dependencies){var retObject = {};if(dependencies['end_time'].value<parameters.value){retObject.valid= false; retObject.message = parameters.displayName + ' must be earlier than '+dependencies['end_time'].displayName;} else {retObject.valid= true;retObject.message='';} return retObject;}"
+    },
+      {
+        "parameterType":"datetime",
+        "value":"Mon Oct 26 2015 00:00:00 GMT+0100 (CET)",
+        "displayName":"End time",
+        "dbName": "end_time",
+        "dependenciesNames":["start_time"],
+        "parameterCategory":2,
+        "hasDate": true,
+        "hasTime":true,
+        "computedResult":"(function(){return scope.pars['end_time'].value;}())",
+        "isValid" : "return function v(parameters, dependencies){var retObject = {};if(dependencies['start_time'].value>parameters.value){retObject.valid= false; retObject.message = parameters.displayName + ' must be greater than '+dependencies['start_time'].displayName;} else {retObject.valid= true;retObject.message='';} return retObject;}"
+    },
+    {
+        "parameterType":"integer",
+        "value":18,
+        "displayName":"Parental Grid Ratio",
+        "dbName": "parental_grid_ratio",
+        "parameterCategory":4,
+        "dependenciesNames":["grid_spacing"],
+        "computedResult":"(function(){return parseInt(scope.pars['grid_spacing'].value)+scope.pars['parental_grid_ratio'].value;}())",
+        "isValid":"return function v(parameters, dependencies){var retObject = {};if(parameters.value<10) {retObject.valid= false; retObject.message=parameters.displayName+' must be bigger then 9';} else retObject.valid= true; return retObject;}"
+    },
+    {
+        "parameterType":"select",
+        "value":1,
+        "displayName":"Physics",
+        "dbName": "physics",
+        "parameterCategory":4,
+        "values": [{"name":"Option 1", "value":0}, {"name":"Option 2", "value":1}],
+        "dependenciesNames":[],
+        "computedResult":"(function(){return scope.pars['physics'].value /*scope.pars['physics'].values[scope.pars['physics'].value].name;*/}())",
+        "isValid":"return function v(parameters, dependencies){var retObject = {};if(parameters.value==0){retObject.valid=false; retObject.message='Select a value'} else retObject.valid= true; return retObject;}"
+    },
+    {
+        "parameterType":"domains",
+        "centerCoords": {"lat":44.496,"long":8.9209},
+        "mapZoom":8,
+        "parameterCategory":1,
+        "value":{
+          "wrfdomains0": {
+            "southWest": {"lat":43.496, "long":8.0209}, 
+            "northEast": {"lat":46.496, "long":10.0209}
+          },
+          "wrfdomains1": {
+            "southWest":{"lat":43.996, "long":8.6209}, 
+            "northEast":{"lat":45.496, "long":9.8209}
+          },
+          "wrfdomains2": {
+            "southWest":{"lat":44.796, "long":9.2209}, 
+            "northEast":{"lat":45.096, "long":9.5209}
+          }
+        } ,
+        "displayName":"Domains",
+        "dbName": "wrfdomains",
+        "dependenciesNames":[],
+        "parameterCategory":1,
+        "onlyNested":true,
+        "maxDomains":4,
+        "computedResult":"(function(){var val = scope.pars['wrfdomains'].value; var keys =Object.keys(val);var retString = '';for(var i=1;i<=keys.length;i++){retString+='Domain number'+i+' - South-West: ('+val[keys[i-1]].southWest.lat+', '+val[keys[i-1]].southWest.long+') North-East: ('+val[keys[i-1]].northEast.lat+', '+val[keys[i-1]].northEast.long+')';}return retString;}())",
+        "isValid":"return function v(parameters, dependencies){var retObject = {};retObject.valid= true; return retObject;}"
+    },
+     {
+        "parameterType":"text",
+        "value":"Prova",
+        "displayName":"Description",
+        "parameterCategory":6,
+        "dbName": "description",
+        "dependenciesNames":[],
+        "computedResult":"(function(){return scope.pars['description'].value}())",
+        "isValid":"return function v(parameters, dependencies){var retObject = {};retObject.valid= true; return retObject;}"
+    },
+     {
+       "parameterType":"fileupload",
+        "value":[],
+        "displayName":"Upload namelist",
+        "dbName": "upload",
+        "parameterCategory":5,
+        "dependenciesNames":[],
+        "computedResult":"(function(){return 'ok'}())",
+        "isValid":"return function v(parameters, dependencies){var retObject = {};retObject.valid= true; return retObject;}",
+        "maxSize":"3kb",
+        "maxUpload":2,
+        "minUpload":1
+     }
+    
+    ]
+    
+
+}

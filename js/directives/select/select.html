@@ -1,0 +1,9 @@
+<div class="row parameter-row">
+    <div class="col-xs-6 col-md-3 col-md-offset-3 par-name-col">
+        {{parameters.displayName}} 
+    </div>
+    <div class="col-xs-6 col-md-3 par-value-col" ng-class="{'has-error': !parameters.evaluate()}">
+        <select ng-model="parameters.value" ng-options="option.value as option.name for option in parameters.values" class="form-control"></select>
+        <div class="error-message">{{parameters.message}}</div>
+    </div>
+</div>

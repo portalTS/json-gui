@@ -1,0 +1,53 @@
+<div class="row parameter-row" id="{{parameters.dbName}}">
+    <div class="col-xs-6 col-md-3 col-md-offset-3 par-name-col upload-name-col">
+        {{parameters.displayName}} 
+    </div>
+    <div class="col-xs-6 col-md-3 par-value-col" ng-class="{'has-error': !parameters.evaluate()}">
+        <!--        <div ngf-drop ngf-select ng-model="file" class="drop-box" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-allow-dir="false" accept="image/*,application/pdf" ngf-pattern="'image/*,application/pdf'">Drop Namelist</div>-->
+
+        <form  action="upload.php" method="POST" enctype="multipart/form-data">
+
+            <fieldset>
+                <div>
+                    <input type="file" id="fileselect" name="fileselect[]" multiple="multiple"  style="visibility:hidden"/>
+                    <div id="filedrag" ng-click="openInput()">Click or drop files here</div>
+                </div>
+
+                <div id="submitbutton">
+                    <button type="submit">Upload Files</button>
+                </div>
+                <div class="error-message">{{parameters.message}}</div>
+                <div class="error-message">
+                    <div ng-repeat="val in errorUpload">{{val}}
+                    </div>
+                </div>
+                 <div class="success-message">
+                    <div ng-repeat="file in uploadedFilesDescription">
+                        Uploaded file: <span style="color:#5C758C;">{{file.name}}</span>
+                    </div>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+    <!--
+<div class="modal fade" id="modal">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+<h4 class="modal-title">Warning</h4>
+</div>
+<div class="modal-body">
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-warning" data-dismiss="modal">Ok</button>
+</div>
+</div>
+</div>
+</div>
+
+-->
+
+
+</div>
