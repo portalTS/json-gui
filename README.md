@@ -47,7 +47,7 @@ This module need some dependencies:
 - bootstrap (both js and css files)
 
 Moreover some components need some other library dependencies:
--  ```fileupload``` component needs ```ng-file-upload``` dependencie.
+-  ```fileupload``` component needs [```ng-file-upload```](https://github.com/danialfarid/ng-file-upload) dependencie.
 -  ```datetime``` component needs ```moment.js``` dependencie.
 -  ```domains``` component need ```Google Map Drawing Api```
 
@@ -64,5 +64,5 @@ while to include the Google Map drawing Api, you only have to load them in your 
   src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=drawing">
 </script>
 ```
-replacing ```YOUR_API_KEY``` with an API_KEY that you can retrieve from [here](https://developers.google.com/maps/documentation/javascript/get-api-key)
+replacing ```YOUR_API_KEY``` with an API_KEY, that you can retrieve from [here](https://developers.google.com/maps/documentation/javascript/get-api-key)
 
