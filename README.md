@@ -38,7 +38,7 @@ In the very same way as with the json-gui component, you can add each tag to you
 <domains parameter="param" dependencies="dep"></domains>
 <fileupload parameters="param" dependencies="dep"></fileupload>
 ```
-The ```parameter``` attribute specifies the parameter object linked to that field, while the ```dependencies``` attribute expects an array containing the dependencies (among the other form fields) used for the validation of that field.
+The ```parameter``` attribute specifies the parameter object linked to that field, while the ```dependencies``` attribute expects an array containing the dependencies (among the other form fields) used for the validation of that field (see Wiki section).
 
 # Dependencies
 This module need some dependencies:
