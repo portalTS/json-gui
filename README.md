@@ -18,8 +18,22 @@ In order to use this component, you only have to add the corresponding tag to yo
 ```
 <json-gui data="data"></json-gui>
 ```
-In ```data```
+The ```data``` object contains the entire object needed (see Wiki section), with the metadata and a list of parameters, from which the form will be built.
 
 ### Single components
 
-Alternatively you can use each single form-field component as a standalone 
+Alternatively you can use each single form-field component as a standalone component in order to build single input fields.
+
+In the very same way as with the json-gui component, you can add each tag to your HTML file:
+
+```
+  <integer ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='integer'" parameters="pars[value]" dependencies = "dep[value]"></integer>
+                            <float parameters="param" dependencies = "dep"></float>
+                            <datetime parameters="param" dependencies = "dep"></datetime>
+                            <select-parameter parameters="param" dependencies =" dep"></select-parameter>
+                            <text-parameter parameters="param" dependencies = "dep"></text-parameter>
+                            <domains parameters="param" dependencies = "dep"></domains>
+                            <fileupload parameters="param" dependencies = "dep"></fileupload>
+```
+
+# Dependencies
