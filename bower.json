@@ -1,16 +1,25 @@
 {
-  "name": "portalModels",
-  "version": "0.0.1",
+  "name": "json-gui",
+  "version": "1.0.0",
   "authors": [
     "Gabriele Zereik <gabrielezereik@gmail.com>"
   ],
-  "description": "model",
-  "main": "",
+  "description": "angular front-end module that dynamically generates a full-featured form-based web interface, including validation and constraints",
+  "main": [
+    "dist/json-gui.js",
+    "dist/json-gui.css"
+  ],
   "moduleType": [
     "amd"
   ],
   "keywords": [
-    "model"
+    "form",
+    "interface",
+    "json",
+    "input",
+    "automatic",
+    "validation",
+    "constraints"
   ],
   "license": "MIT",
   "homepage": "",
@@ -23,6 +32,13 @@
   ],
   "dependencies": {
     "ng-file-upload": "~9.0.16",
-    "moment": "~2.13.0"
+    "moment": "~2.13.0",
+    "angular": "~1.5.5",
+    "bootstrap": "~3.3.6",
+    "jquery": "~2.2.3"
+  },
+  "repository": {
+  "type": "git",
+  "url": "git://github.com/portalTS/json-gui"
   }
 }
