@@ -8,6 +8,13 @@ Starting from a formal JSON configuration describing a list of inputs (that can 
 # Usage
 
 Two different usages are possible:
-1- using the whole json-gui component
-2- using single components for declaring single input fields.
+- using the whole json-gui component
+- using single components for declaring single input fields.
 
+### json-gui component
+
+In order to use this component, you only have to add the corresponding tag to your HTML file:
+
+```
+<json-gui data="data"></json-gui>
+```
