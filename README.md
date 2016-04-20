@@ -4,9 +4,18 @@ Json-gui is an angular front-end module that dynamically generates a full-featur
 Starting from a formal JSON configuration describing a list of inputs (that can be a select, a text or integer input or other types), this module is able to build a form frame interface, with standard type - but also personalized - **validation**, also giving the possibility to define **any constraint** between inputs. 
 
 # Quick start
-## TODO
-bower install or download the folder
-include dist/json-gui.js and dist/json-gui.css
+
+You can download the project here from GitHub or, alternatively, you can install it with bower:
+
+```
+bower install json-gui
+```
+In both cases, you have to include two files in your HTML:
+
+```
+<script src="dist/json-gui.js"></script>
+<link rel="stylesheet" href="dist/json-gui.css"/>
+```
 
 # Usage
 
