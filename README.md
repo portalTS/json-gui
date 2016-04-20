@@ -72,9 +72,9 @@ The ```parameter``` attribute specifies the parameter object linked to that fiel
 
 # Dependencies
 This module need some dependencies:
-- angular
-- jquery
-- bootstrap (both js and css files)
+- AngularJS
+- jQuery
+- Bootstrap (both js and css files)
 
 Moreover some components need some other library dependencies:
 -  ```fileupload``` component needs [```ng-file-upload```](https://github.com/danialfarid/ng-file-upload) dependencie.
