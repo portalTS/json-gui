@@ -4,39 +4,39 @@ directives.directive('datetime', function() {
         templateUrl: 'js/directives/datetime/datetime.html',
         replace: true,
         scope: {
-            parameters:"=",
+            parameter:"=",
             dependencies:"=",
         },
         link:function(scope,elm,attr) {
             var dependencies = scope.dependencies;
-            scope.validationFunction = new Function(scope.parameters.isValid)();
-            
+            scope.validationFunction = new Function(scope.parameter.isValid)();
+
             //parse string date to Date object
-            scope.parameters.value = new moment(scope.parameters.value).toDate();
+            scope.parameter.value = new moment(scope.parameter.value).toDate();
             scope.timeValid = function(){
-                if(typeof(scope.parameters.value)==="undefined" || scope.parameters.value=="Invalid Date"){
-                    scope.parameters.message = "Select a valid date";
+                if(typeof(scope.parameter.value)==="undefined" || scope.parameter.value=="Invalid Date"){
+                    scope.parameter.message = "Select a valid date";
                     return false;
                 }
-                scope.parameters.message = "";
+                scope.parameter.message = "";
                 return true;
             }
-            scope.parameters.evaluate = function(){
-                scope.parameters.message ="";
-                var validation = scope.validationFunction(scope.parameters, scope.dependencies);
+            scope.parameter.evaluate = function(){
+                scope.parameter.message ="";
+                var validation = scope.validationFunction(scope.parameter, scope.dependencies);
                 if(!scope.timeValid()){
                     return false;
                 }
 
                 if(!validation.valid){
-                    scope.parameters.message = validation.message;
+                    scope.parameter.message = validation.message;
                     return false;
                 }
-                scope.parameters.message = "";
+                scope.parameter.message = "";
                 return true;
             }
 
-            scope.$watch("parameters.message", function() {
+            scope.$watch("parameter.message", function() {
             });
 
         }

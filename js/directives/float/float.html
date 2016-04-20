@@ -1,9 +1,9 @@
 <div class="row parameter-row">
     <div class="col-xs-6 col-md-3 col-md-offset-3 par-name-col">
-        {{parameters.displayName}} 
+        {{parameter.displayName}}
     </div>
-    <div class="col-xs-6 col-md-3 par-value-col" ng-class="{'has-error': !parameters.evaluate()}">
-        <input type="number" step="1" ng-model="parameters.value" class="form-control">
-        <div class="error-message">{{parameters.message}}</div>
+    <div class="col-xs-6 col-md-3 par-value-col" ng-class="{'has-error': !parameter.evaluate()}">
+        <input type="number" step="1" ng-model="parameter.value" class="form-control">
+        <div class="error-message">{{parameter.message}}</div>
     </div>
 </div>

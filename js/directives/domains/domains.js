@@ -4,34 +4,34 @@ directives.directive('domains', function($timeout) {
         templateUrl: 'js/directives/domains/domains.html',
         replace: true,
         scope: {
-            parameters:"=",
+            parameter:"=",
             dependencies:"=",
         },
         link:function(scope,elm,attr) {
-            var num =scope.parameters.dbName;
+            var num =scope.parameter.dbName;
             /**************** VALIDATION ******************/
             var dependencies = scope.dependencies;
-            scope.validationFunction = new Function(scope.parameters.isValid)();
+            scope.validationFunction = new Function(scope.parameter.isValid)();
             scope.domainsValid = function(){
                 if(typeof(scope.mapRectangles)=="undefined" || Object.keys(scope.mapRectangles).length===0) {
-                    scope.parameters.message = "Select at least one domain";
+                    scope.parameter.message = "Select at least one domain";
                     return false;
                 }
                 return true;
             }
             /**************** EVALUATION ******************/
-            scope.parameters.evaluate = function(){
-                scope.parameters.message ="";
-                var validation = scope.validationFunction(scope.parameters, scope.dependencies);
+            scope.parameter.evaluate = function(){
+                scope.parameter.message ="";
+                var validation = scope.validationFunction(scope.parameter, scope.dependencies);
                 if(!scope.domainsValid()){
                     return false;
                 }
 
                 if(!validation.valid){
-                    scope.parameters.message = validation.message;
+                    scope.parameter.message = validation.message;
                     return false;
                 }
-                scope.parameters.message = "";
+                scope.parameter.message = "";
                 return true;
             }
 
@@ -43,34 +43,34 @@ directives.directive('domains', function($timeout) {
                 scope.mapRectangles = [];
                 initializeMap();
                 $timeout(function(){
-                    var length = Object.keys(scope.parameters.value).length;
+                    var length = Object.keys(scope.parameter.value).length;
                     var i=0;
-                    for(var r in scope.parameters.value){
-                        if(i==scope.parameters.maxDomains){
+                    for(var r in scope.parameter.value){
+                        if(i==scope.parameter.maxDomains){
                             $timeout(function(){
-                                scope.parameters.value.splice(i, length-i);//PROBLEMI function "delete other values" to be implemented
+                                scope.parameter.value.splice(i, length-i);//PROBLEMI function "delete other values" to be implemented
                             });
                             return;
                         }
-                        var rect = addRectangleToMap(scope.parameters.value[num+i], scope.map);
+                        var rect = addRectangleToMap(scope.parameter.value[num+i], scope.map);
                         scope.mapRectangles[num+rect.zIndex] = rect;
                         if(!checkRectangle(rect.zIndex)) {
                             break;
                         }
                         i++;
                     }
-                    scope.value = scope.parameters.value;
-                    scope.modal = $("#"+scope.parameters.dbName+"modal");
+                    scope.value = scope.parameter.value;
+                    scope.modal = $("#"+scope.parameter.dbName+"modal");
                     scope.modal.find(".btn-success").click(function(){
                         deleteRectangle(scope.deletingIndex);
                     });
                 }, true);
             }
             var initializeMap = function() {
-                var mapCanvas = document.getElementById(scope.parameters.dbName+"map");
+                var mapCanvas = document.getElementById(scope.parameter.dbName+"map");
                 var mapOptions = {
-                    center: new google.maps.LatLng(scope.parameters.centerCoords.lat, scope.parameters.centerCoords.long),
-                    zoom: scope.parameters.mapZoom,
+                    center: new google.maps.LatLng(scope.parameter.centerCoords.lat, scope.parameter.centerCoords.long),
+                    zoom: scope.parameter.mapZoom,
                     mapTypeId: google.maps.MapTypeId.HYBRID
                 }
                 scope.map = new google.maps.Map(mapCanvas, mapOptions);
@@ -101,7 +101,7 @@ directives.directive('domains', function($timeout) {
                     scope.rectOptions.zIndex =zInd;
                     scope.drawingManager.setOptions({rectangleOptions:scope.rectOptions});
                     //meno uno perchè non ho ancora fatto il push del rettangolo nell'array.
-                    if(Object.keys(scope.mapRectangles).length-1 == scope.parameters.maxDomains) {
+                    if(Object.keys(scope.mapRectangles).length-1 == scope.parameter.maxDomains) {
                         rectangle.setMap(null);
                         return;
                     }
@@ -124,7 +124,7 @@ directives.directive('domains', function($timeout) {
             var boundsChanged = function(rectangle, i){
                 var bounds = rectangle.getBounds();
                 $timeout(function(){
-                    var value = scope.parameters.value[num+i];
+                    var value = scope.parameter.value[num+i];
                     if(typeof(value)==="undefined") return;
                     value.northEast.lat = bounds.getNorthEast().lat();
                     value.northEast.long = bounds.getNorthEast().lng();
@@ -148,7 +148,7 @@ directives.directive('domains', function($timeout) {
 
             var deleteRectangle = function(index){
                 scope.modal.modal('hide');
-                if(scope.parameters.onlyNested){
+                if(scope.parameter.onlyNested){
                     $timeout(function(){
                         var pos =  index;
                         var keys = Object.keys(scope.mapRectangles);
@@ -158,7 +158,7 @@ directives.directive('domains', function($timeout) {
                         for(var c = 0;c<howMany;c++) {
                             scope.mapRectangles[keys[c + pos]].setMap(null);
                             delete scope.mapRectangles[keys[c + pos]];
-                            delete scope.parameters.value[keys[c + pos]];
+                            delete scope.parameter.value[keys[c + pos]];
                         }
                     }, 0);
                 }
@@ -166,7 +166,7 @@ directives.directive('domains', function($timeout) {
                     $timeout(function(){
                         scope.mapRectangles[num+index].setMap(null);
                         delete scope.mapRectangles[num+index];
-                        delete scope.parameters.value[num+index];
+                        delete scope.parameter.value[num+index];
                     }, 0);
                 }
             }
@@ -179,7 +179,7 @@ directives.directive('domains', function($timeout) {
             // @par: currentIndex -> the index of the rectangle to be checked;
             // @return: boolean that inform if the rectangle is ok or has been deleted.
             var checkRectangle = function(currentIndex){
-                if(!scope.parameters.onlyNested) return true;
+                if(!scope.parameter.onlyNested) return true;
                 var keys = Object.keys(scope.mapRectangles);
                 var current = scope.mapRectangles[num+currentIndex];
                 var cBounds = current.getBounds();
@@ -200,7 +200,7 @@ directives.directive('domains', function($timeout) {
                                 if(typeof(scope.mapRectangles[keys[offs]])==="undefined") return false;
                                 scope.mapRectangles[keys[offs]].setMap(null);
                                 delete scope.mapRectangles[keys[offs]];
-                                delete scope.parameters.value[keys[offs]];
+                                delete scope.parameter.value[keys[offs]];
                             }
                         });
                         return false;
@@ -220,7 +220,7 @@ directives.directive('domains', function($timeout) {
                                 if(typeof(scope.mapRectangles[keys[offs]])==="undefined") return;
                                 scope.mapRectangles[keys[offs]].setMap(null);
                                 delete scope.mapRectangles[keys[offs]];
-                                delete scope.parameters.value[keys[offs]];
+                                delete scope.parameter.value[keys[offs]];
                             }
                         });
                         return false;
@@ -268,7 +268,7 @@ directives.directive('domains', function($timeout) {
                     northEast: {lat:northEast.lat(), long:northEast.lng()}
                 };
                 $timeout(function(){
-                    scope.parameters.value[num+ind] = rectangle;
+                    scope.parameter.value[num+ind] = rectangle;
                 });
             }
 
@@ -279,7 +279,7 @@ directives.directive('domains', function($timeout) {
             }
 
             scope.range = function() {
-                return Object.keys(scope.parameters.value);
+                return Object.keys(scope.parameter.value);
             };
 
 
@@ -287,7 +287,7 @@ directives.directive('domains', function($timeout) {
             $timeout(function(){
                 google.maps.event.addDomListener(window, 'load', scope.initializeParameter());
             });
-            scope.$watch("parameters.message", function() {
+            scope.$watch("parameter.message", function() {
             });
         }
     };

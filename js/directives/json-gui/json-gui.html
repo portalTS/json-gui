@@ -8,13 +8,13 @@
                     </div>
                     <div class="group-parameters col-xs-12">
                         <div ng-repeat="(key, value) in hashToArray(pars)">
-                            <integer ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='integer'" parameters="pars[value]" dependencies = "dep[value]"></integer>
-                            <float ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='float'" parameters="pars[value]" dependencies = "dep[value]"></float>
-                            <datetime ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='datetime'" parameters="pars[value]" dependencies = "dep[value]"></datetime>
-                            <select-parameter ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='select'" parameters="pars[value]" dependencies =" dep[value]"></select-parameter>
-                            <text-parameter ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='text'" parameters="pars[value]" dependencies = "dep[value]"></text-parameter>
-                            <domains  ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='domains'" parameters="pars[value]" dependencies = "dep[value]"></domains>
-                            <fileupload  ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='fileupload'" parameters="pars[value]" dependencies = "dep[value]"></fileupload>
+                            <integer ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='integer'" parameter="pars[value]" dependencies = "dep[value]"></integer>
+                            <float ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='float'" parameter="pars[value]" dependencies = "dep[value]"></float>
+                            <datetime ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='datetime'" parameter="pars[value]" dependencies = "dep[value]"></datetime>
+                            <select-parameter ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='select'" parameter="pars[value]" dependencies =" dep[value]"></select-parameter>
+                            <text-parameter ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='text'" parameter="pars[value]" dependencies = "dep[value]"></text-parameter>
+                            <domains  ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='domains'" parameter="pars[value]" dependencies = "dep[value]"></domains>
+                            <fileupload  ng-if="pars[value].parameterCategory==group.value && pars[value].parameterType=='fileupload'" parameter="pars[value]" dependencies = "dep[value]"></fileupload>
                         </div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
     </div>
     <div class="row">
         <div class="col-xs-4 col-xs-offset-4  col-md-2 col-md-offset-5">
-            <button ng-click="generateNamelist()" class="btn btn-success">Generate Namelist</button>
+            <button ng-click="saveConfiguration()" class="btn btn-success">Save configuration</button>
         </div>
     </div>
 </div>

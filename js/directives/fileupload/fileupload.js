@@ -4,35 +4,35 @@ directives.directive('fileupload', function($timeout, Upload) {
         templateUrl: 'js/directives/fileupload/fileupload.html',
         replace: true,
         scope: {
-            parameters:"=",
+            parameter:"=",
             dependencies:"=",
         },
         link:function(scope,elm,attr) {
-            var num =scope.parameters.dbName;
+            var num =scope.parameter.dbName;
             /**************** VALIDATION ******************/
             var dependencies = scope.dependencies;
-            scope.validationFunction = new Function(scope.parameters.isValid)();
+            scope.validationFunction = new Function(scope.parameter.isValid)();
             scope.fileuploadValid = function(){
-                if(typeof(scope.parameters.value)=="undefined" || scope.parameters.value.length<scope.parameters.minUpload) {
-                    scope.parameters.message = "Upload at least "+scope.parameters.minUpload;
-                    scope.parameters.message+= (scope.parameters.minUpload==1)? " file" : " files";
+                if(typeof(scope.parameter.value)=="undefined" || scope.parameter.value.length<scope.parameter.minUpload) {
+                    scope.parameter.message = "Upload at least "+scope.parameter.minUpload;
+                    scope.parameter.message+= (scope.parameter.minUpload==1)? " file" : " files";
                     return false;
                 }
                 return true;
             }
             /**************** EVALUATION ******************/
-            scope.parameters.evaluate = function(){
-                scope.parameters.message ="";
-                var validation = scope.validationFunction(scope.parameters, scope.dependencies);
+            scope.parameter.evaluate = function(){
+                scope.parameter.message ="";
+                var validation = scope.validationFunction(scope.parameter, scope.dependencies);
                 if(!scope.fileuploadValid()){
                     return false;
                 }
 
                 if(!validation.valid){
-                    scope.parameters.message = validation.message;
+                    scope.parameter.message = validation.message;
                     return false;
                 }
-                scope.parameters.message = "";
+                scope.parameter.message = "";
                 return true;
             }
 
@@ -45,8 +45,8 @@ directives.directive('fileupload', function($timeout, Upload) {
             }
             // initialize
             scope.init = function() {
-                scope.maxLengthByte = calculateLength(scope.parameters.maxSize);
-                var form = $("#"+scope.parameters.dbName);
+                scope.maxLengthByte = calculateLength(scope.parameter.maxSize);
+                var form = $("#"+scope.parameter.dbName);
                 var fileselect =  form.find("#fileselect")[0],
                     filedrag =  form.find("#filedrag")[0],
                     submitbutton =  form.find("#submitbutton")[0];
@@ -79,13 +79,13 @@ directives.directive('fileupload', function($timeout, Upload) {
 
             scope.parseFile = function(file) {
                 if(file.size>scope.maxLengthByte) {
-                    errorUpload("The file named "+file.name+" is too big. The maximum dimension accepted is "+scope.parameters.maxSize+".");
+                    errorUpload("The file named "+file.name+" is too big. The maximum dimension accepted is "+scope.parameter.maxSize+".");
                     return;
                 }
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     console.log(e.target.result);
-                    $timeout(function(){scope.parameters.value.push(e.target.result);});
+                    $timeout(function(){scope.parameter.value.push(e.target.result);});
                 };
                 reader.readAsDataURL(file);
                 $timeout(function() {
@@ -99,8 +99,8 @@ directives.directive('fileupload', function($timeout, Upload) {
             scope.fileSelectHandler = function(e) {
                 scope.fileDragHover(e);
                 var files = e.target.files || e.dataTransfer.files;
-                if(scope.uploadedFilesDescription.length+files.length>scope.parameters.maxUpload){
-                    errorUpload("Reached maximum file uploads allowed ("+scope.parameters.maxUpload+").");
+                if(scope.uploadedFilesDescription.length+files.length>scope.parameter.maxUpload){
+                    errorUpload("Reached maximum file uploads allowed ("+scope.parameter.maxUpload+").");
                     return;
                 }
 
@@ -112,7 +112,7 @@ directives.directive('fileupload', function($timeout, Upload) {
 
 
             scope.openInput = function(){
-                $('#'+scope.parameters.dbName).find('#fileselect').click();
+                $('#'+scope.parameter.dbName).find('#fileselect').click();
             }
             var calculateLength = function(length){
                 length = length.toLowerCase();

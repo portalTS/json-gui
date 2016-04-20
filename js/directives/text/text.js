@@ -4,38 +4,36 @@ directives.directive('textParameter', function() {
         templateUrl: 'js/directives/text/text.html',
         replace: true,
         scope: {
-            parameters:"=",
+            parameter:"=",
             dependencies:"=",
         },
         link:function(scope,elm,attr) {
             var dependencies = scope.dependencies;
-            scope.validationFunction = new Function(scope.parameters.isValid)();
+            scope.validationFunction = new Function(scope.parameter.isValid)();
             scope.textValid = function(){
-                if(scope.parameters.value===""){
-                    scope.parameters.message = "Insert some text";
+                if(scope.parameter.value===""){
+                    scope.parameter.message = "Insert some text";
                     return false;
                 }
-                scope.parameters.message = "";
+                scope.parameter.message = "";
                 return true;
             }
-            scope.parameters.evaluate = function(){
-                scope.parameters.message ="";
-                var validation = scope.validationFunction(scope.parameters, scope.dependencies);
+            scope.parameter.evaluate = function(){
+                scope.parameter.message ="";
+                var validation = scope.validationFunction(scope.parameter, scope.dependencies);
                 if(!scope.textValid()){
                     return false;
                 }
 
                 if(!validation.valid){
-                    scope.parameters.message = validation.message;
+                    scope.parameter.message = validation.message;
                     return false;
                 }
-                scope.parameters.message = "";
+                scope.parameter.message = "";
                 return true;
-            }   
-            scope.$watch("parameters.message", function() {
+            }
+            scope.$watch("parameter.message", function() {
             });
-
         }
-
     };
 });

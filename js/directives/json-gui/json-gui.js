@@ -15,7 +15,6 @@ directives.directive('jsonGui', function($timeout) {
                 for(var par in jsonPars){
                     scope.pars[jsonPars[par].dbName] = jsonPars[par];
                 }
-                console.log(scope.pars);
             }
             $timeout(function(){
                 $('#nav').affix({
@@ -35,23 +34,20 @@ directives.directive('jsonGui', function($timeout) {
                     }
                     scope.dep[par] = obj;
                 }
-                console.log(scope.dep)
             }
 
-
-            scope.generateNamelist= function(){
+            scope.saveConfiguration= function(){
                 var namelist="";
                 for(var par in scope.pars){
                     console.log(scope.pars[par]);
 
                     if(!scope.pars[par].evaluate()){
-                        console.log("Errore in qualche parametro");
+                        console.log("Error in some parameter");
                         return;
                     }
                     namelist+= scope.pars[par].displayName+": "+ eval(scope.pars[par].computedResult)+";\n";
                 }
                 console.log(namelist);
-
             }
 
 
@@ -66,8 +62,6 @@ directives.directive('jsonGui', function($timeout) {
             }
             scope.buildParametersArray();
             scope.buildDependencies();
-
-
         }
 
     };

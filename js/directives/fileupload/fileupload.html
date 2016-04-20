@@ -1,8 +1,8 @@
-<div class="row parameter-row" id="{{parameters.dbName}}">
+<div class="row parameter-row" id="{{parameter.dbName}}">
     <div class="col-xs-6 col-md-3 col-md-offset-3 par-name-col upload-name-col">
-        {{parameters.displayName}} 
+        {{parameter.displayName}}
     </div>
-    <div class="col-xs-6 col-md-3 par-value-col" ng-class="{'has-error': !parameters.evaluate()}">
+    <div class="col-xs-6 col-md-3 par-value-col" ng-class="{'has-error': !parameter.evaluate()}">
         <!--        <div ngf-drop ngf-select ng-model="file" class="drop-box" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-allow-dir="false" accept="image/*,application/pdf" ngf-pattern="'image/*,application/pdf'">Drop Namelist</div>-->
 
         <form  action="upload.php" method="POST" enctype="multipart/form-data">
@@ -16,7 +16,7 @@
                 <div id="submitbutton">
                     <button type="submit">Upload Files</button>
                 </div>
-                <div class="error-message">{{parameters.message}}</div>
+                <div class="error-message">{{parameter.message}}</div>
                 <div class="error-message">
                     <div ng-repeat="val in errorUpload">{{val}}
                     </div>

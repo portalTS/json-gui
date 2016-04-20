@@ -1,13 +1,13 @@
 <div class="row parameter-row">
 
     <div class="col-xs-12 col-md-6 col-md-offset-3 par-name-col ng-binding">
-        <div style="width:100%;height:{{height}}" id="{{parameters.dbName}}map" ng-class="{'map-has-error' : !parameters.evaluate()}"></div>
-        <div class="error-message">{{parameters.message}}</div>
-        <div ng-repeat="val in range() track by $index"> 
-            Domain number {{$index+1}} - South-West: ({{parameters.value[val].southWest.lat | number:4}}, {{parameters.value[val].southWest.long | number:4}}) North-East: ({{parameters.value[val].northEast.lat | number:4}}, {{parameters.value[val].northEast.long | number:4}})<br/>
+        <div style="width:100%;height:{{height}}" id="{{parameter.dbName}}map" ng-class="{'map-has-error' : !parameter.evaluate()}"></div>
+        <div class="error-message">{{parameter.message}}</div>
+        <div ng-repeat="val in range() track by $index">
+            Domain number {{$index+1}} - South-West: ({{parameter.value[val].southWest.lat | number:4}}, {{parameter.value[val].southWest.long | number:4}}) North-East: ({{parameter.value[val].northEast.lat | number:4}}, {{parameter.value[val].northEast.long | number:4}})<br/>
         </div>
     </div>
-    <div class="modal fade" id="{{parameters.dbName}}modal">
+    <div class="modal fade" id="{{parameter.dbName}}modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -15,7 +15,7 @@
                     <h4 class="modal-title">Delete domain</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Do you want to delete domain number <span id="number"></span><span ng-if="parameters.onlyNested" id="lastDomain"> and all his sub-domains</span>?</p>
+                    <p>Do you want to delete domain number <span id="number"></span><span ng-if="parameter.onlyNested" id="lastDomain"> and all his sub-domains</span>?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning" data-dismiss="modal">No</button>
