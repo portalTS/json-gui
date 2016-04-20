@@ -48,8 +48,8 @@ This module need some dependencies:
 
 Moreover some components need some other library dependencies:
 -  ```fileupload``` component needs [```ng-file-upload```](https://github.com/danialfarid/ng-file-upload) dependencie.
--  ```datetime``` component needs ```moment.js``` dependencie.
--  ```domains``` component need ```Google Map Drawing Api```
+-  ```datetime``` component needs [```moment.js```](http://momentjs.com/) dependencie.
+-  ```domains``` component need [```Google Map Drawing Api```](https://developers.google.com/maps/documentation/javascript/examples/drawing-tools) dependencie.
 
 You can install the first dependencies with bower:
 
