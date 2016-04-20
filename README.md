@@ -29,6 +29,17 @@ the ```index.html``` file includes a ```json-gui``` tag, that is getting the dat
 
 # Usage
 
+First of all, you have to add the ```json-gui``` dependencie to your angular module:
+
+```
+var app = angular.module('app', ['json-gui']).config(function(){
+});
+app.run(function(){
+...
+})
+...
+```
+
 Two different usages are possible:
 - using the whole json-gui component
 - using single components for declaring single input fields.
