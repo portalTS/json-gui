@@ -8,7 +8,7 @@ Starting from a formal JSON configuration describing a list of inputs (that can 
 You can download the project here from GitHub or, alternatively, you can install it with bower:
 
 ```
-bower install json-gui
+bower install json-gui --save
 ```
 In both cases, you have to include two files in your HTML:
 
