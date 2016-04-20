@@ -23,6 +23,9 @@ In both cases, you have to include two files in your HTML:
 <script src="dist/json-gui.js"></script>
 <link rel="stylesheet" href="dist/json-gui.css"/>
 ```
+The project also contains a basic usage example:
+
+the ```index.html``` file include the ```json-gui``` tag, that is getting the data from the ```json/wrf-arw.json``` file.
 
 # Usage
 
