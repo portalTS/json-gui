@@ -9,7 +9,7 @@ directives.directive('float', function() {
         },
         link:function(scope,elm,attr) {
             var dependencies = scope.dependencies;
-            scope.validationFunction = new Function(scope.parameter.isValid)();
+            scope.validationFunction = new Function("return function v(parameter, dependencies){var isValid = {valid:true, message:''};"+scope.parameter.isValid+" return isValid;}")();
             scope.floatValid = function(){
                 if(typeof(scope.parameter.value) === 'undefined' || scope.parameter.value ==="NaN"){
                     scope.parameter.message = "Number format is not valid";

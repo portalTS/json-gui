@@ -9,8 +9,7 @@ directives.directive('selectParameter', function() {
         },
         link:function(scope,elm,attr) {
             var dependencies = scope.dependencies;
-            scope.validationFunction = new Function(scope.parameter.isValid)();
-
+            scope.validationFunction = new Function("return function v(parameter, dependencies){var isValid = {valid:true, message:''};"+scope.parameter.isValid+" return isValid;}")();
             scope.selectValid = function(){
                 return true;
             }

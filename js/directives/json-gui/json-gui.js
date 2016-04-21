@@ -37,20 +37,34 @@ directives.directive('jsonGui', function($timeout) {
             }
 
             scope.saveConfiguration= function(){
+              console.log(scope.pars["upload"].value);
                 var namelist="";
                 for(var par in scope.pars){
-                    console.log(scope.pars[par]);
+                    // console.log(scope.pars[par]);
+                    // console.log(par);
 
                     if(!scope.pars[par].evaluate()){
                         console.log("Error in some parameter");
                         return;
                     }
-                    namelist+= scope.pars[par].displayName+": "+ eval(scope.pars[par].computedResult)+";\n";
+                    var functionBody = scope.buildComputingFunction(par);
+                    namelist+= scope.pars[par].displayName+": "+ eval(functionBody)+";\n";
                 }
                 console.log(namelist);
             }
 
-
+            /*
+            This function is used to build two simpler object to be referred in the computedResult function: the parameter object, and the dependencies array.
+            In this way, in the computedResult property of each parameter object in the json file, the current parameter and its dependencies can be referred in a simpler way.
+            */
+            scope.buildComputingFunction = function(par){
+              var evalPrefix = "var parameter = scope.pars[par];";
+              evalPrefix +=  "var dependencies = [];"
+              scope.pars[par].dependencies.forEach(function(entry) {
+                  evalPrefix += "dependencies['"+entry+"'] = scope.pars['"+entry+"'];";
+              });
+              return evalPrefix + "(function(){"+scope.pars[par].computedResult+"}())";
+            };
             scope.hashToArray = function(items) {
                 var result = [];
                 var i = 0;
@@ -62,7 +76,25 @@ directives.directive('jsonGui', function($timeout) {
             }
             scope.buildParametersArray();
             scope.buildDependencies();
-        }
 
-    };
+            scope.data.getComputedResults = function(){
+              var results = [];
+              var result;
+              for(var par in scope.pars){
+                  result = {};
+                  if(!scope.pars[par].evaluate()){
+                      console.log("Error in some parameter");
+                      return;
+                  }
+                  var functionBody = scope.buildComputingFunction(par);
+                   result.value = eval(functionBody);
+                   result.name = scope.pars[par].dbName;
+                   result.parameterType = scope.pars[par].parameterType;
+                  results.push(result);
+              }
+              return results;
+            };
+
+        }
+    }
 });

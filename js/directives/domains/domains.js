@@ -11,7 +11,7 @@ directives.directive('domains', function($timeout) {
             var num =scope.parameter.dbName;
             /**************** VALIDATION ******************/
             var dependencies = scope.dependencies;
-            scope.validationFunction = new Function(scope.parameter.isValid)();
+            scope.validationFunction = new Function("return function v(parameter, dependencies){var isValid = {valid:true, message:''};"+scope.parameter.isValid+" return isValid;}")();
             scope.domainsValid = function(){
                 if(typeof(scope.mapRectangles)=="undefined" || Object.keys(scope.mapRectangles).length===0) {
                     scope.parameter.message = "Select at least one domain";
@@ -69,7 +69,7 @@ directives.directive('domains', function($timeout) {
             var initializeMap = function() {
                 var mapCanvas = document.getElementById(scope.parameter.dbName+"map");
                 var mapOptions = {
-                    center: new google.maps.LatLng(scope.parameter.centerCoords.lat, scope.parameter.centerCoords.long),
+                    center: new google.maps.LatLng(scope.parameter.center.lat, scope.parameter.center.long),
                     zoom: scope.parameter.mapZoom,
                     mapTypeId: google.maps.MapTypeId.HYBRID
                 }

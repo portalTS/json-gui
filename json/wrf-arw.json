@@ -17,9 +17,9 @@
         "displayName":"Grid Spacing",
         "dbName": "grid_spacing",
         "dependencies":["parental_grid_ratio"],
-        "computedResult":"(function(){return scope.pars['grid_spacing'].value*3;}())",
+        "computedResult":"return parameter.value*3;",
         "parameterCategory":3,
-        "isValid" : "return function v(parameters, dependencies){var retObject = {};if(parameters.value<dependencies['parental_grid_ratio'].value){retObject.valid= false; retObject.message=parameters.displayName+' must be greater then '+dependencies['parental_grid_ratio'].displayName;}  else retObject.valid= true; return retObject;}"
+        "isValid" : "if(parameter.value<dependencies['parental_grid_ratio'].value){isValid.valid= false; isValid.message=parameter.displayName+' must be greater than '+dependencies['parental_grid_ratio'].displayName;}"
     },
     { "parameterType":"datetime",
       "value":"Mon Oct 26 2015 00:00:00 GMT+0100 (CET)",
@@ -29,8 +29,8 @@
       "parameterCategory":2,
       "hasDate": true,
       "hasTime":true,
-      "computedResult":"(function(){return scope.pars['start_time'].value;}())",
-      "isValid" :"return function v(parameters, dependencies){var retObject = {};if(dependencies['end_time'].value<parameters.value){retObject.valid= false; retObject.message = parameters.displayName + ' must be earlier than '+dependencies['end_time'].displayName;} else {retObject.valid= true;retObject.message='';} return retObject;}"
+      "computedResult":"return parameter.value;",
+      "isValid" :"if(dependencies['end_time'].value<parameter.value){isValid.valid= false; isValid.message = parameter.displayName + ' must be earlier than '+dependencies['end_time'].displayName;}"
     },
       {
         "parameterType":"datetime",
@@ -41,8 +41,8 @@
         "parameterCategory":2,
         "hasDate": true,
         "hasTime":true,
-        "computedResult":"(function(){return scope.pars['end_time'].value;}())",
-        "isValid" : "return function v(parameters, dependencies){var retObject = {};if(dependencies['start_time'].value>parameters.value){retObject.valid= false; retObject.message = parameters.displayName + ' must be greater than '+dependencies['start_time'].displayName;} else {retObject.valid= true;retObject.message='';} return retObject;}"
+        "computedResult":"return parameter.value;",
+        "isValid" : "if(dependencies['start_time'].value>parameter.value){isValid.valid= false; isValid.message = parameter.displayName + ' must be greater than '+dependencies['start_time'].displayName;}"
     },
     {
         "parameterType":"integer",
@@ -51,8 +51,8 @@
         "dbName": "parental_grid_ratio",
         "parameterCategory":4,
         "dependencies":["grid_spacing"],
-        "computedResult":"(function(){return parseInt(scope.pars['grid_spacing'].value)+scope.pars['parental_grid_ratio'].value;}())",
-        "isValid":"return function v(parameters, dependencies){var retObject = {};if(parameters.value<10) {retObject.valid= false; retObject.message=parameters.displayName+' must be bigger then 9';} else retObject.valid= true; return retObject;}"
+        "computedResult":"return parseInt(parameter.value)+dependencies['grid_spacing'].value;",
+        "isValid":"if(parameter.value<10) {isValid.valid= false; isValid.message=parameter.displayName+' must be bigger then 9';} "
     },
     {
         "parameterType":"select",
@@ -62,12 +62,12 @@
         "parameterCategory":4,
         "values": [{"name":"Option 1", "value":0}, {"name":"Option 2", "value":1}],
         "dependencies":[],
-        "computedResult":"(function(){return scope.pars['physics'].value /*scope.pars['physics'].values[scope.pars['physics'].value].name;*/}())",
-        "isValid":"return function v(parameters, dependencies){var retObject = {};if(parameters.value==0){retObject.valid=false; retObject.message='Select a value'} else retObject.valid= true; return retObject;}"
+        "computedResult":"return parameter.value",
+        "isValid":"if(parameter.value==0){isValid.valid=false; isValid.message='Select a value'}"
     },
     {
         "parameterType":"domains",
-        "centerCoords": {"lat":44.496,"long":8.9209},
+        "center": {"lat":44.496,"long":8.9209},
         "mapZoom":8,
         "parameterCategory":1,
         "value":{
@@ -90,8 +90,8 @@
         "parameterCategory":1,
         "onlyNested":true,
         "maxDomains":4,
-        "computedResult":"(function(){var val = scope.pars['wrfdomains'].value; var keys =Object.keys(val);var retString = '';for(var i=1;i<=keys.length;i++){retString+='Domain number'+i+' - South-West: ('+val[keys[i-1]].southWest.lat+', '+val[keys[i-1]].southWest.long+') North-East: ('+val[keys[i-1]].northEast.lat+', '+val[keys[i-1]].northEast.long+')';}return retString;}())",
-        "isValid":"return function v(parameters, dependencies){var retObject = {};retObject.valid= true; return retObject;}"
+        "computedResult":"var val = parameter.value; var keys =Object.keys(val);var retString = '';for(var i=1;i<=keys.length;i++){retString+='Domain number'+i+' - South-West: ('+val[keys[i-1]].southWest.lat+', '+val[keys[i-1]].southWest.long+') North-East: ('+val[keys[i-1]].northEast.lat+', '+val[keys[i-1]].northEast.long+')';}return retString;",
+        "isValid":""
     },
      {
         "parameterType":"text",
@@ -100,8 +100,8 @@
         "parameterCategory":6,
         "dbName": "description",
         "dependencies":[],
-        "computedResult":"(function(){return scope.pars['description'].value}())",
-        "isValid":"return function v(parameters, dependencies){var retObject = {};retObject.valid= true; return retObject;}"
+        "computedResult":"return parameter.value;",
+        "isValid":""
     },
      {
        "parameterType":"fileupload",
@@ -110,9 +110,9 @@
         "dbName": "upload",
         "parameterCategory":5,
         "dependencies":[],
-        "computedResult":"(function(){return 'ok'}())",
-        "isValid":"return function v(parameters, dependencies){var retObject = {};retObject.valid= true; return retObject;}",
-        "maxSize":"3kb",
+        "computedResult":"return 'ok'",
+        "isValid":"",
+        "maxSize":"3MB",
         "maxUpload":2,
         "minUpload":1
      }

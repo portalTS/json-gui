@@ -11,7 +11,7 @@ directives.directive('fileupload', function($timeout, Upload) {
             var num =scope.parameter.dbName;
             /**************** VALIDATION ******************/
             var dependencies = scope.dependencies;
-            scope.validationFunction = new Function(scope.parameter.isValid)();
+            scope.validationFunction = new Function("return function v(parameter, dependencies){var isValid = {valid:true, message:''};"+scope.parameter.isValid+" return isValid;}")();
             scope.fileuploadValid = function(){
                 if(typeof(scope.parameter.value)=="undefined" || scope.parameter.value.length<scope.parameter.minUpload) {
                     scope.parameter.message = "Upload at least "+scope.parameter.minUpload;
