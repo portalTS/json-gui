@@ -28,7 +28,7 @@ directives.directive('jsonGui', function($timeout) {
                 var currDeps;
                 for(var par in scope.pars){ // par contiene il nome del parametro
                     var obj={};
-                    currDeps = scope.pars[par].dependenciesNames;
+                    currDeps = scope.pars[par].dependencies;
                     for(var i=0;i<currDeps.length;i++) {
                         obj[currDeps[i]] = scope.pars[currDeps[i]];
                     }
