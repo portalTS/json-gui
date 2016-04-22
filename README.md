@@ -10,6 +10,8 @@ Starting from a formal JSON configuration object describing a list of inputs (th
 - type validation
 - personalizable validation
 
+# Live Demo
+A live demo is available [here](https://plnkr.co/edit/RWTAKi9kRUEdrrb3p6Kp).
 # Quick start
 
 You can download the project here from GitHub or, alternatively, you can install it with bower:
