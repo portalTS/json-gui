@@ -19,7 +19,7 @@ bower install json-gui --save
 ```
 In both cases, you have to include two files in your HTML:
 
-```
+```html
 <script src="dist/json-gui.js"></script>
 <link rel="stylesheet" href="dist/json-gui.css"/>
 ```
@@ -32,7 +32,7 @@ shown in the ```js/mainController.js``` file.
 
 First of all, you have to add the ```json-gui``` dependencie to your angular module:
 
-```
+```javascript
 var app = angular.module('app', ['json-gui']).config(function(){
 });
 app.run(function(){
@@ -49,7 +49,7 @@ Two different usages are possible:
 
 In order to use this component, you only have to add the corresponding tag to your HTML file:
 
-```
+```html
 <json-gui data="data"></json-gui>
 ```
 The ```data``` object contains the entire object needed (see Wiki section), with the metadata and a list of parameters, from which the form will be built.
@@ -60,7 +60,7 @@ Alternatively you can use each single form-field component as a standalone compo
 
 In the very same way as with the json-gui component, you can add each tag to your HTML file:
 
-```
+```html
 <integer parameter="param" dependencies="dep"></integer>
 <float parameter="param" dependencies="dep"></float>
 <datetime parameter="param" dependencies="dep"></datetime>
@@ -90,7 +90,7 @@ bower install moment --save
 ```
 while to include the Google Maps Drawing Api, you only have to load them in your HTML file:
 
-```
+```html
 <script type="text/javascript"
   src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=drawing">
 </script>
