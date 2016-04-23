@@ -4,29 +4,22 @@ var templateCache = require('gulp-angular-templatecache');
 var uglify = require('gulp-uglify')
 var clean = require('gulp-clean');
 var ngAnnotate = require('gulp-ng-annotate')
-
-
-
-
-gulp.task('concatenate', function () {
-  gulp.src(['build/pmodules/api/libs/**/collections.js', 'build/pmodules/api/libs/**/documents.js'])
-    .pipe(concat('tests/app.js'))
-    .pipe(gulp.dest('.'))
-})
+var sourcemaps = require('gulp-sourcemaps')
 
 gulp.task('template-cache', function () {
   return gulp.src('js/directives/**/*.html')
-    .pipe(templateCache("templateCache.js",  { module:'templateCache', standalone:true,  base: __dirname}))
+    .pipe(templateCache("templateCache.js",  { module:'templateCache', standalone:true}))
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('concatenate', function () {
   gulp.src('dist/json-gui.js', {read: false})
 		.pipe(clean());
-  gulp.src(['js/directives.js', 'js/directives/**/*.js'])
+  gulp.src(['dist/templateCache.js','js/directives.js', 'js/directives/**/*.js'])
     .pipe(concat('dist/json-gui.js'))
     .pipe(ngAnnotate())
     .pipe(uglify())
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('.'))
 })
 
@@ -40,7 +33,7 @@ gulp.task('concatenatecss', function () {
 
 
 gulp.task('watch', ['concatenate'], function () {
-  gulp.watch('js/directives/**/*.js', ['concatenate'])
+  gulp.watch('js/directives/**/*.js', ['template-cache','concatenate'])
   gulp.watch('js/directives.js', ['concatenate'])
   gulp.watch('js/directives/**/*.css', ['concatenatecss'])
   gulp.watch('css/directives/**/*.css', ['concatenatecss'])

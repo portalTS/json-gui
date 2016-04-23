@@ -1,7 +1,7 @@
 directives.directive('float', function() {
     return {
         restrict: 'E',
-        templateUrl: 'js/directives/float/float.html',
+        templateUrl: 'float/float.html',
         replace: true,
         scope: {
             parameter:"=",

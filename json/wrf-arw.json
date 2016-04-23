@@ -110,11 +110,12 @@
         "dbName": "upload",
         "parameterCategory":5,
         "dependencies":[],
-        "computedResult":"return 'ok'",
+        "computedResult":"return parameter.value;",
         "isValid":"",
         "maxSize":"3MB",
-        "maxUpload":2,
-        "minUpload":1
+        "maxUpload":5,
+        "minUpload":1,
+        "allowedExtensions": ""
      }
 
     ]

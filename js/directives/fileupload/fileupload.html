@@ -21,10 +21,13 @@
                     <div ng-repeat="val in errorUpload">{{val}}
                     </div>
                 </div>
-                 <div class="success-message">
-                    <div ng-repeat="file in uploadedFilesDescription">
-                        Uploaded file: <span style="color:#5C758C;">{{file.name}}</span>
-                    </div>
+                 <div class="success-message" ng-show="uploadedFilesDescription.length!=0">
+                   Uploaded files:
+                   <ul>
+                    <li ng-repeat="file in uploadedFilesDescription track by $index">
+                        <span class="uploaded-file">{{file.name}}</span>&nbsp;&nbsp;&nbsp;<span ng-click="removeFile($index)" class="file-unload">Remove</span>
+                    </li>
+                  </ul>
                 </div>
             </fieldset>
 

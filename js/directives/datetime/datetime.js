@@ -1,7 +1,7 @@
 directives.directive('datetime', function() {
     return {
         restrict: 'E',
-        templateUrl: 'js/directives/datetime/datetime.html',
+        templateUrl: 'datetime/datetime.html',
         replace: true,
         scope: {
             parameter:"=",

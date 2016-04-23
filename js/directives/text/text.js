@@ -1,7 +1,7 @@
 directives.directive('textParameter', function() {
     return {
         restrict: 'E',
-        templateUrl: 'js/directives/text/text.html',
+        templateUrl: 'text/text.html',
         replace: true,
         scope: {
             parameter:"=",
@@ -32,8 +32,6 @@ directives.directive('textParameter', function() {
                 scope.parameter.message = "";
                 return true;
             }
-            scope.$watch("parameter.message", function() {
-            });
         }
     };
 });

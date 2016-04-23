@@ -1,1 +1,1 @@
-var directives = angular.module('json-gui', []);
+var directives = angular.module('json-gui', ['ngFileUpload', 'templateCache']);

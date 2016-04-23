@@ -1,7 +1,7 @@
 directives.directive('domains', function($timeout) {
     return {
         restrict: 'E',
-        templateUrl: 'js/directives/domains/domains.html',
+        templateUrl: 'domains/domains.html',
         replace: true,
         scope: {
             parameter:"=",
@@ -38,7 +38,6 @@ directives.directive('domains', function($timeout) {
             /**************** INIT ******************/
             scope.initializeParameter = function(){
                 var height =  parseInt($("body").css("width"))*2/6;
-                console.log($("body").css("width"));
                 scope.height=height+"px";
                 scope.mapRectangles = [];
                 initializeMap();
@@ -90,12 +89,16 @@ directives.directive('domains', function($timeout) {
                     drawingControlOptions: {
                         position: google.maps.ControlPosition.TOP_CENTER,
                         drawingModes: [
-                            google.maps.drawing.OverlayType.RECTANGLE
+                            google.maps.drawing.OverlayType.RECTANGLE,
+                            // google.maps.drawing.OverlayType.MARKER
                         ]
                     },
                     rectangleOptions:scope.rectOptions
                 });
                 scope.drawingManager.setMap(scope.map);
+                // google.maps.event.addListener(scope.drawingManager, "markercomplete", function(marker){
+                //     console.log(marker);
+                // });
                 google.maps.event.addListener(scope.drawingManager,'rectanglecomplete',function(rectangle){
                     var zInd = scope.rectOptions.zIndex+1;
                     scope.rectOptions.zIndex =zInd;
@@ -153,8 +156,6 @@ directives.directive('domains', function($timeout) {
                         var pos =  index;
                         var keys = Object.keys(scope.mapRectangles);
                         var howMany = keys.length - pos;
-                        console.log("pos: "+pos);
-                        console.log("howm: "+howMany);
                         for(var c = 0;c<howMany;c++) {
                             scope.mapRectangles[keys[c + pos]].setMap(null);
                             delete scope.mapRectangles[keys[c + pos]];

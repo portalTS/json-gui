@@ -1,7 +1,7 @@
 directives.directive('selectParameter', function() {
     return {
         restrict: 'E',
-        templateUrl: 'js/directives/select/select.html',
+        templateUrl: 'select/select.html',
         replace: true,
         scope: {
             parameter:"=",
@@ -28,10 +28,6 @@ directives.directive('selectParameter', function() {
                 scope.parameter.message = "";
                 return true;
             }
-            scope.$watch("parameter.message", function() {
-            });
-
-
         }
     };
 });

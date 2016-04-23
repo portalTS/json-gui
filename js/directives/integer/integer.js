@@ -1,7 +1,7 @@
 directives.directive('integer', function() {
     return {
         restrict: 'E',
-        templateUrl: 'js/directives/integer/integer.html',
+        templateUrl: 'integer/integer.html',
         replace: true,
         scope: {
             parameter:"=",

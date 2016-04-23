@@ -1,7 +1,7 @@
 directives.directive('fileupload', function($timeout, Upload) {
     return {
         restrict: 'E',
-        templateUrl: 'js/directives/fileupload/fileupload.html',
+        templateUrl: 'fileupload/fileupload.html',
         replace: true,
         scope: {
             parameter:"=",
@@ -78,19 +78,21 @@ directives.directive('fileupload', function($timeout, Upload) {
 
 
             scope.parseFile = function(file) {
+                if(!scope.fileHasAllowedExtension(file)){
+                  errorUpload("This extension is not allowed. Allowed extensions are: "+scope.parameter.allowedExtensions);
+                  return;
+                }
                 if(file.size>scope.maxLengthByte) {
                     errorUpload("The file named "+file.name+" is too big. The maximum dimension accepted is "+scope.parameter.maxSize+".");
                     return;
                 }
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    console.log(e.target.result);
                     $timeout(function(){scope.parameter.value.push(e.target.result);});
                 };
                 reader.readAsDataURL(file);
                 $timeout(function() {
                     scope.uploadedFilesDescription.push(file);
-                    console.log(scope.uploadedFilesDescription);
                 });
 
 
@@ -138,6 +140,27 @@ directives.directive('fileupload', function($timeout, Upload) {
 
                 $timeout(function(){scope.errorUpload.splice(0,1)},5000);
             }
+
+            scope.removeFile = function(index){
+              scope.parameter.value.splice(index, 1);
+              scope.uploadedFilesDescription.splice(index, 1);
+              console.log(index);
+            }
+
+            scope.fileHasAllowedExtension = function(file){
+              var exts = scope.parameter.allowedExtensions;
+                if(typeof(exts)=='undefined') return true;
+                if(typeof(exts)=='string' && exts!="") return file.name.endsWith('.'+exts);
+                if(Array.isArray(exts)){
+                  for(var i=0;i<exts.length;i++)
+                    if(file.name.endsWith('.'+exts[i]))
+                      return true;
+                  return false;
+                }
+
+                return true;
+            }
+
             scope.errorUpload = [];
             scope.uploadedFilesDescription = [];
             $timeout(function(){

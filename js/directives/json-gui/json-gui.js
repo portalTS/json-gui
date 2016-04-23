@@ -1,7 +1,7 @@
 directives.directive('jsonGui', function($timeout) {
     return {
         restrict: 'E',
-        templateUrl: 'js/directives/json-gui/json-gui.html',
+        templateUrl: 'json-gui/json-gui.html',
         replace: true,
         scope: {
             data:"=",
@@ -74,27 +74,31 @@ directives.directive('jsonGui', function($timeout) {
                 }
                 return result;
             }
-            scope.buildParametersArray();
-            scope.buildDependencies();
 
-            scope.data.getComputedResults = function(){
-              var results = [];
-              var result;
-              for(var par in scope.pars){
-                  result = {};
-                  if(!scope.pars[par].evaluate()){
-                      console.log("Error in some parameter");
-                      return;
-                  }
-                  var functionBody = scope.buildComputingFunction(par);
-                   result.value = eval(functionBody);
-                   result.name = scope.pars[par].dbName;
-                   result.parameterType = scope.pars[par].parameterType;
-                  results.push(result);
-              }
-              return results;
-            };
 
+            var unbind = scope.$watch("data", function() {
+              console.log("data was changed");
+              scope.buildParametersArray();
+              scope.buildDependencies();
+              scope.data.getComputedResults = function(){
+                var results = [];
+                var result;
+                for(var par in scope.pars){
+                    result = {};
+                    if(!scope.pars[par].evaluate()){
+                        console.log("Error in some parameter");
+                        return;
+                    }
+                    var functionBody = scope.buildComputingFunction(par);
+                     result.value = eval(functionBody);
+                     result.name = scope.pars[par].dbName;
+                     result.parameterType = scope.pars[par].parameterType;
+                    results.push(result);
+                }
+                return results;
+              };
+              unbind();
+            });
         }
     }
 });
