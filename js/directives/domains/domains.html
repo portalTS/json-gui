@@ -2,10 +2,14 @@
 
     <div class="col-xs-12 col-md-6 col-md-offset-3 par-name-col ng-binding">
         <div style="width:100%;height:{{height}}" id="{{parameter.dbName}}map" ng-class="{'map-has-error' : !parameter.evaluate()}"></div>
-        <div class="error-message">{{parameter.message}}</div>
-        <div ng-repeat="val in range() track by $index">
-            Domain number {{$index+1}} - South-West: ({{parameter.value[val].southWest.lat | number:4}}, {{parameter.value[val].southWest.long | number:4}}) North-East: ({{parameter.value[val].northEast.lat | number:4}}, {{parameter.value[val].northEast.long | number:4}})<br/>
+        <div class="error-message" ng-repeat="msg in parameter.message">{{msg}}</div>
+        <div ng-show="parameter.drawDomains" ng-repeat="val in parameter.value.domains track by $index">
+            Domain number {{$index+1}} - South-West: ({{val.southWest.lat | number:4}}, {{val.southWest.long | number:4}}) North-East: ({{val.northEast.lat | number:4}}, {{val.northEast.long | number:4}})<br/>
         </div>
+        <div ng-show="parameter.drawMarkers" ng-repeat="mark in parameter.value.markers track by $index">
+            Marker {{$index+1}}: ({{mark.lat | number:4}}, {{mark.long | number:4}})
+        </div>
+
     </div>
     <div class="modal fade" id="{{parameter.dbName}}modal">
         <div class="modal-dialog">
