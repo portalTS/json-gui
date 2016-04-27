@@ -11,7 +11,9 @@ directives.directive('jsonGui', function($timeout) {
             scope.pars = [];
             scope.dep=[];
             scope.buildParametersArray = function(){
+              try{
                 var jsonPars = scope.data.parameters;
+              } catch(error){console.log(error);}
                 for(var par in jsonPars){
                     scope.pars[jsonPars[par].dbName] = jsonPars[par];
                 }
@@ -74,29 +76,31 @@ directives.directive('jsonGui', function($timeout) {
                 }
                 return result;
             }
-
+            var computedResults  = function(){
+              var results = [];
+              var result;
+              for(var par in scope.pars){
+                  result = {};
+                  if(!scope.pars[par].evaluate()){
+                      console.log("Error in some parameter");
+                      return;
+                  }
+                  var functionBody = scope.buildComputingFunction(par);
+                   result.value = eval(functionBody);
+                   result.name = scope.pars[par].dbName;
+                   result.parameterType = scope.pars[par].parameterType;
+                  results.push(result);
+              }
+              return results;
+            };
 
             var unbind = scope.$watch("data", function() {
               console.log("data was changed");
               scope.buildParametersArray();
               scope.buildDependencies();
-              scope.data.getComputedResults = function(){
-                var results = [];
-                var result;
-                for(var par in scope.pars){
-                    result = {};
-                    if(!scope.pars[par].evaluate()){
-                        console.log("Error in some parameter");
-                        return;
-                    }
-                    var functionBody = scope.buildComputingFunction(par);
-                     result.value = eval(functionBody);
-                     result.name = scope.pars[par].dbName;
-                     result.parameterType = scope.pars[par].parameterType;
-                    results.push(result);
-                }
-                return results;
-              };
+              try {
+              scope.data.getComputedResults = computedResults;
+            } catch(error){console.log(error); return;}
               unbind();
             });
         }
