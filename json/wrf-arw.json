@@ -71,27 +71,38 @@
         "mapZoom":8,
         "parameterCategory":1,
         "value":{
-          "wrfdomains0": {
+          "domains": [
+          {
+            "id": 32569,
             "southWest": {"lat":43.496, "long":8.0209},
             "northEast": {"lat":46.496, "long":10.0209}
           },
-          "wrfdomains1": {
+          {
+            "id": 32570,
             "southWest":{"lat":43.996, "long":8.6209},
             "northEast":{"lat":45.496, "long":9.8209}
           },
-          "wrfdomains2": {
+          {
+            "id": 32571,
             "southWest":{"lat":44.796, "long":9.2209},
             "northEast":{"lat":45.096, "long":9.5209}
           }
+        ],
+        "markers": [
+            {"lat":44.42593442145313, "long":8.914546966552734, "id": 234567}
+         ]
         } ,
-        "displayName":"Domains",
+        "displayName": "Domains",
         "dbName": "wrfdomains",
-        "dependencies":[],
-        "parameterCategory":1,
-        "onlyNested":true,
-        "maxDomains":4,
-        "computedResult":"var val = parameter.value; var keys =Object.keys(val);var retString = '';for(var i=1;i<=keys.length;i++){retString+='Domain number'+i+' - South-West: ('+val[keys[i-1]].southWest.lat+', '+val[keys[i-1]].southWest.long+') North-East: ('+val[keys[i-1]].northEast.lat+', '+val[keys[i-1]].northEast.long+')';}return retString;",
-        "isValid":""
+        "dependencies": [],
+        "parameterCategory": 1,
+        "onlyNested": true,
+        "maxDomains": 2,
+        "maxMarkers": 2,
+        "drawDomains": true,
+        "drawMarkers": true,
+        "computedResult": "var val = parameter.value.domains;var retString = '';for(var i=1;i<=val.length;i++){retString+='Domain number'+i+' - South-West: ('+val[i-1].southWest.lat+', '+val[i-1].southWest.long+') North-East: ('+val[i-1].northEast.lat+', '+val[i-1].northEast.long+')';}return retString;",
+        "isValid": "if(parameter.value.domains.length==0) isValid.valid=false; isValid.message = 'Length must be different from 0';"
     },
      {
         "parameterType":"text",

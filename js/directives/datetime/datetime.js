@@ -15,30 +15,24 @@ directives.directive('datetime', function() {
             scope.parameter.value = new moment(scope.parameter.value).toDate();
             scope.timeValid = function(){
                 if(typeof(scope.parameter.value)==="undefined" || scope.parameter.value=="Invalid Date"){
-                    scope.parameter.message = "Select a valid date";
+                    scope.parameter.message.push("Select a valid date");
                     return false;
                 }
-                scope.parameter.message = "";
                 return true;
             }
             scope.parameter.evaluate = function(){
-                scope.parameter.message ="";
+                scope.parameter.message = [];
+                var bool = true;
                 var validation = scope.validationFunction(scope.parameter, scope.dependencies);
                 if(!scope.timeValid()){
-                    return false;
+                    bool = false;
                 }
-
                 if(!validation.valid){
-                    scope.parameter.message = validation.message;
+                    scope.parameter.message.push(validation.message);
                     return false;
                 }
-                scope.parameter.message = "";
-                return true;
+                return bool;
             }
-
-            scope.$watch("parameter.message", function() {
-            });
-
         }
     };
 });

@@ -14,26 +14,26 @@ directives.directive('fileupload', function($timeout, Upload) {
             scope.validationFunction = new Function("return function v(parameter, dependencies){var isValid = {valid:true, message:''};"+scope.parameter.isValid+" return isValid;}")();
             scope.fileuploadValid = function(){
                 if(typeof(scope.parameter.value)=="undefined" || scope.parameter.value.length<scope.parameter.minUpload) {
-                    scope.parameter.message = "Upload at least "+scope.parameter.minUpload;
-                    scope.parameter.message+= (scope.parameter.minUpload==1)? " file" : " files";
+                    var msg = "Upload at least "+scope.parameter.minUpload;
+                    msg+= (scope.parameter.minUpload==1)? " file" : " files";
+                    scope.parameter.message.push(msg);
                     return false;
                 }
                 return true;
             }
             /**************** EVALUATION ******************/
             scope.parameter.evaluate = function(){
-                scope.parameter.message ="";
+                scope.parameter.message = [];
+                var bool = true;
                 var validation = scope.validationFunction(scope.parameter, scope.dependencies);
                 if(!scope.fileuploadValid()){
-                    return false;
+                    bool = false;
                 }
-
                 if(!validation.valid){
-                    scope.parameter.message = validation.message;
+                    scope.parameter.message.push(validation.message);
                     return false;
                 }
-                scope.parameter.message = "";
-                return true;
+                return bool;
             }
 
 

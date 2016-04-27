@@ -12,25 +12,24 @@ directives.directive('textParameter', function() {
             scope.validationFunction = new Function("return function v(parameter, dependencies){var isValid = {valid:true, message:''};"+scope.parameter.isValid+" return isValid;}")();
             scope.textValid = function(){
                 if(scope.parameter.value===""){
-                    scope.parameter.message = "Insert some text";
+                    scope.parameter.message.push("Insert some text");
                     return false;
                 }
-                scope.parameter.message = "";
                 return true;
             }
             scope.parameter.evaluate = function(){
-                scope.parameter.message ="";
+                scope.parameter.message = [];
+                var bool = true;
                 var validation = scope.validationFunction(scope.parameter, scope.dependencies);
                 if(!scope.textValid()){
-                    return false;
+                    bool = false;
                 }
 
                 if(!validation.valid){
-                    scope.parameter.message = validation.message;
+                    scope.parameter.message.push(validation.message);
                     return false;
                 }
-                scope.parameter.message = "";
-                return true;
+                return bool;
             }
         }
     };

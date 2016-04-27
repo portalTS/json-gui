@@ -12,29 +12,25 @@ directives.directive('integer', function() {
             scope.validationFunction = new Function("return function v(parameter, dependencies){var isValid = {valid:true, message:''};"+scope.parameter.isValid+" return isValid;}")();
             scope.integerValid = function(){
                 if(scope.parameter.value % 1 !== 0 || scope.parameter.value ==="NaN"){
-                    scope.parameter.message = "Number is not an Integer";
+                    scope.parameter.message.push("Number is not an Integer");
                     return false;
                 }
-                scope.parameter.message = "";
                 return true;
             }
             scope.parameter.evaluate = function(){
-                scope.parameter.message ="";
+                scope.parameter.message = [];
+                var bool = true;
                 var validation = scope.validationFunction(scope.parameter, scope.dependencies);
                 if(!scope.integerValid()){
-                    return false;
+                    bool = false;
                 }
 
                 if(!validation.valid){
-                    scope.parameter.message = validation.message;
+                    scope.parameter.message.push(validation.message);
                     return false;
                 }
-                scope.parameter.message = "";
-                return true;
+                return bool;
             }
-            scope.$watch("parameter.message", function() {
-            });
-
         }
 
     };

@@ -15,18 +15,18 @@ directives.directive('selectParameter', function() {
             }
             ;
             scope.parameter.evaluate = function(){
-                scope.parameter.message ="";
+                scope.parameter.message = [];
+                var bool = true;
                 var validation = scope.validationFunction(scope.parameter, scope.dependencies);
                 if(!scope.selectValid()){
-                    return false;
+                    bool = false;
                 }
 
                 if(!validation.valid){
-                    scope.parameter.message = validation.message;
+                    scope.parameter.message.push(validation.message);
                     return false;
                 }
-                scope.parameter.message = "";
-                return true;
+                return bool;
             }
         }
     };
