@@ -18,7 +18,7 @@ gulp.task('concatenate', function () {
   gulp.src(['dist/templateCache.js','js/directives.js', 'js/directives/**/*.js'])
     .pipe(concat('dist/json-gui.js'))
     .pipe(ngAnnotate())
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('.'))
 })
@@ -34,6 +34,7 @@ gulp.task('concatenatecss', function () {
 
 gulp.task('watch', ['concatenate'], function () {
   gulp.watch('js/directives/**/*.js', ['template-cache','concatenate'])
+  gulp.watch('js/directives/**/*.html', ['template-cache','concatenate'])
   gulp.watch('js/directives.js', ['concatenate'])
   gulp.watch('js/directives/**/*.css', ['concatenatecss'])
   gulp.watch('css/directives/**/*.css', ['concatenatecss'])
