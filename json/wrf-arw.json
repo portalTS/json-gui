@@ -16,6 +16,7 @@
         "value":54,
         "displayName":"Grid Spacing",
         "dbName": "grid_spacing",
+        "required": true,
         "dependencies":["parental_grid_ratio"],
         "computedResult":"return parameter.value*3;",
         "parameterCategory":3,
@@ -23,6 +24,7 @@
     },
     { "parameterType":"datetime",
       "value":"Mon Oct 26 2015 00:00:00 GMT+0100 (CET)",
+      "required": true,
       "displayName":"Start time",
       "dbName": "start_time",
       "dependencies":["end_time"],
@@ -38,6 +40,7 @@
         "displayName":"End time",
         "dbName": "end_time",
         "dependencies":["start_time"],
+        "required": false,
         "parameterCategory":2,
         "hasDate": true,
         "hasTime":true,
@@ -47,6 +50,7 @@
     {
         "parameterType":"integer",
         "value":18,
+        "required": true,
         "displayName":"Parental Grid Ratio",
         "dbName": "parental_grid_ratio",
         "parameterCategory":4,
@@ -95,6 +99,7 @@
         "displayName": "Domains",
         "dbName": "wrfdomains",
         "dependencies": [],
+        "required": true,
         "parameterCategory": 1,
         "onlyNested": true,
         "maxDomains": 2,
@@ -102,8 +107,43 @@
         "drawDomains": true,
         "drawMarkers": true,
         "computedResult": "var val = parameter.value.domains;var retString = '';for(var i=1;i<=val.length;i++){retString+='Domain number'+i+' - South-West: ('+val[i-1].southWest.lat+', '+val[i-1].southWest.long+') North-East: ('+val[i-1].northEast.lat+', '+val[i-1].northEast.long+')';}return retString;",
-        "isValid": "if(parameter.value.domains.length==0) isValid.valid=false; isValid.message = 'Length must be different from 0';"
+        "isValid": "if(parameter.value.domains.length==4) isValid.valid=false; isValid.message = 'Length must be different from 4';"
     },
+      {
+            "parameterType":"domains",
+            "center": {"lat":45.496,"long":8.9209},
+            "mapZoom":8,
+            "parameterCategory":1,
+            "value":{
+              "domains": [
+              {
+                "id": 32569,
+                "southWest": {"lat":45.496, "long":8.0209},
+                "northEast": {"lat":46.496, "long":10.0209}
+              },
+              {
+                "id": 32571,
+                "southWest":{"lat":44.796, "long":9.2209},
+                "northEast":{"lat":45.096, "long":9.5209}
+              }
+            ],
+            "markers": [
+                {"lat":44.42593442145313, "long":8.954546966552734, "id": 234567}
+             ]
+            } ,
+            "displayName": "Domains",
+            "dbName": "otherdomains",
+            "dependencies": [],
+            "required": true,
+            "parameterCategory": 1,
+            "onlyNested": true,
+            "maxDomains": 3,
+            "maxMarkers": 3,
+            "drawDomains": true,
+            "drawMarkers": true,
+            "computedResult": "var val = parameter.value.domains;var retString = '';for(var i=1;i<=val.length;i++){retString+='Domain number'+i+' - South-West: ('+val[i-1].southWest.lat+', '+val[i-1].southWest.long+') North-East: ('+val[i-1].northEast.lat+', '+val[i-1].northEast.long+')';}return retString;",
+            "isValid": "if(parameter.value.domains.length==4) isValid.valid=false; isValid.message = 'Length must be different from 4';"
+        },
      {
         "parameterType":"text",
         "value":"Prova",
@@ -111,6 +151,7 @@
         "parameterCategory":6,
         "dbName": "description",
         "dependencies":[],
+        "required": true,
         "computedResult":"return parameter.value;",
         "isValid":""
     },

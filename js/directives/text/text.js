@@ -3,34 +3,36 @@ directives.directive('textParameter', function() {
         restrict: 'E',
         templateUrl: 'text/text.html',
         replace: true,
+        require: '^jsonInput',
         scope: {
             parameter:"=",
             dependencies:"=",
         },
-        link:function(scope,elm,attr) {
+        link:function(scope, elm, attr, jsonInputCtrl) {
             var dependencies = scope.dependencies;
             scope.validationFunction = new Function("return function v(parameter, dependencies){var isValid = {valid:true, message:''};"+scope.parameter.isValid+" return isValid;}")();
             scope.textValid = function(){
-                if(scope.parameter.value===""){
-                    scope.parameter.message.push("Insert some text");
-                    return false;
-                }
                 return true;
             }
-            scope.parameter.evaluate = function(){
-                scope.parameter.message = [];
-                var bool = true;
-                var validation = scope.validationFunction(scope.parameter, scope.dependencies);
-                if(!scope.textValid()){
-                    bool = false;
-                }
+            scope.message = [];
+            jsonInputCtrl.isValid = scope.parameter.isValid;
+            scope.validationFunction = jsonInputCtrl.validationFunction;
 
-                if(!validation.valid){
-                    scope.parameter.message.push(validation.message);
-                    return false;
-                }
-                return bool;
+            scope.parameter.evaluate = function() {
+              scope.parameter.message = [];
+              var a = jsonInputCtrl.evaluate(scope.parameter, scope.dependencies);
+              for(var i=0; i<a.message.length;i++)
+                scope.parameter.message.push(a.message[i]);
+              var valid =  scope.textValid();
+              valid =  a.isValid && valid;
+              scope.isParameterValid = valid;
+              return valid;
             }
+
+            scope.$watch('parameter.value', function(){
+              scope.parameter.evaluate();
+            });
+
         }
     };
 });
