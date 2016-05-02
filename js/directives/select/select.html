@@ -3,7 +3,7 @@
         {{parameter.displayName}}
     </div>
     <div class="col-xs-6 col-md-3 par-value-col" ng-class="{'has-error': !isParameterValid}">
-        <select ng-model="parameter.value" ng-options="option.value as option.name for option in parameter.values" class="form-control"></select>
+        <select ng-model="parameter.value" ng-options="option.value as option.name for option in parameter.values" class="form-control" ng-disabled="parameter.disabled"></select>
         <div class="error-message" ng-repeat="msg in parameter.message">{{msg}}</div>
     </div>
 </div>

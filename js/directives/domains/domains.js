@@ -13,11 +13,11 @@ directives.directive('domains', function($timeout) {
       /**************** VALIDATION ******************/
       scope.domainsValid = function(){
         var bool = true;
-        if(scope.parameter.required && scope.parameter.drawDomains && (typeof(scope.mapRectangles)=="undefined" ||scope.mapRectangles.length===0)) {
+        if(typeof(scope.parameter.required)!=="undefined" && scope.parameter.required.domains && scope.parameter.drawDomains && (typeof(scope.mapRectangles)=="undefined" ||scope.mapRectangles.length===0)) {
           scope.parameter.message.push("Select at least one domain");
           bool =  false;
         }
-        if(scope.parameter.required && scope.parameter.drawMarkers && (typeof(scope.mapMarkers)=="undefined" ||scope.mapMarkers.length===0)) {
+        if(typeof(scope.parameter.required)!=="undefined" && scope.parameter.required.markers && scope.parameter.drawMarkers && (typeof(scope.mapMarkers)=="undefined" ||scope.mapMarkers.length===0)) {
           scope.parameter.message.push("Add at least one marker");
           return false;
         }
@@ -77,7 +77,9 @@ directives.directive('domains', function($timeout) {
 
           //INIT MARKERS
           if(scope.parameter.drawMarkers) {
+            var markerInsideDomain = [];
             for(var m in scope.parameter.value.markers){
+              markerInsideDomain[scope.parameter.value.markers[m].id] = checkMarkerInsideDomain(scope.parameter.value.markers[m]);
               if(i==scope.parameter.maxMarkers){
                 $timeout(function(){
                   scope.parameter.value.markers.splice(i, length-i);
@@ -87,6 +89,11 @@ directives.directive('domains', function($timeout) {
               var mark = addMarkerToMap(scope.parameter.value.markers[m], scope.map, i);
               scope.mapMarkers.push(mark);
               i++;
+            }
+            for(var mar in markerInsideDomain) {
+              if(!markerInsideDomain[mar]) {
+                removeMarker(mar);
+              }
             }
           }
         }, true);
@@ -112,8 +119,10 @@ directives.directive('domains', function($timeout) {
           map: scope.map,
         };
         var drawModes = [];
-        if(scope.parameter.drawMarkers) drawModes.push(google.maps.drawing.OverlayType.MARKER);
-        if(scope.parameter.drawDomains) drawModes.push(google.maps.drawing.OverlayType.RECTANGLE);
+        if(!scope.parameter.disabled) {
+          if(scope.parameter.drawMarkers) drawModes.push(google.maps.drawing.OverlayType.MARKER);
+          if(scope.parameter.drawDomains) drawModes.push(google.maps.drawing.OverlayType.RECTANGLE);
+       }
         scope.drawingManager = new google.maps.drawing.DrawingManager({
           drawingControl: true,
           drawingControlOptions: {
@@ -123,47 +132,50 @@ directives.directive('domains', function($timeout) {
           rectangleOptions:scope.rectOptions
         });
         scope.drawingManager.setMap(scope.map);
-        google.maps.event.addListener(scope.drawingManager, "markercomplete", function(marker){
-          var tmstamp = new Date().getTime();
-          var ind = scope.mapMarkers.length;
-          if(scope.mapMarkers.length== scope.parameter.maxMarkers){
-            //TODO ALERT?
-            marker.setMap(null);
-            return;
-          }
-          marker.addListener('click', function(){
-            markerClicked(tmstamp);
+        if(!scope.parameter.disabled) {
+          google.maps.event.addListener(scope.drawingManager, "markercomplete", function(marker){
+            var tmstamp = new Date().getTime();
+            var ind = scope.mapMarkers.length;
+            if(scope.mapMarkers.length== scope.parameter.maxMarkers){
+              //TODO ALERT?
+              marker.setMap(null);
+              return;
+            }
+            marker.addListener('click', function(){
+              removeMarker(tmstamp);
+            });
+            $timeout(function(){
+              if(addMarkerToValues(marker, tmstamp))
+                scope.mapMarkers.push(marker);
+              else marker.setMap(null);
+            }, 0);
+
+
           });
-          $timeout(function(){
-            addMarkerToValues(marker, tmstamp);
-            scope.mapMarkers.push(marker);
-          }, 0);
 
-
-        });
-
-        google.maps.event.addListener(scope.drawingManager,'rectanglecomplete',function(rectangle){
-          var tmstamp = new Date().getTime();
-          var zInd = scope.rectOptions.zIndex+1;
-          scope.rectOptions.zIndex =zInd;
-          scope.drawingManager.setOptions({rectangleOptions:scope.rectOptions});
-          if(scope.mapRectangles.length== scope.parameter.maxDomains) {
-            //TODO ALERT?
-            rectangle.setMap(null);
-            return;
-          }
-          rectangle.setTitle = tmstamp; //setting the id as the rectangle title
-          rectangle.addListener('bounds_changed', function(){
-            boundsChanged(rectangle, tmstamp);
+          google.maps.event.addListener(scope.drawingManager,'rectanglecomplete',function(rectangle){
+            var tmstamp = new Date().getTime();
+            var zInd = scope.rectOptions.zIndex+1;
+            scope.rectOptions.zIndex =zInd;
+            scope.drawingManager.setOptions({rectangleOptions:scope.rectOptions});
+            if(scope.mapRectangles.length== scope.parameter.maxDomains) {
+              //TODO ALERT?
+              rectangle.setMap(null);
+              return;
+            }
+            rectangle.setTitle = tmstamp; //setting the id as the rectangle title
+            rectangle.addListener('bounds_changed', function(){
+              boundsChanged(rectangle, tmstamp);
+            });
+            rectangle.addListener('click', function(){
+              rectangleClicked(tmstamp);
+            })
+            $timeout(function(){
+              scope.mapRectangles.push(rectangle);
+              addRectangleToValues(rectangle, tmstamp);
+            }, 0);
           });
-          rectangle.addListener('click', function(){
-            rectangleClicked(tmstamp);
-          })
-          $timeout(function(){
-            scope.mapRectangles.push(rectangle);
-            addRectangleToValues(rectangle, tmstamp);
-          }, 0);
-        });
+        }
       }
 
       /**************** EVENTS ******************/
@@ -193,9 +205,12 @@ directives.directive('domains', function($timeout) {
 
       }
 
+
+      //while deleting a rectangle, I have to check if I also have to delete markers, depending on the values of onlyNested and allowMarkersOutDomains properties.
       var deleteRectangle = function(index){
         scope.modal.modal('hide');
-        if(scope.parameter.onlyNested){
+        if(scope.parameter.onlyNested) {
+          if(!scope.parameter.allowMarkersOutDomains && index == 0) removeAllMarkers();
           $timeout(function(){
             var howMany = scope.mapRectangles.length - index;
             for(var c = 0;c<howMany;c++) {
@@ -206,13 +221,21 @@ directives.directive('domains', function($timeout) {
           }, 0);
         }
         else {
+          var markers = findMarkersInsideRectangle(scope.parameter.value.domains[index]);
           $timeout(function(){
             scope.mapRectangles[index].setMap(null);
             scope.mapRectangles.splice(index, 1);
             scope.parameter.value.domains.splice(index, 1);
           }, 0);
+          if(!scope.parameter.allowMarkersOutDomains){
+              $timeout(function(){
+              for(var i=0;i<markers.length;i++){
+                //I have to remove first the rectangle, and only then check if the markers are inside another rectangle.
+                if(!checkMarkerInsideDomain(markers[i])) removeMarker(markers[i].id);
+              }
+            }, 0);
+          }
         }
-
       }
 
       /**************** CONTROLS ******************/
@@ -270,6 +293,29 @@ directives.directive('domains', function($timeout) {
         return true;
       }
 
+
+      var checkMarkerInsideDomain = function(marker){
+        if(!scope.parameter.drawDomains || scope.parameter.allowMarkersOutDomains) return true;
+        if(scope.parameter.value.domains.length==0) return false;
+        if(scope.parameter.onlyNested) {
+          var domain = scope.parameter.value.domains[0];
+          if(marker.lat< domain.southWest.lat || marker.lat>domain.northEast.lat) return false;
+          if(marker.long < domain.southWest.long || marker.long>domain.northEast.long) return false;
+          return true;
+        }
+        //IF onlyNested is false, I need to check if the marker is inside any domain, not only the first.
+        // it is sufficient that the marker is inside one domain to be considered ok.
+        var domains = scope.parameter.value.domains;
+        for(var i=0;i<domains.length;i++){
+          if(marker.lat > domains[i].southWest.lat && marker.lat < domains[i].northEast.lat &&
+              marker.long > domains[i].southWest.long && marker.long < domains[i].northEast.long)  {
+                return true;
+              }
+        }
+        return false;
+      }
+
+
       /**************** UTILS ******************/
 
       var addRectangleToMap = function(rectangle, map){
@@ -290,15 +336,20 @@ directives.directive('domains', function($timeout) {
             west: rectangle.southWest.long,
           }
         });
-        mapRectangle.addListener('bounds_changed', function(){
-          boundsChanged(mapRectangle, rectangle.id);
 
-        });
-        mapRectangle.addListener('click', function(){
-          rectangleClicked(rectangle.id);
-        })
+        if(scope.parameter.disabled) mapRectangle.setDraggable(false);
+        else {
+          mapRectangle.addListener('bounds_changed', function(){
+            boundsChanged(mapRectangle, rectangle.id);
+
+          });
+          mapRectangle.addListener('click', function(){
+            rectangleClicked(rectangle.id);
+          })
+        }
         return mapRectangle;
       }
+
 
 
       var addMarkerToMap = function(marker, map, index){
@@ -307,21 +358,26 @@ directives.directive('domains', function($timeout) {
           position: {lat: marker.lat, lng: marker.long},
           zIndex: 3000
         });
-        mapMarker.addListener('click', function(){
-          markerClicked(marker.id);
-        });
+        if(!scope.parameter.disabled) {
+          mapMarker.addListener('click', function(){
+            removeMarker(marker.id);
+          });
+        }
         return mapMarker;
       };
 
-      var markerClicked = function(id){
-        var index = getPositionOfId(id, scope.parameter.value.markers);
-        scope.mapMarkers[index].setMap(null);
+      var removeMarker = function(id){
         $timeout(function(){
+          var index = getPositionOfId(id, scope.parameter.value.markers);
+          scope.mapMarkers[index].setMap(null);
           scope.mapMarkers.splice(index, 1);
           scope.parameter.value.markers.splice(index, 1);
         }, 0);
-
       };
+      var removeAllMarkers = function(){
+        for(var i=0; i<scope.parameter.value.markers.length;i++)
+          removeMarker(scope.parameter.value.markers[i].id);
+      }
 
       var addMarkerToValues = function(marker, id){
         var index=0;
@@ -334,9 +390,11 @@ directives.directive('domains', function($timeout) {
           lat: marker.getPosition().lat(),
           long: marker.getPosition().lng()
         };
+        if(!checkMarkerInsideDomain(mark)) return false;
         $timeout(function(){
           scope.parameter.value.markers.push(mark);
         });
+        return true;
       }
 
       var addRectangleToValues = function(mapRectangle, id){
@@ -352,6 +410,20 @@ directives.directive('domains', function($timeout) {
           checkRectangle(id);
         });
       };
+
+      var findMarkersInsideRectangle = function (rectangle){
+        var markers = [];
+        var current;
+        for(var i=0;i<scope.parameter.value.markers.length;i++){
+          current = scope.parameter.value.markers[i];
+          if(current.lat > rectangle.southWest.lat && current.lat < rectangle.northEast.lat &&
+              current.long > rectangle.southWest.long && current.long < rectangle.northEast.long)
+                markers.push(current);
+        }
+        return markers;
+      }
+
+
 
       var getPositionOfId = function(id, array){
         for(var i=0;i<array.length;i++)

@@ -52,9 +52,8 @@ directives.directive('fileupload', function($timeout, Upload) {
       scope.init = function() {
         scope.maxLengthByte = calculateLength(scope.parameter.maxSize);
         var form = $("#"+scope.parameter.dbName);
-        var fileselect =  form.find("#fileselect")[0],
-        filedrag =  form.find("#filedrag")[0],
-        submitbutton =  form.find("#submitbutton")[0];
+        var fileselect =  form.find("#fileselect")[0];
+        var filedrag =  form.find("#filedrag")[0];
         //                scope.modal = form.find("#modal");
 
         // file select
@@ -71,7 +70,6 @@ directives.directive('fileupload', function($timeout, Upload) {
           filedrag.style.display = "block";
 
           // remove submit button
-          submitbutton.style.display = "none";
         }
       }
 
@@ -91,13 +89,19 @@ directives.directive('fileupload', function($timeout, Upload) {
           errorUpload("The file named "+file.name+" is too big. The maximum dimension accepted is "+scope.parameter.maxSize+".");
           return;
         }
+        if(fileAlreadyUploaded(file.name)){
+          errorUpload("You already uploaded a file with name "+file.name+".");
+          return;
+        }
         var reader = new FileReader();
         reader.onload = function(e) {
-          $timeout(function(){scope.parameter.value.push(e.target.result);});
+          var paramFile = {fileName: file.name, data: e.target.result};
+          $timeout(function(){scope.parameter.value.push(paramFile)});
         };
         reader.readAsDataURL(file);
         $timeout(function() {
           scope.uploadedFilesDescription.push(file);
+
         });
 
 
@@ -119,6 +123,7 @@ directives.directive('fileupload', function($timeout, Upload) {
 
 
       scope.openInput = function(){
+        if(scope.parameter.disabled) return;
         $('#'+scope.parameter.dbName).find('#fileselect').click();
       }
       var calculateLength = function(length){
@@ -141,8 +146,7 @@ directives.directive('fileupload', function($timeout, Upload) {
       //            }
 
       var errorUpload = function(message) {
-        $timeout(function(){scope.errorUpload.splice(0, 0,message);});
-
+        $timeout(function(){scope.errorUpload.splice(0, 0, message);});
         $timeout(function(){scope.errorUpload.splice(0,1)},5000);
       }
 
@@ -164,10 +168,16 @@ directives.directive('fileupload', function($timeout, Upload) {
 
         return true;
       }
+      var fileAlreadyUploaded = function(fileName){
+        for(var i=0;i<scope.parameter.value.length;i++)
+          if(scope.parameter.value[i].fileName.localeCompare(fileName)==0) return true;
+        return false;
+      }
 
       scope.errorUpload = [];
       scope.uploadedFilesDescription = [];
       $timeout(function(){
+        if(scope.parameter.disabled) return;
         scope.initFileReader();
       });
     }

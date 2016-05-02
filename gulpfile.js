@@ -18,7 +18,7 @@ gulp.task('concatenate', function () {
   gulp.src(['dist/templateCache.js','js/directives.js','js/directives/json-input/*.js', 'js/directives/**/*.js'])
     .pipe(concat('dist/json-gui.js'))
     .pipe(ngAnnotate())
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('.'))
 })

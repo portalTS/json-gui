@@ -10,7 +10,6 @@ directives.directive('jsonInput', function() {
               bool = false;
             }
           }
-
           var validationFunction = new Function("return function v(parameter, dependencies){var isValid = {valid:true, message:''};"+this.isValid+" return isValid;}")();
           var validation = validationFunction(parameter, dependencies);
           if(!validation.valid){

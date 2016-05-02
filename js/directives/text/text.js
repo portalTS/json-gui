@@ -9,8 +9,6 @@ directives.directive('textParameter', function() {
             dependencies:"=",
         },
         link:function(scope, elm, attr, jsonInputCtrl) {
-            var dependencies = scope.dependencies;
-            scope.validationFunction = new Function("return function v(parameter, dependencies){var isValid = {valid:true, message:''};"+scope.parameter.isValid+" return isValid;}")();
             scope.textValid = function(){
                 return true;
             }

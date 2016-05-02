@@ -19,7 +19,6 @@
 
 #filedrag
 {
-    display:none;
 	font-weight: bold;
 	text-align: center;
 	padding: 1em 0;
@@ -47,4 +46,11 @@
 .file-unload{
   color:#E63946;
   cursor:pointer;
+}
+
+.file-container.disabled{
+  background: #eee;
+}
+.file-container.disabled *{
+  cursor: not-allowed !important;
 }
