@@ -123,8 +123,10 @@ directives.directive('fileupload', function($timeout, Upload) {
 
 
       scope.openInput = function(){
-        if(scope.parameter.disabled) return;
-        $('#'+scope.parameter.dbName).find('#fileselect').click();
+        $timeout(function(){
+          if(scope.parameter.disabled) return;
+          $('#'+scope.parameter.dbName).find('#fileselect').click();
+        }, 0);
       }
       var calculateLength = function(length){
         length = length.toLowerCase();
