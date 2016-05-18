@@ -48,8 +48,8 @@ directives.directive('domains', function($timeout) {
         scope.height=height+"px";
         scope.mapRectangles = [];
         scope.mapMarkers = [];
-        initializeMap();
         $timeout(function(){
+          initializeMap();
           var length = scope.parameter.value.domains.length;
           var i=0;
           var valueRect;
