@@ -100,7 +100,8 @@ directives.directive('jsonGui', function($timeout) {
               scope.buildDependencies();
               try {
               scope.data.getComputedResults = computedResults;
-            } catch(error){console.log(error); return;}
+            } catch(error)
+                {console.log(error); return;}
               unbind();
             });
         }
