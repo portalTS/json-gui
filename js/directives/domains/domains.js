@@ -44,7 +44,7 @@ directives.directive('domains', function($timeout) {
 
       /**************** INIT ******************/
       scope.initializeParameter = function(){
-        var height =  parseInt($("body").css("width"))*2/6;
+        var height =  parseInt($("#"+scope.parameter.dbName+"map").css("width"))/2;
         scope.height=height+"px";
         scope.mapRectangles = [];
         scope.mapMarkers = [];

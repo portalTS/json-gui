@@ -1,6 +1,6 @@
 <div class="row parameter-row">
 
-    <div class="col-xs-12 col-md-6 col-md-offset-3 par-name-col map-container ng-binding" ng-class="{'disabled' : parameter.disabled}">
+    <div class="col-xs-12 par-name-col map-container ng-binding" ng-class="{'disabled' : parameter.disabled}">
         <div style="width:100%;height:{{height}}" id="{{parameter.dbName}}map" ng-class="{'map-has-error' : !isParameterValid}"></div>
         <div class="error-message" ng-repeat="msg in parameter.message">{{msg}}</div>
         <div ng-show="parameter.drawDomains" ng-repeat="val in parameter.value.domains track by $index">
