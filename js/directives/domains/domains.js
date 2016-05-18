@@ -96,6 +96,7 @@ directives.directive('domains', function($timeout) {
               }
             }
           }
+          scope.parameter.evaluate();
         }, true);
       }
 
@@ -190,6 +191,12 @@ directives.directive('domains', function($timeout) {
           value.southWest.lat = bounds.getSouthWest().lat();
           value.southWest.long = bounds.getSouthWest().lng();
           checkRectangle(id);
+          if(scope.parameter.allowMarkersOutDomains) return;
+          for(var i=0;i<scope.parameter.value.markers.length;i++){
+            //I have to remove first the rectangle, and only then check if the markers are inside another rectangle.
+            if(!checkMarkerInsideDomain(scope.parameter.value.markers[i])) removeMarker(scope.parameter.value.markers[i].id);
+          }
+
         });
       }
 
