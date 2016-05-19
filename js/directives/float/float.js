@@ -31,9 +31,7 @@ directives.directive('float', function() {
               return valid;
             }
 
-            scope.$watch('parameter.value', function(){
-              scope.parameter.evaluate();
-            });
+            
         }
     };
 });

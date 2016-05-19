@@ -12,9 +12,9 @@ app.controller('modelController', function($scope, $timeout) {
         });
     }
     $scope.data = $scope.parseModelFromJson("json/wrf-arw.json");
-
+    $scope.values = {};
     $scope.getAllResults = function(){
-      $scope.results =  $scope.data.getComputedResults();
+      $scope.results =  $scope.data.getConfiguration();
       console.log($scope.results);
     }
 

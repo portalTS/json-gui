@@ -37,9 +37,7 @@ directives.directive('fileupload', function($timeout, Upload) {
         return valid;
       }
 
-      scope.$watch('parameter.value', function(){
-        scope.parameter.evaluate();
-      }, true);
+
 
 
 

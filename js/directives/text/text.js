@@ -26,11 +26,6 @@ directives.directive('textParameter', function() {
               scope.isParameterValid = valid;
               return valid;
             }
-
-            scope.$watch('parameter.value', function(){
-              scope.parameter.evaluate();
-            });
-
         }
     };
 });

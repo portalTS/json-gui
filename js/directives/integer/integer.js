@@ -32,9 +32,7 @@ directives.directive('integer', function() {
             return valid;
           }
 
-          scope.$watch('parameter.value', function(){
-            scope.parameter.evaluate();
-          });
+        
 
         }
     };

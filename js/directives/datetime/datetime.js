@@ -11,10 +11,6 @@ directives.directive('datetime', function() {
     link:function(scope, elm, attr, jsonInputCtrl) {
       scope.parameter.value = new moment(scope.parameter.value).toDate();
       scope.timeValid = function(){
-        // if(typeof(scope.parameter.value)==="undefined" || scope.parameter.value=="Invalid Date"){
-        //   scope.parameter.message.push("Select a valid date");
-        //   return false;
-        // }
         return true;
       }
 
@@ -33,10 +29,6 @@ directives.directive('datetime', function() {
         scope.isParameterValid = valid;
         return valid;
       }
-
-      scope.$watch('parameter.value', function(){
-        scope.parameter.evaluate();
-      });
     }
   };
 });

@@ -38,9 +38,6 @@ directives.directive('domains', function($timeout) {
         return valid;
       }
 
-      scope.$watch('parameter.value', function(){
-        scope.parameter.evaluate();
-      }, true);
 
       /**************** INIT ******************/
       scope.initializeParameter = function(){

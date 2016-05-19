@@ -5,18 +5,26 @@ directives.directive('jsonGui', function($timeout) {
         replace: true,
         scope: {
             data:"=",
+            values: "="
         },
         link:function(scope,elm,attr) {
-
-            scope.pars = [];
+            scope.obj = {}
+            scope.obj.pars = {};
             scope.dep=[];
             scope.buildParametersArray = function(){
               try{
                 var jsonPars = scope.data.parameters;
               } catch(error){console.log(error);}
                 for(var par in jsonPars){
-                    scope.pars[jsonPars[par].dbName] = jsonPars[par];
+                    scope.obj.pars[jsonPars[par].dbName] = jsonPars[par];
                 }
+                $timeout(function(){
+                scope.$watch("obj.pars", function(newVal, oldVal){
+                  for(var property in scope.obj.pars){
+                    scope.obj.pars[property].evaluate();
+                  }
+                }, true);
+                });
             }
             $timeout(function(){
                 $('#nav').affix({
@@ -28,31 +36,50 @@ directives.directive('jsonGui', function($timeout) {
 
             scope.buildDependencies = function(){
                 var currDeps;
-                for(var par in scope.pars){ // par contiene il nome del parametro
+                for(var par in scope.obj.pars){ // par contiene il nome del parametro
                     var obj={};
-                    currDeps = scope.pars[par].dependencies;
+                    currDeps = scope.obj.pars[par].dependencies;
                     for(var i=0;i<currDeps.length;i++) {
-                        obj[currDeps[i]] = scope.pars[currDeps[i]];
+                        obj[currDeps[i]] = scope.obj.pars[currDeps[i]];
                     }
                     scope.dep[par] = obj;
                 }
             }
-
-            scope.saveConfiguration= function(){
-              console.log(scope.pars["upload"].value);
+            scope.loadConfiguration = function(){
+              for(var i=0;i<scope.values.length;i++){
+                scope.obj.pars[scope.values[i].dbName].value = scope.values[i].value;
+              }
+            }
+            scope.saveNamelist = function(){
                 var namelist="";
-                for(var par in scope.pars){
-                    // console.log(scope.pars[par]);
-                    // console.log(par);
-
-                    if(!scope.pars[par].evaluate()){
+                for(var par in scope.obj.pars){
+                    if(!scope.obj.pars[par].evaluate()){
                         console.log("Error in some parameter");
                         return;
                     }
                     var functionBody = scope.buildComputingFunction(par);
-                    namelist+= scope.pars[par].displayName+": "+ eval(functionBody)+";\n";
+                    namelist+= scope.obj.pars[par].displayName+": "+ eval(functionBody)+";\n";
                 }
                 console.log(namelist);
+            }
+
+            scope.getConfiguration = function(){
+              console.log("paars js", scope.obj.pars);
+              var results = [];
+              var result;
+              for(var par in scope.obj.pars){
+                  result = {};
+                  if(!scope.obj.pars[par].evaluate()){
+                      console.log("Error in some parameter");
+                      return;
+                  }
+
+                   result.value = scope.obj.pars[par].value;
+                   result.dbName = scope.obj.pars[par].dbName;
+                   result.parameterType = scope.obj.pars[par].parameterType;
+                  results.push(result);
+              }
+              return results;
             }
 
             /*
@@ -60,12 +87,12 @@ directives.directive('jsonGui', function($timeout) {
             In this way, in the computedResult property of each parameter object in the json file, the current parameter and its dependencies can be referred in a simpler way.
             */
             scope.buildComputingFunction = function(par){
-              var evalPrefix = "var parameter = scope.pars[par];";
+              var evalPrefix = "var parameter = scope.obj.pars[par];";
               evalPrefix +=  "var dependencies = [];"
-              scope.pars[par].dependencies.forEach(function(entry) {
-                  evalPrefix += "dependencies['"+entry+"'] = scope.pars['"+entry+"'];";
+              scope.obj.pars[par].dependencies.forEach(function(entry) {
+                  evalPrefix += "dependencies['"+entry+"'] = scope.obj.pars['"+entry+"'];";
               });
-              return evalPrefix + "(function(){"+scope.pars[par].computedResult+"}())";
+              return evalPrefix + "(function(){"+scope.obj.pars[par].computedResult+"}())";
             };
             scope.hashToArray = function(items) {
                 var result = [];
@@ -76,34 +103,43 @@ directives.directive('jsonGui', function($timeout) {
                 }
                 return result;
             }
-            var computedResults  = function(){
+            var computedResults  = function() {
               var results = [];
               var result;
-              for(var par in scope.pars){
+              for(var par in scope.obj.pars){
                   result = {};
-                  if(!scope.pars[par].evaluate()){
+                  if(!scope.obj.pars[par].evaluate()){
                       console.log("Error in some parameter");
                       return;
                   }
                   var functionBody = scope.buildComputingFunction(par);
                    result.value = eval(functionBody);
-                   result.name = scope.pars[par].dbName;
-                   result.parameterType = scope.pars[par].parameterType;
+                   result.name = scope.obj.pars[par].dbName;
+                   result.parameterType = scope.obj.pars[par].parameterType;
                   results.push(result);
               }
               return results;
             };
 
+            scope.logPars= function(){
+              console.log("log pars");
+              for(var i in scope.obj.pars){
+                console.log(i+" = "+scope.obj.pars[i].value);
+              }
+            }
             var unbind = scope.$watch("data", function() {
               console.log("data was changed");
               scope.buildParametersArray();
               scope.buildDependencies();
+              scope.loadConfiguration();
               try {
-              scope.data.getComputedResults = computedResults;
+              scope.data.getConfiguration = scope.getConfiguration;
             } catch(error)
                 {console.log(error); return;}
               unbind();
             });
+
+
         }
     }
 });
