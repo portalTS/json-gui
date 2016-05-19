@@ -52,9 +52,12 @@ Two different usages are possible:
 In order to use this component, you only have to add the corresponding tag to your HTML file:
 
 ```html
-<json-gui data="data"></json-gui>
+<json-gui data="data" values="values"></json-gui>
 ```
 The ```data``` object contains the entire object needed (see Wiki section), with the metadata and a list of parameters, from which the form will be built.
+The ```values``` object is an optional object defining the values of the parameter that compose the interface.
+
+In this way, ```data``` will contain the definition of the form interface, including all the parameters composing it and their default values; while ```values```, if present, will contain their current values.
 
 ### Single components
 
