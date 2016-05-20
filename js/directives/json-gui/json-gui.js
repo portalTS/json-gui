@@ -31,7 +31,6 @@ directives.directive('jsonGui', function($timeout) {
                     offset: {
                     }
                 });
-                $('body').scrollspy({ target: '#scrollspy' })
             });
 
             scope.buildDependencies = function(){
@@ -64,7 +63,6 @@ directives.directive('jsonGui', function($timeout) {
             }
 
             scope.getConfiguration = function(){
-              console.log("paars js", scope.obj.pars);
               var results = [];
               var result;
               for(var par in scope.obj.pars){
@@ -122,13 +120,11 @@ directives.directive('jsonGui', function($timeout) {
             };
 
             scope.logPars= function(){
-              console.log("log pars");
               for(var i in scope.obj.pars){
                 console.log(i+" = "+scope.obj.pars[i].value);
               }
             }
             var unbind = scope.$watch("data", function() {
-              console.log("data was changed");
               scope.buildParametersArray();
               scope.buildDependencies();
               scope.loadConfiguration();
@@ -138,8 +134,6 @@ directives.directive('jsonGui', function($timeout) {
                 {console.log(error); return;}
               unbind();
             });
-
-
         }
     }
 });

@@ -15,7 +15,7 @@ gulp.task('template-cache', function () {
 gulp.task('concatenate', function () {
   gulp.src('dist/json-gui.js', {read: false})
 		.pipe(clean());
-  gulp.src(['dist/templateCache.js','js/directives.js','js/directives/json-input/*.js', 'js/directives/**/*.js'])
+  gulp.src(['dist/templateCache.js','js/directives.js','js/lib/angular-scrollspy.js','js/directives/json-input/*.js', 'js/directives/**/*.js'])
     .pipe(concat('dist/json-gui.js'))
     .pipe(ngAnnotate())
     .pipe(uglify())

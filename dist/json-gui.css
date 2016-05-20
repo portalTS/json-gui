@@ -108,7 +108,7 @@ body{
     color:#cdbfe3;
 }
 
-#nav li.active a{
+#nav li a.active{
     color: #5C4383;
     border-left:3px solid #5C4383;
 }
@@ -118,3 +118,4 @@ body{
 .groups{
     padding: 0px !important;
 }
+

@@ -1,5 +1,5 @@
 <div class="container-fluid" id="model-container">
-    <div class="row">
+    <div class="row" scroll-spy>
         <div class="col-xs-12 col-md-10 groups">
             <div ng-repeat="group in data.parametersCategories">
                 <div class="row group-container">
@@ -19,11 +19,12 @@
                     </div>
                 </div>
             </div>
+
         </div>
-        <div class="col-md-2" id="scrollspy" style="padding-left:0px">
+        <div class="col-md-2" style="padding-left:0px">
             <ul id="nav" class="nav hidden-xs hidden-sm" style="margin-top:20px;padding-left:10px; border-left:1px solid #dedede;">
                 <li ng-repeat="group in data.parametersCategories">
-                    <a href="#group{{group.value}}">{{group.name}}</a>
+                    <a spy="group{{group.value}}">{{group.name}}</a>
                 </li>
             </ul>
         </div>
