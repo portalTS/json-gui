@@ -11,8 +11,8 @@
                             <integer json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='integer'" parameter="obj.pars[value]" dependencies = "dep[value]"></integer>
                             <float json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='float'" parameter="obj.pars[value]" dependencies = "dep[value]"></float>
                             <datetime json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='datetime'" parameter="obj.pars[value]" dependencies = "dep[value]"></datetime>
-                            <select-parameter json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='select'" parameter="obj.pars[value]" dependencies =" dep[value]"></select-parameter>
-                            <text-parameter json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='text'" parameter="obj.pars[value]" dependencies = "dep[value]"></text-parameter>
+                            <json-select json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='select'" parameter="obj.pars[value]" dependencies =" dep[value]"></json-select>
+                            <json-text json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='text'" parameter="obj.pars[value]" dependencies = "dep[value]"></json-text>
                             <domains json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='domains'" parameter="obj.pars[value]" dependencies = "dep[value]"></domains>
                             <fileupload json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='fileupload'" parameter="obj.pars[value]" dependencies = "dep[value]"></fileupload>
                         </div>

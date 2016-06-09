@@ -1,4 +1,6 @@
 directives.directive('domains', function($timeout) {
+
+  //TEST THIS BEFORE COMMITTING!!!!!!
   return {
     restrict: 'E',
     templateUrl: 'domains/domains.html',
@@ -7,9 +9,10 @@ directives.directive('domains', function($timeout) {
     scope: {
       parameter:"=",
       dependencies:"=",
+      validation: "="
     },
     link:function(scope, elm, attr, jsonInputCtrl) {
-      var num =scope.parameter.dbName;
+
       /**************** VALIDATION ******************/
       scope.domainsValid = function(){
         var bool = true;
@@ -24,10 +27,9 @@ directives.directive('domains', function($timeout) {
         return bool;
       }
       scope.message = [];
-      jsonInputCtrl.isValid = scope.parameter.isValid;
-      scope.validationFunction = jsonInputCtrl.validationFunction;
 
-      scope.parameter.evaluate = function() {
+
+      var evaluate = function() {
         scope.parameter.message = [];
         var a = jsonInputCtrl.evaluate(scope.parameter, scope.dependencies);
         for(var i=0; i<a.message.length;i++)
@@ -37,6 +39,24 @@ directives.directive('domains', function($timeout) {
         scope.isParameterValid = valid;
         return valid;
       }
+
+      var unbind = scope.$watch('parameter', function() {
+        if(scope.parameter==undefined) return;
+        jsonInputCtrl.isValid = scope.parameter.isValid;
+        scope.validationFunction = jsonInputCtrl.validationFunction;
+        scope.parameter.evaluate = evaluate;
+
+        if(scope.validation) {
+          scope.$watch('parameter.value', function() {
+              evaluate();
+          }, true);
+        } else scope.isParameterValid = true;
+        /***************** START ********************/
+        $timeout(function(){
+          google.maps.event.addDomListener(window, 'load', scope.initializeParameter());
+        });
+        unbind();
+      }, true);
 
 
       /**************** INIT ******************/
@@ -93,7 +113,8 @@ directives.directive('domains', function($timeout) {
               }
             }
           }
-          scope.parameter.evaluate();
+          if(scope.validation)
+            scope.parameter.evaluate();
         }, true);
       }
 
@@ -434,11 +455,6 @@ directives.directive('domains', function($timeout) {
         if(array[i].id==id) return i;
         return -1;
       }
-
-      /***************** START ********************/
-      $timeout(function(){
-        google.maps.event.addDomListener(window, 'load', scope.initializeParameter());
-      });
     }
   }
 });

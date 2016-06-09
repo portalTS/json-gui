@@ -1,4 +1,4 @@
-directives.directive('textParameter', function() {
+directives.directive('jsonText', function() {
     return {
         restrict: 'E',
         templateUrl: 'text/text.html',
@@ -7,16 +7,15 @@ directives.directive('textParameter', function() {
         scope: {
             parameter:"=",
             dependencies:"=",
+            validation:"="
         },
         link:function(scope, elm, attr, jsonInputCtrl) {
             scope.textValid = function(){
                 return true;
             }
             scope.message = [];
-            jsonInputCtrl.isValid = scope.parameter.isValid;
-            scope.validationFunction = jsonInputCtrl.validationFunction;
 
-            scope.parameter.evaluate = function() {
+            var evaluate = function() {
               scope.parameter.message = [];
               var a = jsonInputCtrl.evaluate(scope.parameter, scope.dependencies);
               for(var i=0; i<a.message.length;i++)
@@ -26,6 +25,21 @@ directives.directive('textParameter', function() {
               scope.isParameterValid = valid;
               return valid;
             }
+            
+            var unbind = scope.$watch('parameter', function() {
+              if(scope.parameter==undefined) return;
+              jsonInputCtrl.isValid = scope.parameter.isValid;
+              scope.validationFunction = jsonInputCtrl.validationFunction;
+              scope.parameter.evaluate = evaluate;
+
+              if(scope.validation) {
+                scope.$watch('parameter.value', function() {
+                    evaluate();
+                });
+              } else scope.isParameterValid = true;
+              unbind();
+            }, true);
+
         }
     };
 });

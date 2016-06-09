@@ -1,4 +1,4 @@
-directives.directive('selectParameter', function() {
+directives.directive('jsonSelect', function() {
   return {
     restrict: 'E',
     templateUrl: 'select/select.html',
@@ -7,6 +7,7 @@ directives.directive('selectParameter', function() {
     scope: {
       parameter:"=",
       dependencies:"=",
+      validation: "="
     },
     link:function(scope, elm, attr, jsonInputCtrl) {
       scope.selectValid = function(){
@@ -14,9 +15,8 @@ directives.directive('selectParameter', function() {
       };
 
       scope.message = [];
-      jsonInputCtrl.isValid = scope.parameter.isValid;
-      scope.validationFunction = jsonInputCtrl.validationFunction;
-      scope.parameter.evaluate = function() {
+
+      var evaluate = function() {
         scope.parameter.message = [];
         var a = jsonInputCtrl.evaluate(scope.parameter, scope.dependencies);
         for(var i=0; i<a.message.length;i++)
@@ -26,6 +26,20 @@ directives.directive('selectParameter', function() {
         scope.isParameterValid = valid;
         return valid;
       }
+
+      var unbind = scope.$watch('parameter', function() {
+        if(scope.parameter==undefined) return;
+        jsonInputCtrl.isValid = scope.parameter.isValid;
+        scope.validationFunction = jsonInputCtrl.validationFunction;
+        scope.parameter.evaluate = evaluate;
+
+        if(scope.validation) {
+          scope.$watch('parameter.value', function() {
+              evaluate();
+          });
+        } else scope.isParameterValid = true;
+        unbind();
+      }, true);
     }
   };
 });

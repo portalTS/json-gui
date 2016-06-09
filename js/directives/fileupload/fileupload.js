@@ -7,9 +7,10 @@ directives.directive('fileupload', function($timeout, Upload) {
     scope: {
       parameter:"=",
       dependencies:"=",
+      validation:"="
     },
     link:function(scope, elm, attr, jsonInputCtrl) {
-      var num = scope.parameter.dbName;
+
       /**************** VALIDATION ******************/
       scope.fileuploadValid = function(){
         if(typeof(scope.parameter.value)=="undefined" || scope.parameter.value.length<scope.parameter.minUpload) {
@@ -23,10 +24,8 @@ directives.directive('fileupload', function($timeout, Upload) {
       /**************** EVALUATION ******************/
 
       scope.message = [];
-      jsonInputCtrl.isValid = scope.parameter.isValid;
-      scope.validationFunction = jsonInputCtrl.validationFunction;
 
-      scope.parameter.evaluate = function() {
+      var evaluate = function() {
         scope.parameter.message = [];
         var a = jsonInputCtrl.evaluate(scope.parameter, scope.dependencies);
         for(var i=0; i<a.message.length;i++)
@@ -36,6 +35,32 @@ directives.directive('fileupload', function($timeout, Upload) {
         scope.isParameterValid = valid;
         return valid;
       }
+
+      var unbind = scope.$watch('parameter', function() {
+        if(scope.parameter==undefined) return;
+        jsonInputCtrl.isValid = scope.parameter.isValid;
+        scope.validationFunction = jsonInputCtrl.validationFunction;
+        scope.parameter.evaluate = evaluate;
+        scope.errorUpload = [];
+        scope.uploadedFilesDescription = [];
+        $timeout(function(){
+          if(scope.parameter.disabled) return;
+          scope.initFileReader();
+        });
+
+        if(scope.validation) {
+          scope.$watch('parameter.value', function() {
+              evaluate();
+          });
+        } else scope.isParameterValid = true;
+
+        scope.$watch("parameter.maxSize", function(){
+          scope.maxLengthByte = calculateLength(scope.parameter.maxSize);
+        });
+        unbind();
+      }, true);
+
+
 
 
 
@@ -48,7 +73,6 @@ directives.directive('fileupload', function($timeout, Upload) {
       }
       // initialize
       scope.init = function() {
-        scope.maxLengthByte = calculateLength(scope.parameter.maxSize);
         var form = $("#"+scope.parameter.dbName);
         var fileselect =  form.find("#fileselect")[0];
         var filedrag =  form.find("#filedrag")[0];
@@ -173,13 +197,6 @@ directives.directive('fileupload', function($timeout, Upload) {
           if(scope.parameter.value[i].fileName.localeCompare(fileName)==0) return true;
         return false;
       }
-
-      scope.errorUpload = [];
-      scope.uploadedFilesDescription = [];
-      $timeout(function(){
-        if(scope.parameter.disabled) return;
-        scope.initFileReader();
-      });
     }
   }
 
