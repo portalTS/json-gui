@@ -12,6 +12,10 @@ directives.directive('datetime', function() {
     link:function(scope, elm, attr, jsonInputCtrl) {
 
       scope.timeValid = function(){
+        if(scope.parameter.value == "Invalid Date") {
+          scope.parameter.message.push("Date format is not valid");
+          return false;
+        }
         return true;
       }
 
@@ -20,6 +24,7 @@ directives.directive('datetime', function() {
       var evaluate = function() {
         scope.parameter.message = [];
         var a = jsonInputCtrl.evaluate(scope.parameter, scope.dependencies);
+
         for(var i=0; i<a.message.length;i++)
         scope.parameter.message.push(a.message[i]);
         var valid =  scope.timeValid();

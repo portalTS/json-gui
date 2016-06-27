@@ -13,7 +13,7 @@
                             <datetime json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='datetime'" parameter="obj.pars[value]" dependencies = "dep[value]"></datetime>
                             <json-select json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='select'" parameter="obj.pars[value]" dependencies =" dep[value]"></json-select>
                             <json-text json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='text'" parameter="obj.pars[value]" dependencies = "dep[value]"></json-text>
-                            <domains json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='domains'" parameter="obj.pars[value]" dependencies = "dep[value]"></domains>
+                            <domains json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='domains'" parameter="obj.pars[value]" dependencies = "dep[value]" validation="true"></domains>
                             <fileupload json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='fileupload'" parameter="obj.pars[value]" dependencies = "dep[value]"></fileupload>
                         </div>
                     </div>

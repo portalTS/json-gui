@@ -1,8 +1,8 @@
 <div class="row parameter-row">
-    <div class="col-xs-6 col-md-3 col-md-offset-3 par-name-col">
+    <div class="col-xs-6 col-md-3 par-name-col">
         {{parameter.displayName}}
     </div>
-    <div class="col-xs-6 col-md-3 par-value-col datetime-col" ng-class="{'has-error': !isParameterValid}">
+    <div class="col-xs-6 col-md-9 par-value-col datetime-col" ng-class="{'has-error': !isParameterValid}">
         <input ng-if="parameter.hasDate" type="date" ng-model="parameter.value" class="form-control" ng-disabled="parameter.disabled">
         <input ng-if="parameter.hasTime" type="time" step="60" ng-model="parameter.value" class="form-control" ng-disabled="parameter.disabled">
         <div class="error-message" ng-repeat="msg in parameter.message">{{msg}}</div>

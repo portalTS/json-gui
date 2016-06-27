@@ -80,6 +80,8 @@ directives.directive('domains', function($timeout) {
 
       /**************** INIT ******************/
       scope.initializeParameter = function(){
+        if(!scope.parameter.value.hasOwnProperty("domains")) scope.parameter.value.domains = [];
+        if(!scope.parameter.value.hasOwnProperty("markers")) scope.parameter.value.markers = [];
         var height =  parseInt($("#"+scope.parameter.dbName+"map").css("width"))/2;
         scope.height=height+"px";
         scope.mapRectangles = [];

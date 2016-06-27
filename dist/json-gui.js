@@ -1,11 +1,11 @@
-angular.module("templateCache", []).run(["$templateCache", function($templateCache) {$templateCache.put("datetime/datetime.html","<div class=\"row parameter-row\">\n    <div class=\"col-xs-6 col-md-3 col-md-offset-3 par-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-3 par-value-col datetime-col\" ng-class=\"{\'has-error\': !isParameterValid}\">\n        <input ng-if=\"parameter.hasDate\" type=\"date\" ng-model=\"parameter.value\" class=\"form-control\" ng-disabled=\"parameter.disabled\">\n        <input ng-if=\"parameter.hasTime\" type=\"time\" step=\"60\" ng-model=\"parameter.value\" class=\"form-control\" ng-disabled=\"parameter.disabled\">\n        <div class=\"error-message\" ng-repeat=\"msg in parameter.message\">{{msg}}</div>\n    </div>\n</div>\n");
+angular.module("templateCache", []).run(["$templateCache", function($templateCache) {$templateCache.put("datetime/datetime.html","<div class=\"row parameter-row\">\n    <div class=\"col-xs-6 col-md-3 par-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-9 par-value-col datetime-col\" ng-class=\"{\'has-error\': !isParameterValid}\">\n        <input ng-if=\"parameter.hasDate\" type=\"date\" ng-model=\"parameter.value\" class=\"form-control\" ng-disabled=\"parameter.disabled\">\n        <input ng-if=\"parameter.hasTime\" type=\"time\" step=\"60\" ng-model=\"parameter.value\" class=\"form-control\" ng-disabled=\"parameter.disabled\">\n        <div class=\"error-message\" ng-repeat=\"msg in parameter.message\">{{msg}}</div>\n    </div>\n</div>\n");
 $templateCache.put("domains/domains.html","<div class=\"row parameter-row\">\n\n    <div class=\"col-xs-12 par-name-col map-container ng-binding\" ng-class=\"{\'disabled\' : parameter.disabled}\">\n        <div style=\"width:100%;height:{{height}}\" id=\"{{parameter.dbName}}map\" ng-class=\"{\'map-has-error\' : !isParameterValid}\"></div>\n        <div class=\"error-message\" ng-repeat=\"msg in parameter.message\">{{msg}}</div>\n        <div ng-show=\"parameter.drawDomains\" ng-repeat=\"val in parameter.value.domains track by $index\">\n            Domain number {{$index+1}} - South-West: ({{val.southWest.lat | number:4}}, {{val.southWest.long | number:4}}) North-East: ({{val.northEast.lat | number:4}}, {{val.northEast.long | number:4}})<br/>\n        </div>\n        <div ng-show=\"parameter.drawMarkers\" ng-repeat=\"mark in parameter.value.markers track by $index\">\n            Marker {{$index+1}}: ({{mark.lat | number:4}}, {{mark.long | number:4}})\n        </div>\n\n    </div>\n    <div class=\"modal fade\" id=\"{{parameter.dbName}}modal\">\n        <div class=\"modal-dialog\">\n            <div class=\"modal-content\">\n                <div class=\"modal-header\">\n                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n                    <h4 class=\"modal-title\">Delete domain</h4>\n                </div>\n                <div class=\"modal-body\">\n                    <p>Do you want to delete domain number <span id=\"number\"></span><span ng-if=\"parameter.onlyNested\" id=\"lastDomain\"> and all his sub-domains</span>?</p>\n                </div>\n                <div class=\"modal-footer\">\n                    <button type=\"button\" class=\"btn btn-warning\" data-dismiss=\"modal\">No</button>\n                    <button type=\"button\" class=\"btn btn-success\">Yes</button>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n");
-$templateCache.put("fileupload/fileupload.html","<div class=\"row parameter-row\" id=\"{{parameter.dbName}}\">\n    <div class=\"col-xs-6 col-md-3 col-md-offset-3 par-name-col upload-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-3 par-value-col file-container\" ng-class=\"{\'has-error\': !isParameterValid, \'disabled\' : parameter.disabled}\">\n        <!--        <div ngf-drop ngf-select ng-model=\"file\" class=\"drop-box\" ngf-drag-over-class=\"dragover\" ngf-multiple=\"true\" ngf-allow-dir=\"false\" accept=\"image/*,application/pdf\" ngf-pattern=\"\'image/*,application/pdf\'\">Drop Namelist</div>-->\n\n        <form  action=\"upload.php\" method=\"POST\" enctype=\"multipart/form-data\">\n\n            <fieldset>\n                <div>\n                    <input type=\"file\" id=\"fileselect\" name=\"fileselect[]\" multiple=\"multiple\"  style=\"visibility:hidden\"/>\n                    <div id=\"filedrag\" ng-click=\"openInput()\">Click or drop files here</div>\n                </div>\n                <div class=\"error-message\" ng-repeat=\"msg in parameter.message\">{{msg}}</div>\n                <div class=\"error-message\">\n                    <div ng-repeat=\"val in errorUpload\">{{val}}\n                    </div>\n                </div>\n                 <div class=\"success-message\" ng-show=\"parameter.value.length!=0\">\n                   Uploaded files:\n                   <ul>\n                    <li ng-repeat=\"file in parameter.value track by $index\">\n                        <span class=\"uploaded-file\">{{file.fileName}}</span>&nbsp;&nbsp;&nbsp;<span ng-if=\"!parameter.disabled\" ng-click=\"removeFile($index)\" class=\"file-unload\">Remove</span>\n                    </li>\n                  </ul>\n                </div>\n            </fieldset>\n\n        </form>\n    </div>\n    <!--\n<div class=\"modal fade\" id=\"modal\">\n<div class=\"modal-dialog\">\n<div class=\"modal-content\">\n<div class=\"modal-header\">\n<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n<h4 class=\"modal-title\">Warning</h4>\n</div>\n<div class=\"modal-body\">\n</div>\n<div class=\"modal-footer\">\n<button type=\"button\" class=\"btn btn-warning\" data-dismiss=\"modal\">Ok</button>\n</div>\n</div>\n</div>\n</div>\n\n-->\n\n\n</div>\n");
-$templateCache.put("float/float.html","<div class=\"row parameter-row\">\n    <div class=\"col-xs-6 col-md-3 col-md-offset-3 par-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-3 par-value-col\" ng-class=\"{\'has-error\': !isParameterValid}\">\n        <input type=\"number\" step=\"1\" ng-model=\"parameter.value\" class=\"form-control\" ng-disabled=\"parameter.disabled\">\n        <div class=\"error-message\" ng-repeat=\"msg in parameter.message\">{{msg}}</div>\n    </div>\n</div>\n");
-$templateCache.put("integer/integer.html","<div class=\"row parameter-row\">\n    <div class=\"col-xs-6 col-md-3 col-md-offset-3 par-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-3 par-value-col\" ng-class=\"{\'has-error\': !isParameterValid}\">\n        <input type=\"number\" step=\"1\" ng-model=\"parameter.value\" class=\"form-control\" ng-disabled=\"parameter.disabled\">\n        <div class=\"error-message\" ng-repeat=\"msg in parameter.message track by $index\">{{msg}}</div>\n    </div>\n</div>\n");
-$templateCache.put("json-gui/json-gui.html","<div class=\"container-fluid\" id=\"model-container\">\n    <div class=\"row\" scroll-spy>\n        <div class=\"col-xs-12 col-md-10 groups\">\n            <div ng-repeat=\"group in data.parametersCategories\">\n                <div class=\"row group-container\">\n                    <div class=\"group-name\" id=\"group{{group.value}}\">\n                        {{group.name}}\n                    </div>\n                    <div class=\"group-parameters col-xs-12\">\n                        <div ng-repeat=\"(key, value) in hashToArray(obj.pars)\">\n                            <integer json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'integer\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\"></integer>\n                            <float json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'float\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\"></float>\n                            <datetime json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'datetime\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\"></datetime>\n                            <json-select json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'select\'\" parameter=\"obj.pars[value]\" dependencies =\" dep[value]\"></json-select>\n                            <json-text json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'text\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\"></json-text>\n                            <domains json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'domains\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\"></domains>\n                            <fileupload json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'fileupload\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\"></fileupload>\n                        </div>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n        <div class=\"col-md-2\" style=\"padding-left:0px\">\n            <ul id=\"nav\" class=\"nav hidden-xs hidden-sm\" style=\"margin-top:20px;padding-left:10px; border-left:1px solid #dedede;\">\n                <li ng-repeat=\"group in data.parametersCategories\">\n                    <a spy=\"group{{group.value}}\">{{group.name}}</a>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n");
-$templateCache.put("select/select.html","<div class=\"row parameter-row\">\n    <div class=\"col-xs-6 col-md-3 col-md-offset-3 par-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-3 par-value-col\" ng-class=\"{\'has-error\': !isParameterValid}\">\n        <select ng-model=\"parameter.value\" ng-options=\"option.value as option.name for option in parameter.values\" class=\"form-control\" ng-disabled=\"parameter.disabled\"></select>\n        <div class=\"error-message\" ng-repeat=\"msg in parameter.message\">{{msg}}</div>\n    </div>\n</div>\n");
-$templateCache.put("text/text.html","<div class=\"row parameter-row\">\n    <div class=\"col-xs-6 col-md-3 col-md-offset-3 par-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-3 par-value-col\" ng-class=\"{\'has-error\': !isParameterValid}\">\n        <textarea ng-model=\"parameter.value\" ng-disabled=\"parameter.disabled\" class=\"form-control\" style=\"resize:none\"></textarea>\n        <div class=\"error-message\" ng-repeat=\"msg in parameter.message\">{{msg}}</div>\n    </div>\n</div>\n");}]);
+$templateCache.put("fileupload/fileupload.html","<div class=\"row parameter-row\" id=\"{{parameter.dbName}}\">\n    <div class=\"col-xs-6 col-md-3 par-name-col upload-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-9 par-value-col file-container\" ng-class=\"{\'has-error\': !isParameterValid, \'disabled\' : parameter.disabled}\">\n        <!--        <div ngf-drop ngf-select ng-model=\"file\" class=\"drop-box\" ngf-drag-over-class=\"dragover\" ngf-multiple=\"true\" ngf-allow-dir=\"false\" accept=\"image/*,application/pdf\" ngf-pattern=\"\'image/*,application/pdf\'\">Drop Namelist</div>-->\n\n        <form  action=\"upload.php\" method=\"POST\" enctype=\"multipart/form-data\">\n\n            <fieldset>\n                <div>\n                    <input type=\"file\" id=\"fileselect\" name=\"fileselect[]\" multiple=\"multiple\"  style=\"visibility:hidden\"/>\n                    <div id=\"filedrag\" ng-click=\"openInput()\">Click or drop files here</div>\n                </div>\n                <div class=\"error-message\" ng-repeat=\"msg in parameter.message\">{{msg}}</div>\n                <div class=\"error-message\">\n                    <div ng-repeat=\"val in errorUpload\">{{val}}\n                    </div>\n                </div>\n                 <div class=\"success-message\" ng-show=\"parameter.value.length!=0\">\n                   Uploaded files:\n                   <ul>\n                    <li ng-repeat=\"file in parameter.value track by $index\">\n                        <span class=\"uploaded-file\">{{file.fileName}}</span>&nbsp;&nbsp;&nbsp;<span ng-if=\"!parameter.disabled\" ng-click=\"removeFile($index)\" class=\"file-unload\">Remove</span>\n                    </li>\n                  </ul>\n                </div>\n            </fieldset>\n\n        </form>\n    </div>\n    <!--\n<div class=\"modal fade\" id=\"modal\">\n<div class=\"modal-dialog\">\n<div class=\"modal-content\">\n<div class=\"modal-header\">\n<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n<h4 class=\"modal-title\">Warning</h4>\n</div>\n<div class=\"modal-body\">\n</div>\n<div class=\"modal-footer\">\n<button type=\"button\" class=\"btn btn-warning\" data-dismiss=\"modal\">Ok</button>\n</div>\n</div>\n</div>\n</div>\n\n-->\n\n\n</div>\n");
+$templateCache.put("float/float.html","<div class=\"row parameter-row\">\n    <div class=\"col-xs-6 col-md-3  par-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-9 par-value-col\" ng-class=\"{\'has-error\': !isParameterValid}\">\n        <input type=\"number\" step=\"1\" ng-model=\"parameter.value\" class=\"form-control\" ng-disabled=\"parameter.disabled\">\n        <div class=\"error-message\" ng-repeat=\"msg in parameter.message\">{{msg}}</div>\n    </div>\n</div>\n");
+$templateCache.put("integer/integer.html","<div class=\"row parameter-row\">\n    <div class=\"col-xs-6 col-md-3 par-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-9 par-value-col\" ng-class=\"{\'has-error\': !isParameterValid}\">\n        <input type=\"number\" step=\"1\" ng-model=\"parameter.value\" class=\"form-control\" ng-disabled=\"parameter.disabled\">\n        <div class=\"error-message\" ng-repeat=\"msg in parameter.message track by $index\">{{msg}}</div>\n    </div>\n</div>\n");
+$templateCache.put("json-gui/json-gui.html","<div class=\"container-fluid\" id=\"model-container\">\n    <div class=\"row\" scroll-spy>\n        <div class=\"col-xs-12 col-md-10 groups\">\n            <div ng-repeat=\"group in data.parametersCategories\">\n                <div class=\"row group-container\">\n                    <div class=\"group-name\" id=\"group{{group.value}}\">\n                        {{group.name}}\n                    </div>\n                    <div class=\"group-parameters col-xs-12\">\n                        <div ng-repeat=\"(key, value) in hashToArray(obj.pars)\">\n                            <integer json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'integer\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\"></integer>\n                            <float json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'float\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\"></float>\n                            <datetime json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'datetime\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\"></datetime>\n                            <json-select json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'select\'\" parameter=\"obj.pars[value]\" dependencies =\" dep[value]\"></json-select>\n                            <json-text json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'text\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\"></json-text>\n                            <domains json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'domains\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\" validation=\"true\"></domains>\n                            <fileupload json-input ng-if=\"obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType==\'fileupload\'\" parameter=\"obj.pars[value]\" dependencies = \"dep[value]\"></fileupload>\n                        </div>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n        <div class=\"col-md-2\" style=\"padding-left:0px\">\n            <ul id=\"nav\" class=\"nav hidden-xs hidden-sm\" style=\"margin-top:20px;padding-left:10px; border-left:1px solid #dedede;\">\n                <li ng-repeat=\"group in data.parametersCategories\">\n                    <a spy=\"group{{group.value}}\">{{group.name}}</a>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>\n");
+$templateCache.put("text/text.html","<div class=\"row parameter-row\">\n    <div class=\"col-xs-6 col-md-3 par-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-9 par-value-col\" ng-class=\"{\'has-error\': !isParameterValid}\">\n        <textarea ng-model=\"parameter.value\" ng-disabled=\"parameter.disabled\" class=\"form-control\" style=\"resize:none\"></textarea>\n        <div class=\"error-message\" ng-repeat=\"msg in parameter.message\">{{msg}}</div>\n    </div>\n</div>\n");
+$templateCache.put("select/select.html","<div class=\"row parameter-row\">\n    <div class=\"col-xs-6 col-md-3 par-name-col\">\n        {{parameter.displayName}}\n    </div>\n    <div class=\"col-xs-6 col-md-9 par-value-col\" ng-class=\"{\'has-error\': !isParameterValid}\">\n        <select ng-model=\"parameter.value\" ng-options=\"option.value as option.name for option in parameter.values\" class=\"form-control\" ng-disabled=\"parameter.disabled\"></select>\n        <div class=\"error-message\" ng-repeat=\"msg in parameter.message\">{{msg}}</div>\n    </div>\n</div>\n");}]);
 var directives = angular.module('json-gui', ['ngFileUpload', 'templateCache']);
 
 
@@ -105,7 +105,7 @@ directives.directive('jsonInput', function() {
         var bool = true;
         this.message = [];
         if(parameter.required){
-          if(parameter.value!=0 && (parameter.value==null || typeof(parameter.value)=="undefined" || parameter.value=="")){
+          if(parameter.value!==0 && (parameter.value==null || typeof(parameter.value)=="undefined" || parameter.value=="")){
             this.message.push("This field is required");
             bool = false;
           }
@@ -136,6 +136,10 @@ directives.directive('datetime', function() {
     link:function(scope, elm, attr, jsonInputCtrl) {
 
       scope.timeValid = function(){
+        if(scope.parameter.value == "Invalid Date") {
+          scope.parameter.message.push("Date format is not valid");
+          return false;
+        }
         return true;
       }
 
@@ -144,6 +148,7 @@ directives.directive('datetime', function() {
       var evaluate = function() {
         scope.parameter.message = [];
         var a = jsonInputCtrl.evaluate(scope.parameter, scope.dependencies);
+
         for(var i=0; i<a.message.length;i++)
         scope.parameter.message.push(a.message[i]);
         var valid =  scope.timeValid();
@@ -172,7 +177,6 @@ directives.directive('datetime', function() {
 
 directives.directive('domains', ["$timeout", function($timeout) {
 
-  //TEST THIS BEFORE COMMITTING!!!!!!
   return {
     restrict: 'E',
     templateUrl: 'domains/domains.html',
@@ -217,10 +221,10 @@ directives.directive('domains', ["$timeout", function($timeout) {
         jsonInputCtrl.isValid = scope.parameter.isValid;
         scope.validationFunction = jsonInputCtrl.validationFunction;
         scope.parameter.evaluate = evaluate;
-
+        scope.parameter.redraw = redraw;
         if(scope.validation) {
           scope.$watch('parameter.value', function() {
-              evaluate();
+            evaluate();
           }, true);
         } else scope.isParameterValid = true;
         /***************** START ********************/
@@ -230,9 +234,31 @@ directives.directive('domains', ["$timeout", function($timeout) {
         unbind();
       }, true);
 
+      var redraw = function() {
+        var length = scope.parameter.value.markers.length;
+        var max = scope.parameter.maxMarkers;
+        for(var i=max;i<length;i++){
+          removeMarker(scope.parameter.value.markers[i].id);
+        }
+        for(var i = 0;i<length;i++){
+          if(!checkMarkerInsideDomain(scope.parameter.value.markers[i])) removeMarker(scope.parameter.value.markers[i].id);
+        }
+        length = scope.parameter.value.domains.length;
+        max = scope.parameter.maxDomains;
+        if(max<length) {
+          scope.parameter.value.domains.splice(max, length-max);
+          deleteRectangle(max);
+        }
+        for(var i=0;i<length;i++) {
+          boundsChanged(scope.mapRectangles[i], scope.parameter.value.domains[i].id);
+        }
+      }
+
 
       /**************** INIT ******************/
       scope.initializeParameter = function(){
+        if(!scope.parameter.value.hasOwnProperty("domains")) scope.parameter.value.domains = [];
+        if(!scope.parameter.value.hasOwnProperty("markers")) scope.parameter.value.markers = [];
         var height =  parseInt($("#"+scope.parameter.dbName+"map").css("width"))/2;
         scope.height=height+"px";
         scope.mapRectangles = [];
@@ -286,7 +312,7 @@ directives.directive('domains', ["$timeout", function($timeout) {
             }
           }
           if(scope.validation)
-            scope.parameter.evaluate();
+          scope.parameter.evaluate();
         }, true);
       }
 
@@ -313,7 +339,7 @@ directives.directive('domains', ["$timeout", function($timeout) {
         if(!scope.parameter.disabled) {
           if(scope.parameter.drawMarkers) drawModes.push(google.maps.drawing.OverlayType.MARKER);
           if(scope.parameter.drawDomains) drawModes.push(google.maps.drawing.OverlayType.RECTANGLE);
-       }
+        }
         scope.drawingManager = new google.maps.drawing.DrawingManager({
           drawingControl: true,
           drawingControlOptions: {
@@ -337,7 +363,7 @@ directives.directive('domains', ["$timeout", function($timeout) {
             });
             $timeout(function(){
               if(addMarkerToValues(marker, tmstamp))
-                scope.mapMarkers.push(marker);
+              scope.mapMarkers.push(marker);
               else marker.setMap(null);
             }, 0);
 
@@ -425,7 +451,7 @@ directives.directive('domains', ["$timeout", function($timeout) {
             scope.parameter.value.domains.splice(index, 1);
           }, 0);
           if(!scope.parameter.allowMarkersOutDomains){
-              $timeout(function(){
+            $timeout(function(){
               for(var i=0;i<markers.length;i++){
                 //I have to remove first the rectangle, and only then check if the markers are inside another rectangle.
                 if(!checkMarkerInsideDomain(markers[i])) removeMarker(markers[i].id);
@@ -505,130 +531,370 @@ directives.directive('domains', ["$timeout", function($timeout) {
         var domains = scope.parameter.value.domains;
         for(var i=0;i<domains.length;i++){
           if(marker.lat > domains[i].southWest.lat && marker.lat < domains[i].northEast.lat &&
-              marker.long > domains[i].southWest.long && marker.long < domains[i].northEast.long)  {
-                return true;
-              }
-        }
-        return false;
-      }
-
-
-      /**************** UTILS ******************/
-
-      var addRectangleToMap = function(rectangle, map){
-        var mapRectangle =  new google.maps.Rectangle({
-          strokeColor: '#00BCD4',
-          strokeWeight: 1,
-          draggable:true,
-          fillColor: '#00BCD4',
-          fillOpacity: 0.5,
-          editable:true,
-          clickable:true,
-          zIndex:scope.mapRectangles.length,
-          map: map,
-          bounds: {
-            north: rectangle.northEast.lat,
-            south: rectangle.southWest.lat,
-            east: rectangle.northEast.long,
-            west: rectangle.southWest.long,
+            marker.long > domains[i].southWest.long && marker.long < domains[i].northEast.long)  {
+              return true;
+            }
           }
-        });
-
-        if(scope.parameter.disabled) mapRectangle.setDraggable(false);
-        else {
-          mapRectangle.addListener('bounds_changed', function(){
-            boundsChanged(mapRectangle, rectangle.id);
-
-          });
-          mapRectangle.addListener('click', function(){
-            rectangleClicked(rectangle.id);
-          })
+          return false;
         }
-        return mapRectangle;
-      }
 
 
+        /**************** UTILS ******************/
 
-      var addMarkerToMap = function(marker, map, index){
-        var mapMarker = new google.maps.Marker({
-          map:map,
-          position: {lat: marker.lat, lng: marker.long},
-          zIndex: 3000
-        });
-        if(!scope.parameter.disabled) {
-          mapMarker.addListener('click', function(){
-            removeMarker(marker.id);
+        var addRectangleToMap = function(rectangle, map){
+          var mapRectangle =  new google.maps.Rectangle({
+            strokeColor: '#00BCD4',
+            strokeWeight: 1,
+            draggable:true,
+            fillColor: '#00BCD4',
+            fillOpacity: 0.5,
+            editable:true,
+            clickable:true,
+            zIndex:scope.mapRectangles.length,
+            map: map,
+            bounds: {
+              north: rectangle.northEast.lat,
+              south: rectangle.southWest.lat,
+              east: rectangle.northEast.long,
+              west: rectangle.southWest.long,
+            }
           });
-        }
-        return mapMarker;
-      };
 
-      var removeMarker = function(id){
-        $timeout(function(){
-          var index = getPositionOfId(id, scope.parameter.value.markers);
-          scope.mapMarkers[index].setMap(null);
-          scope.mapMarkers.splice(index, 1);
-          scope.parameter.value.markers.splice(index, 1);
-        }, 0);
-      };
-      var removeAllMarkers = function(){
-        for(var i=0; i<scope.parameter.value.markers.length;i++)
+          if(scope.parameter.disabled) mapRectangle.setDraggable(false);
+          else {
+            mapRectangle.addListener('bounds_changed', function(){
+              boundsChanged(mapRectangle, rectangle.id);
+
+            });
+            mapRectangle.addListener('click', function(){
+              rectangleClicked(rectangle.id);
+            })
+          }
+          return mapRectangle;
+        }
+
+
+
+        var addMarkerToMap = function(marker, map, index){
+          var mapMarker = new google.maps.Marker({
+            map:map,
+            position: {lat: marker.lat, lng: marker.long},
+            zIndex: 3000
+          });
+          if(!scope.parameter.disabled) {
+            mapMarker.addListener('click', function(){
+              removeMarker(marker.id);
+            });
+          }
+          return mapMarker;
+        };
+
+        var removeMarker = function(id){
+          $timeout(function(){
+            var index = getPositionOfId(id, scope.parameter.value.markers);
+            scope.mapMarkers[index].setMap(null);
+            scope.mapMarkers.splice(index, 1);
+            scope.parameter.value.markers.splice(index, 1);
+          }, 0);
+        };
+        var removeAllMarkers = function(){
+          for(var i=0; i<scope.parameter.value.markers.length;i++)
           removeMarker(scope.parameter.value.markers[i].id);
-      }
-
-      var addMarkerToValues = function(marker, id){
-        var index=0;
-        if(typeof(scope.parameter.value.markers)==='undefined'){
-          scope.parameter.value.markers = {};
         }
-        else index = scope.parameter.value.markers.length;
-        var mark = {
-          id: id,
-          lat: marker.getPosition().lat(),
-          long: marker.getPosition().lng()
-        };
-        if(!checkMarkerInsideDomain(mark)) return false;
-        $timeout(function(){
-          scope.parameter.value.markers.push(mark);
-        });
-        return true;
-      }
 
-      var addRectangleToValues = function(mapRectangle, id){
-        var southWest = mapRectangle.getBounds().getSouthWest();
-        var northEast = mapRectangle.getBounds().getNorthEast();
-        var rectangle = {
-          id: id,
-          southWest: {lat:southWest.lat(), long:southWest.lng()},
-          northEast: {lat:northEast.lat(), long:northEast.lng()}
-        };
-        $timeout(function(){
-          scope.parameter.value.domains.push(rectangle);
-          checkRectangle(id);
-        });
-      };
+        var addMarkerToValues = function(marker, id){
+          var index=0;
+          if(typeof(scope.parameter.value.markers)==='undefined'){
+            scope.parameter.value.markers = {};
+          }
+          else index = scope.parameter.value.markers.length;
+          var mark = {
+            id: id,
+            lat: marker.getPosition().lat(),
+            long: marker.getPosition().lng()
+          };
+          if(!checkMarkerInsideDomain(mark)) return false;
+          $timeout(function(){
+            scope.parameter.value.markers.push(mark);
+          });
+          return true;
+        }
 
-      var findMarkersInsideRectangle = function (rectangle){
-        var markers = [];
-        var current;
-        for(var i=0;i<scope.parameter.value.markers.length;i++){
-          current = scope.parameter.value.markers[i];
-          if(current.lat > rectangle.southWest.lat && current.lat < rectangle.northEast.lat &&
+        var addRectangleToValues = function(mapRectangle, id){
+          var southWest = mapRectangle.getBounds().getSouthWest();
+          var northEast = mapRectangle.getBounds().getNorthEast();
+          var rectangle = {
+            id: id,
+            southWest: {lat:southWest.lat(), long:southWest.lng()},
+            northEast: {lat:northEast.lat(), long:northEast.lng()}
+          };
+          $timeout(function(){
+            scope.parameter.value.domains.push(rectangle);
+            checkRectangle(id);
+          });
+        };
+
+        var findMarkersInsideRectangle = function (rectangle){
+          var markers = [];
+          var current;
+          for(var i=0;i<scope.parameter.value.markers.length;i++){
+            current = scope.parameter.value.markers[i];
+            if(current.lat > rectangle.southWest.lat && current.lat < rectangle.northEast.lat &&
               current.long > rectangle.southWest.long && current.long < rectangle.northEast.long)
-                markers.push(current);
+              markers.push(current);
+            }
+            return markers;
+          }
+
+
+
+          var getPositionOfId = function(id, array){
+            for(var i=0;i<array.length;i++)
+            if(array[i].id==id) return i;
+            return -1;
+          }
         }
-        return markers;
       }
+    }]);
+
+directives.directive('integer', function() {
+    return {
+        restrict: 'E',
+        templateUrl: 'integer/integer.html',
+        replace: true,
+        require: '^jsonInput',
+        scope: {
+            parameter:"=",
+            dependencies:"=",
+            validation:"="
+        },
+        link:function(scope, elm, attr, jsonInputCtrl) {
+          scope.integerValid = function(){
+            if(scope.parameter.value % 1 !== 0 || scope.parameter.value ==="NaN" || typeof(scope.parameter.value) =="undefined"){
+              scope.parameter.message.push("Number is not an Integer");
+              return false;
+            }
+              return true;
+          }
+
+          var evaluate = function() {
+            scope.parameter.message = [];
+            var a = jsonInputCtrl.evaluate(scope.parameter, scope.dependencies);
+            for(var i=0; i<a.message.length;i++)
+              scope.parameter.message.push(a.message[i]);
+            var valid =  scope.integerValid();
+            valid =  a.isValid && valid;
+            scope.isParameterValid = valid;
+            return valid;
+          }
+
+          scope.message = [];
+          var unbind = scope.$watch('parameter', function() {
+            if(scope.parameter==undefined) return;
+            jsonInputCtrl.isValid = scope.parameter.isValid;
+            scope.validationFunction = jsonInputCtrl.validationFunction;
+            scope.parameter.evaluate = evaluate;
+
+            if(scope.validation) {
+              scope.$watch('parameter.value', function() {
+                  evaluate();
+              });
+            } else scope.isParameterValid = true;
+            unbind();
+          }, true);
+        }
+    };
+});
+
+directives.directive('float', function() {
+    return {
+        restrict: 'E',
+        templateUrl: 'float/float.html',
+        replace: true,
+        require: '^jsonInput',
+        scope: {
+            parameter:"=",
+            dependencies:"=",
+            validation:"="
+        },
+        link:function(scope, elm, attr, jsonInputCtrl) {
+            scope.floatValid = function(){
+                if(typeof(scope.parameter.value) === 'undefined' || scope.parameter.value ==="NaN"){
+                    scope.parameter.message.push("Number format is not valid");
+                    return false;
+                }
+                return true;
+            }
+            scope.message = [];
+
+            var evaluate = function() {
+              scope.parameter.message = [];
+              var a = jsonInputCtrl.evaluate(scope.parameter, scope.dependencies);
+              for(var i=0; i<a.message.length;i++)
+                scope.parameter.message.push(a.message[i]);
+              var valid =  scope.floatValid();
+              valid =  a.isValid && valid;
+              scope.isParameterValid = valid;
+              return valid;
+            }
+
+            var unbind = scope.$watch('parameter', function() {
+              if(scope.parameter==undefined) return;
+              jsonInputCtrl.isValid = scope.parameter.isValid;
+              scope.validationFunction = jsonInputCtrl.validationFunction;
+              scope.parameter.evaluate = evaluate;
+
+              if(scope.validation) {
+                scope.$watch('parameter.value', function() {
+                    evaluate();
+                });
+              } else scope.isParameterValid = true;
+              unbind();
+            }, true);
 
 
+        }
+    };
+});
 
-      var getPositionOfId = function(id, array){
-        for(var i=0;i<array.length;i++)
-        if(array[i].id==id) return i;
-        return -1;
-      }
+directives.directive('jsonGui', ["$timeout", function($timeout) {
+    return {
+        restrict: 'E',
+        templateUrl: 'json-gui/json-gui.html',
+        replace: true,
+        scope: {
+            data:"=",
+            values: "="
+        },
+        link:function(scope,elm,attr) {
+            scope.obj = {}
+            scope.obj.pars = {};
+            scope.dep=[];
+            scope.buildParametersArray = function(){
+              try{
+                var jsonPars = scope.data.parameters;
+              } catch(error){console.log(error);}
+                for(var par in jsonPars){
+                    scope.obj.pars[jsonPars[par].dbName] = jsonPars[par];
+                }
+                $timeout(function(){
+                scope.$watch("obj.pars", function(newVal, oldVal){
+                  for(var property in scope.obj.pars){
+                    scope.obj.pars[property].evaluate();
+                  }
+                }, true);
+                });
+            }
+            $timeout(function(){
+                $('#nav').affix({
+                    offset: {
+                    }
+                });
+            });
+
+            scope.buildDependencies = function(){
+                var currDeps;
+                for(var par in scope.obj.pars){ // par contiene il nome del parametro
+                    var obj={};
+                    currDeps = scope.obj.pars[par].dependencies;
+                    for(var i=0;i<currDeps.length;i++) {
+                        obj[currDeps[i]] = scope.obj.pars[currDeps[i]];
+                    }
+                    scope.dep[par] = obj;
+                }
+            }
+            scope.loadConfiguration = function(){
+              for(var i=0;i<scope.values.length;i++){
+                scope.obj.pars[scope.values[i].dbName].value = scope.values[i].value;
+              }
+            }
+            scope.saveNamelist = function(){
+                var namelist="";
+                for(var par in scope.obj.pars){
+                    if(!scope.obj.pars[par].evaluate()){
+                        console.log("Error in some parameter");
+                        return;
+                    }
+                    var functionBody = scope.buildComputingFunction(par);
+                    namelist+= scope.obj.pars[par].displayName+": "+ eval(functionBody)+";\n";
+                }
+                console.log(namelist);
+            }
+
+            scope.getConfiguration = function(){
+              var results = [];
+              var result;
+              for(var par in scope.obj.pars){
+                  result = {};
+                  if(!scope.obj.pars[par].evaluate()){
+                      console.log("Error in some parameter");
+                      return;
+                  }
+
+                   result.value = scope.obj.pars[par].value;
+                   result.dbName = scope.obj.pars[par].dbName;
+                   result.parameterType = scope.obj.pars[par].parameterType;
+                  results.push(result);
+              }
+              return results;
+            }
+
+            /*
+            This function is used to build two simpler object to be referred in the computedResult function: the parameter object, and the dependencies array.
+            In this way, in the computedResult property of each parameter object in the json file, the current parameter and its dependencies can be referred in a simpler way.
+            */
+            scope.buildComputingFunction = function(par){
+              var evalPrefix = "var parameter = scope.obj.pars[par];";
+              evalPrefix +=  "var dependencies = [];"
+              scope.obj.pars[par].dependencies.forEach(function(entry) {
+                  evalPrefix += "dependencies['"+entry+"'] = scope.obj.pars['"+entry+"'];";
+              });
+              return evalPrefix + "(function(){"+scope.obj.pars[par].computedResult+"}())";
+            };
+            scope.hashToArray = function(items) {
+                var result = [];
+                var i = 0;
+                for(item in items){
+                    result[i] = item;
+                    i++;
+                }
+                return result;
+            }
+            var computedResults  = function() {
+              var results = [];
+              var result;
+              for(var par in scope.obj.pars){
+                  result = {};
+                  if(!scope.obj.pars[par].evaluate()){
+                      console.log("Error in some parameter");
+                      return;
+                  }
+                  var functionBody = scope.buildComputingFunction(par);
+                   result.value = eval(functionBody);
+                   result.name = scope.obj.pars[par].dbName;
+                   result.parameterType = scope.obj.pars[par].parameterType;
+                  results.push(result);
+              }
+              return results;
+            };
+
+            scope.logPars= function(){
+              for(var i in scope.obj.pars){
+                console.log(i+" = "+scope.obj.pars[i].value);
+              }
+            }
+            var unbind = scope.$watch("data", function() {
+              scope.buildParametersArray();
+              scope.buildDependencies();
+              scope.loadConfiguration();
+              try {
+              scope.data.getConfiguration = scope.getConfiguration;
+            } catch(error)
+                {console.log(error); return;}
+              unbind();
+            });
+        }
     }
-  }
 }]);
 
 directives.directive('fileupload', ["$timeout", "Upload", function($timeout, Upload) {
@@ -836,246 +1102,6 @@ directives.directive('fileupload', ["$timeout", "Upload", function($timeout, Upl
 
 
 }]);
-
-directives.directive('float', function() {
-    return {
-        restrict: 'E',
-        templateUrl: 'float/float.html',
-        replace: true,
-        require: '^jsonInput',
-        scope: {
-            parameter:"=",
-            dependencies:"=",
-            validation:"="
-        },
-        link:function(scope, elm, attr, jsonInputCtrl) {
-            scope.floatValid = function(){
-                if(typeof(scope.parameter.value) === 'undefined' || scope.parameter.value ==="NaN"){
-                    scope.parameter.message.push("Number format is not valid");
-                    return false;
-                }
-                return true;
-            }
-            scope.message = [];
-
-            var evaluate = function() {
-              scope.parameter.message = [];
-              var a = jsonInputCtrl.evaluate(scope.parameter, scope.dependencies);
-              for(var i=0; i<a.message.length;i++)
-                scope.parameter.message.push(a.message[i]);
-              var valid =  scope.floatValid();
-              valid =  a.isValid && valid;
-              scope.isParameterValid = valid;
-              return valid;
-            }
-
-            var unbind = scope.$watch('parameter', function() {
-              if(scope.parameter==undefined) return;
-              jsonInputCtrl.isValid = scope.parameter.isValid;
-              scope.validationFunction = jsonInputCtrl.validationFunction;
-              scope.parameter.evaluate = evaluate;
-
-              if(scope.validation) {
-                scope.$watch('parameter.value', function() {
-                    evaluate();
-                });
-              } else scope.isParameterValid = true;
-              unbind();
-            }, true);
-
-
-        }
-    };
-});
-
-directives.directive('jsonGui', ["$timeout", function($timeout) {
-    return {
-        restrict: 'E',
-        templateUrl: 'json-gui/json-gui.html',
-        replace: true,
-        scope: {
-            data:"=",
-            values: "="
-        },
-        link:function(scope,elm,attr) {
-            scope.obj = {}
-            scope.obj.pars = {};
-            scope.dep=[];
-            scope.buildParametersArray = function(){
-              try{
-                var jsonPars = scope.data.parameters;
-              } catch(error){console.log(error);}
-                for(var par in jsonPars){
-                    scope.obj.pars[jsonPars[par].dbName] = jsonPars[par];
-                }
-                $timeout(function(){
-                scope.$watch("obj.pars", function(newVal, oldVal){
-                  for(var property in scope.obj.pars){
-                    scope.obj.pars[property].evaluate();
-                  }
-                }, true);
-                });
-            }
-            $timeout(function(){
-                $('#nav').affix({
-                    offset: {
-                    }
-                });
-            });
-
-            scope.buildDependencies = function(){
-                var currDeps;
-                for(var par in scope.obj.pars){ // par contiene il nome del parametro
-                    var obj={};
-                    currDeps = scope.obj.pars[par].dependencies;
-                    for(var i=0;i<currDeps.length;i++) {
-                        obj[currDeps[i]] = scope.obj.pars[currDeps[i]];
-                    }
-                    scope.dep[par] = obj;
-                }
-            }
-            scope.loadConfiguration = function(){
-              for(var i=0;i<scope.values.length;i++){
-                scope.obj.pars[scope.values[i].dbName].value = scope.values[i].value;
-              }
-            }
-            scope.saveNamelist = function(){
-                var namelist="";
-                for(var par in scope.obj.pars){
-                    if(!scope.obj.pars[par].evaluate()){
-                        console.log("Error in some parameter");
-                        return;
-                    }
-                    var functionBody = scope.buildComputingFunction(par);
-                    namelist+= scope.obj.pars[par].displayName+": "+ eval(functionBody)+";\n";
-                }
-                console.log(namelist);
-            }
-
-            scope.getConfiguration = function(){
-              var results = [];
-              var result;
-              for(var par in scope.obj.pars){
-                  result = {};
-                  if(!scope.obj.pars[par].evaluate()){
-                      console.log("Error in some parameter");
-                      return;
-                  }
-
-                   result.value = scope.obj.pars[par].value;
-                   result.dbName = scope.obj.pars[par].dbName;
-                   result.parameterType = scope.obj.pars[par].parameterType;
-                  results.push(result);
-              }
-              return results;
-            }
-
-            /*
-            This function is used to build two simpler object to be referred in the computedResult function: the parameter object, and the dependencies array.
-            In this way, in the computedResult property of each parameter object in the json file, the current parameter and its dependencies can be referred in a simpler way.
-            */
-            scope.buildComputingFunction = function(par){
-              var evalPrefix = "var parameter = scope.obj.pars[par];";
-              evalPrefix +=  "var dependencies = [];"
-              scope.obj.pars[par].dependencies.forEach(function(entry) {
-                  evalPrefix += "dependencies['"+entry+"'] = scope.obj.pars['"+entry+"'];";
-              });
-              return evalPrefix + "(function(){"+scope.obj.pars[par].computedResult+"}())";
-            };
-            scope.hashToArray = function(items) {
-                var result = [];
-                var i = 0;
-                for(item in items){
-                    result[i] = item;
-                    i++;
-                }
-                return result;
-            }
-            var computedResults  = function() {
-              var results = [];
-              var result;
-              for(var par in scope.obj.pars){
-                  result = {};
-                  if(!scope.obj.pars[par].evaluate()){
-                      console.log("Error in some parameter");
-                      return;
-                  }
-                  var functionBody = scope.buildComputingFunction(par);
-                   result.value = eval(functionBody);
-                   result.name = scope.obj.pars[par].dbName;
-                   result.parameterType = scope.obj.pars[par].parameterType;
-                  results.push(result);
-              }
-              return results;
-            };
-
-            scope.logPars= function(){
-              for(var i in scope.obj.pars){
-                console.log(i+" = "+scope.obj.pars[i].value);
-              }
-            }
-            var unbind = scope.$watch("data", function() {
-              scope.buildParametersArray();
-              scope.buildDependencies();
-              scope.loadConfiguration();
-              try {
-              scope.data.getConfiguration = scope.getConfiguration;
-            } catch(error)
-                {console.log(error); return;}
-              unbind();
-            });
-        }
-    }
-}]);
-
-directives.directive('integer', function() {
-    return {
-        restrict: 'E',
-        templateUrl: 'integer/integer.html',
-        replace: true,
-        require: '^jsonInput',
-        scope: {
-            parameter:"=",
-            dependencies:"=",
-            validation:"="
-        },
-        link:function(scope, elm, attr, jsonInputCtrl) {
-          scope.integerValid = function(){
-            if(scope.parameter.value % 1 !== 0 || scope.parameter.value ==="NaN" || typeof(scope.parameter.value) =="undefined"){
-              scope.parameter.message.push("Number is not an Integer");
-              return false;
-            }
-              return true;
-          }
-
-          var evaluate = function() {
-            scope.parameter.message = [];
-            var a = jsonInputCtrl.evaluate(scope.parameter, scope.dependencies);
-            for(var i=0; i<a.message.length;i++)
-              scope.parameter.message.push(a.message[i]);
-            var valid =  scope.integerValid();
-            valid =  a.isValid && valid;
-            scope.isParameterValid = valid;
-            return valid;
-          }
-
-          scope.message = [];
-          var unbind = scope.$watch('parameter', function() {
-            if(scope.parameter==undefined) return;
-            jsonInputCtrl.isValid = scope.parameter.isValid;
-            scope.validationFunction = jsonInputCtrl.validationFunction;
-            scope.parameter.evaluate = evaluate;
-
-            if(scope.validation) {
-              scope.$watch('parameter.value', function() {
-                  evaluate();
-              });
-            } else scope.isParameterValid = true;
-            unbind();
-          }, true);
-        }
-    };
-});
 
 directives.directive('jsonSelect', function() {
   return {
