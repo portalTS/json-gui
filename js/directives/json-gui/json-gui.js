@@ -5,7 +5,8 @@ directives.directive('jsonGui', function($timeout) {
         replace: true,
         scope: {
             data:"=",
-            values: "="
+            values: "=",
+            options:'='
         },
         link:function(scope,elm,attr) {
             scope.obj = {}
@@ -54,7 +55,7 @@ directives.directive('jsonGui', function($timeout) {
                 for(var par in scope.obj.pars){
                     if(!scope.obj.pars[par].evaluate()){
                         console.log("Error in some parameter");
-                        return;
+                        continue;
                     }
                     var functionBody = scope.buildComputingFunction(par);
                     namelist+= scope.obj.pars[par].displayName+": "+ eval(functionBody)+";\n";
@@ -65,11 +66,13 @@ directives.directive('jsonGui', function($timeout) {
             scope.getConfiguration = function(){
               var results = [];
               var result;
+              scope.data.isConfigured = true;
               for(var par in scope.obj.pars){
                   result = {};
                   if(!scope.obj.pars[par].evaluate()){
                       console.log("Error in some parameter");
-                      return;
+                      scope.data.isConfigured = false;
+                      continue;
                   }
 
                    result.value = scope.obj.pars[par].value;

@@ -2,7 +2,7 @@
     <div class="col-xs-6 col-md-3 par-name-col upload-name-col">
         {{parameter.displayName}}
     </div>
-    <div class="col-xs-6 col-md-9 par-value-col file-container" ng-class="{'has-error': !isParameterValid, 'disabled' : parameter.disabled}">
+    <div class="col-xs-5 col-md-8 par-value-col file-container" ng-class="{'has-error': !isParameterValid, 'disabled' : parameter.disabled}">
         <!--        <div ngf-drop ngf-select ng-model="file" class="drop-box" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-allow-dir="false" accept="image/*,application/pdf" ngf-pattern="'image/*,application/pdf'">Drop Namelist</div>-->
 
         <form  action="upload.php" method="POST" enctype="multipart/form-data">
@@ -12,6 +12,7 @@
                     <input type="file" id="fileselect" name="fileselect[]" multiple="multiple"  style="visibility:hidden"/>
                     <div id="filedrag" ng-click="openInput()">Click or drop files here</div>
                 </div>
+
                 <div class="error-message" ng-repeat="msg in parameter.message">{{msg}}</div>
                 <div class="error-message">
                     <div ng-repeat="val in errorUpload">{{val}}
@@ -28,6 +29,9 @@
             </fieldset>
 
         </form>
+    </div>
+    <div class="col-xs-1 info-col" style="margin-top: 70px !important;">
+        <div class="info" ng-if="parameter.description!=undefined && parameter.description!=''">i <span>{{parameter.description}}</span></div>
     </div>
     <!--
 <div class="modal fade" id="modal">

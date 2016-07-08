@@ -2,6 +2,9 @@
 directives.directive('scrollSpy', function ($window, $timeout) {
   return {
     restrict: 'A',
+    scope:{
+      yOffset: '='
+    },
     controller: function ($scope) {
       $scope.spies = [];
       this.addSpy = function (spyObj) {
@@ -39,8 +42,7 @@ directives.directive('scrollSpy', function ($window, $timeout) {
           if (spyElems[spy.id].offset() === undefined) {
             continue;
           }
-
-          if ((pos = spyElems[spy.id].offset().top) - $window.scrollY <= 0) {
+          if ((pos = spyElems[spy.id].offset().top) - $window.scrollY <= 0+scope.yOffset) {
             // the window has been scrolled past the top of a spy element
             spy.pos = pos;
 
@@ -69,7 +71,11 @@ directives.directive('spy', function ($location, $anchorScroll) {
   return {
     restrict: "A",
     require: "^scrollSpy",
+    scope: {
+        yOffset:'=',
+    },
     link: function(scope, elem, attrs, affix) {
+      $anchorScroll.yOffset = scope.yOffset;
       $(elem).click(function () {
         $location.hash(attrs.spy);
         $anchorScroll();

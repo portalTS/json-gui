@@ -1,11 +1,13 @@
 <div class="container-fluid" id="model-container">
-    <div class="row" scroll-spy>
+    <div class="row" scroll-spy y-offset="options.viewOffset">
         <div class="col-xs-12 col-md-10 groups">
             <div ng-repeat="group in data.parametersCategories">
                 <div class="row group-container">
-                    <div class="group-name" id="group{{group.value}}">
+                  <div id="group{{group.value}}" class="group">
+                    <div class="group-name">
                         {{group.name}}
                     </div>
+                  </div>
                     <div class="group-parameters col-xs-12">
                         <div ng-repeat="(key, value) in hashToArray(obj.pars)">
                             <integer json-input ng-if="obj.pars[value].parameterCategory==group.value && obj.pars[value].parameterType=='integer'" parameter="obj.pars[value]" dependencies = "dep[value]"></integer>
@@ -24,7 +26,7 @@
         <div class="col-md-2" style="padding-left:0px">
             <ul id="nav" class="nav hidden-xs hidden-sm" style="margin-top:20px;padding-left:10px; border-left:1px solid #dedede;">
                 <li ng-repeat="group in data.parametersCategories">
-                    <a spy="group{{group.value}}">{{group.name}}</a>
+                    <a spy="group{{group.value}}" y-offset="options.viewOffset">{{group.name}}</a>
                 </li>
             </ul>
         </div>

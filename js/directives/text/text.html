@@ -2,8 +2,11 @@
     <div class="col-xs-6 col-md-3 par-name-col">
         {{parameter.displayName}}
     </div>
-    <div class="col-xs-6 col-md-9 par-value-col" ng-class="{'has-error': !isParameterValid}">
+    <div class="col-xs-5 col-md-8 par-value-col" ng-class="{'has-error': !isParameterValid}">
         <textarea ng-model="parameter.value" ng-disabled="parameter.disabled" class="form-control" style="resize:none"></textarea>
         <div class="error-message" ng-repeat="msg in parameter.message">{{msg}}</div>
+    </div>
+    <div class="col-xs-1 info-col" style="margin-top:16px !important">
+        <div class="info" ng-if="parameter.description!=undefined && parameter.description!=''">i <span>{{parameter.description}}</span></div>
     </div>
 </div>

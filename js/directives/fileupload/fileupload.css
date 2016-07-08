@@ -25,10 +25,11 @@
 	margin: 1em 0;
 	color: #555;
 	border: 2px dashed #555;
-    width: 100%;
+    width: 96%;
     height: 100px;
 	border-radius: 7px;
 	cursor: default;
+  display:inline-block !important;
 }
 .has-error #filedrag{
     border-color:#EF5C00;

@@ -17,6 +17,7 @@ app.controller('modelController', function($scope, $timeout) {
       $scope.results =  $scope.data.getConfiguration();
       console.log($scope.results);
     }
+    $scope.options = {viewOffset:52};
 
     //TODO
     /*
