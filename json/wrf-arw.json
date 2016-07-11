@@ -110,7 +110,6 @@
         "displayName": "Domains",
         "dbName": "wrfdomains",
         "dependencies": [],
-        "required": true,
         "disabled": false,
         "parameterCategory": 1,
         "onlyNested": true,

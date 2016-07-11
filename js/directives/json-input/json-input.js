@@ -4,7 +4,7 @@ directives.directive('jsonInput', function() {
       this.evaluate = function(parameter, dependencies){
         var bool = true;
         this.message = [];
-        if(parameter.required){
+        if(parameter.required && !parameter.required.hasOwnProperty("markers")) {
           if(parameter.value!==0 && (parameter.value==null || typeof(parameter.value)=="undefined" || parameter.value=="")){
             this.message.push("This field is required");
             bool = false;
