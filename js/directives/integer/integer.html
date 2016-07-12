@@ -3,7 +3,7 @@
         {{parameter.displayName}}
     </div>
     <div class="col-xs-5 col-md-8 par-value-col" ng-class="{'has-error': !isParameterValid}">
-        <input type="number" step="1" ng-model="parameter.value" class="form-control" ng-disabled="parameter.disabled">
+        <input type="number" step="1" ng-model="parameter.value" class="form-control" ng-disabled="!parameter.editable">
         <div class="error-message" ng-repeat="msg in parameter.message track by $index">{{msg}}</div>
     </div>
     <div class="col-xs-1 info-col">

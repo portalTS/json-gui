@@ -3,8 +3,8 @@
         {{parameter.displayName}}
     </div>
     <div class="col-xs-5 col-md-8 par-value-col datetime-col" ng-class="{'has-error': !isParameterValid}">
-        <input ng-if="parameter.hasDate" type="date" ng-model="parameter.value" class="form-control" ng-disabled="parameter.disabled">
-        <input ng-if="parameter.hasTime" type="time" step="60" ng-model="parameter.value" class="form-control" ng-disabled="parameter.disabled">
+        <input ng-if="parameter.hasDate" type="date" ng-model="parameter.value" class="form-control" ng-disabled="!parameter.editable">
+        <input ng-if="parameter.hasTime" type="time" step="60" ng-model="parameter.value" class="form-control" ng-disabled="!parameter.editable">
         <div class="error-message" ng-repeat="msg in parameter.message">{{msg}}</div>
     </div>
     <div class="col-xs-1 info-col">
