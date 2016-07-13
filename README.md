@@ -72,7 +72,7 @@ In the very same way as with the json-gui component, you can add each tag to you
 <select-parameter json-input parameter="param" dependencies="dep" validation="false"></select-parameter>
 <text-parameter json-input parameter="param" dependencies="dep" validation="false"></text-parameter>
 <domains json-input parameter="param" dependencies="dep" validation="false"></domains>
-<fileupload json-input parameters="param" dependencies="dep" validation="false"></fileupload>
+<fileupload json-input parameter="param" dependencies="dep" validation="false"></fileupload>
 ```
 The ```parameter``` attribute specifies the parameter object linked to that field, while the ```dependencies``` attribute expects an array containing the dependencies (among the other form fields) used for the validation of that field (see Wiki section).
 Lastly, the ```validation``` boolean attribute allows the field validation for the parameter.
