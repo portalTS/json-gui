@@ -44,12 +44,12 @@ directives.directive('fileupload', function($timeout, Upload) {
         scope.errorUpload = [];
         scope.uploadedFilesDescription = [];
         $timeout(function(){
-          if(scope.parameter.disabled) return;
+          if(!scope.parameter.editable) return;
           scope.initFileReader();
         });
 
         if(scope.validation) {
-          scope.$watch('parameter.value', function() {
+          scope.$watchCollection('parameter.value', function() {
               evaluate();
           });
         } else scope.isParameterValid = true;
@@ -72,9 +72,10 @@ directives.directive('fileupload', function($timeout, Upload) {
         }
       }
       // initialize
+      var fileselect;
       scope.init = function() {
         var form = $("#"+scope.parameter.dbName);
-        var fileselect =  form.find("#fileselect")[0];
+        fileselect =  form.find("#fileselect")[0];
         var filedrag =  form.find("#filedrag")[0];
         //                scope.modal = form.find("#modal");
 
@@ -146,7 +147,7 @@ directives.directive('fileupload', function($timeout, Upload) {
 
       scope.openInput = function(){
         $timeout(function(){
-          if(scope.parameter.disabled) return;
+          if(!scope.parameter.editable) return;
           $('#'+scope.parameter.dbName).find('#fileselect').click();
         }, 0);
       }
@@ -177,6 +178,7 @@ directives.directive('fileupload', function($timeout, Upload) {
       scope.removeFile = function(index){
         scope.parameter.value.splice(index, 1);
         scope.uploadedFilesDescription.splice(index, 1);
+        fileselect.value = null;
       }
 
       scope.fileHasAllowedExtension = function(file){

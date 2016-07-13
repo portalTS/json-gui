@@ -159,7 +159,7 @@ directives.directive('domains', function($timeout) {
           map: scope.map,
         };
         var drawModes = [];
-        if(!scope.parameter.disabled) {
+        if(scope.parameter.editable) {
           if(scope.parameter.drawMarkers) drawModes.push(google.maps.drawing.OverlayType.MARKER);
           if(scope.parameter.drawDomains) drawModes.push(google.maps.drawing.OverlayType.RECTANGLE);
         }
@@ -172,7 +172,7 @@ directives.directive('domains', function($timeout) {
           rectangleOptions:scope.rectOptions
         });
         scope.drawingManager.setMap(scope.map);
-        if(!scope.parameter.disabled) {
+        if(scope.parameter.editable) {
           google.maps.event.addListener(scope.drawingManager, "markercomplete", function(marker){
             var tmstamp = new Date().getTime();
             var ind = scope.mapMarkers.length;
@@ -383,7 +383,7 @@ directives.directive('domains', function($timeout) {
             }
           });
 
-          if(scope.parameter.disabled) mapRectangle.setDraggable(false);
+          if(!scope.parameter.editable) mapRectangle.setDraggable(false);
           else {
             mapRectangle.addListener('bounds_changed', function(){
               boundsChanged(mapRectangle, rectangle.id);
@@ -404,7 +404,7 @@ directives.directive('domains', function($timeout) {
             position: {lat: marker.lat, lng: marker.long},
             zIndex: 3000
           });
-          if(!scope.parameter.disabled) {
+          if(scope.parameter.editable) {
             mapMarker.addListener('click', function(){
               removeMarker(marker.id);
             });
