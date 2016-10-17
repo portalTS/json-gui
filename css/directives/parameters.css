@@ -16,7 +16,6 @@
 body{
   position: relative;
 }
-
 .info-col{
   margin-top: 5px;
 }
@@ -49,7 +48,7 @@ body{
   display: none;
   padding: 5px 10px;
   bottom: 35px;
-
+  z-index: 10;
 }
 .info span:after{
   content:'';
