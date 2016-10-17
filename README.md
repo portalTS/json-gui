@@ -11,7 +11,7 @@ Starting from a formal JSON configuration object describing a list of inputs (th
 - personalizable validation
 
 # Live Demo & Wiki
-A live demo is available [here](https://plnkr.co/edit/RWTAKi9kRUEdrrb3p6Kp), while a more detailed tutorial can be found [here](https://github.com/portalTS/json-gui/wiki).
+A live demo is available [here](https://plnkr.co/edit/RWTAKi9kRUEdrrb3p6Kp) (maybe you have to wait few seconds to make it work, as Plunkr seems not to digest it very well), while a more detailed tutorial can be found [here](https://github.com/portalTS/json-gui/wiki).
 # Quick start
 
 You can download the project here from GitHub or, alternatively, you can install it with bower:
