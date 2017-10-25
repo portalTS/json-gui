@@ -37,6 +37,7 @@ directives.directive('datetime', function() {
         if(scope.parameter==undefined) return;
         scope.parameter.value = new moment(scope.parameter.value).toDate();
         jsonInputCtrl.isValid = scope.parameter.isValid;
+        jsonInputCtrl.deactivation = scope.parameter.deactivation;
         scope.validationFunction = jsonInputCtrl.validationFunction;
         scope.parameter.evaluate = evaluate;
 

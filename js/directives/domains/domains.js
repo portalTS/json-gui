@@ -43,6 +43,7 @@ directives.directive('domains', function($timeout) {
         if(scope.parameter==undefined) return;
         jsonInputCtrl.isValid = scope.parameter.isValid;
         scope.validationFunction = jsonInputCtrl.validationFunction;
+        jsonInputCtrl.deactivation = scope.parameter.deactivation;
         scope.parameter.evaluate = evaluate;
         scope.parameter.redraw = redraw;
         if(scope.validation) {

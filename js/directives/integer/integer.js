@@ -32,7 +32,9 @@ directives.directive('integer', function() {
           scope.message = [];
           var unbind = scope.$watch('parameter', function() {
             if(scope.parameter==undefined) return;
+            console.log('intefer');
             jsonInputCtrl.isValid = scope.parameter.isValid;
+            jsonInputCtrl.deactivation = scope.parameter.deactivation;
             scope.validationFunction = jsonInputCtrl.validationFunction;
             scope.parameter.evaluate = evaluate;
 

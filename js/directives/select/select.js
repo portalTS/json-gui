@@ -10,10 +10,9 @@ directives.directive('jsonSelect', function() {
       validation: "="
     },
     link:function(scope, elm, attr, jsonInputCtrl) {
-      scope.selectValid = function(){
+      scope.selectValid = function() {
         return true;
       };
-
       scope.message = [];
 
       var evaluate = function() {
@@ -29,7 +28,21 @@ directives.directive('jsonSelect', function() {
 
       var unbind = scope.$watch('parameter', function() {
         if(scope.parameter==undefined) return;
+
+
+        if(scope.parameter.isDynamic) {
+            var getParametersCallback = function(error, data) {
+                scope.parameter.values = data;
+                scope.parameter.value = data[0].value;
+                scope.$apply();
+            };
+            var getParameters = new Function("return function getP(cb){"+scope.parameter.getDynamicValues+"}")();
+            getParameters(getParametersCallback);
+        }
+
+
         jsonInputCtrl.isValid = scope.parameter.isValid;
+        jsonInputCtrl.deactivation = scope.parameter.deactivation;
         scope.validationFunction = jsonInputCtrl.validationFunction;
         scope.parameter.evaluate = evaluate;
 

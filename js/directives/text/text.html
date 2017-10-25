@@ -3,7 +3,7 @@
         {{parameter.displayName}}
     </div>
     <div class="col-xs-5 col-md-8 par-value-col" ng-class="{'has-error': !isParameterValid}">
-        <textarea ng-model="parameter.value" ng-disabled="!parameter.editable" class="form-control" style="resize:none"></textarea>
+        <textarea ng-model="parameter.value" ng-disabled="!parameter.editable || parameter.deactive" class="form-control" style="resize:none"></textarea>
         <div class="error-message" ng-repeat="msg in parameter.message">{{msg}}</div>
     </div>
     <div class="col-xs-1 info-col" style="margin-top:16px !important">

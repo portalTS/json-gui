@@ -12,7 +12,7 @@ directives.directive('fileupload', function($timeout, Upload) {
     link:function(scope, elm, attr, jsonInputCtrl) {
 
       /**************** VALIDATION ******************/
-      scope.fileuploadValid = function(){
+      scope.fileuploadValid = function() {
         if(typeof(scope.parameter.value)=="undefined" || scope.parameter.value.length<scope.parameter.minUpload) {
           var msg = "Upload at least "+scope.parameter.minUpload;
           msg+= (scope.parameter.minUpload==1)? " file" : " files";
@@ -40,6 +40,7 @@ directives.directive('fileupload', function($timeout, Upload) {
         if(scope.parameter==undefined) return;
         jsonInputCtrl.isValid = scope.parameter.isValid;
         scope.validationFunction = jsonInputCtrl.validationFunction;
+        jsonInputCtrl.deactivation = scope.parameter.deactivation;
         scope.parameter.evaluate = evaluate;
         scope.errorUpload = [];
         scope.uploadedFilesDescription = [];

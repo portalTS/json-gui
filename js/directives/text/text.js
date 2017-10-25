@@ -25,10 +25,11 @@ directives.directive('jsonText', function() {
               scope.isParameterValid = valid;
               return valid;
             }
-            
+
             var unbind = scope.$watch('parameter', function() {
               if(scope.parameter==undefined) return;
               jsonInputCtrl.isValid = scope.parameter.isValid;
+              jsonInputCtrl.deactivation = scope.parameter.deactivation;
               scope.validationFunction = jsonInputCtrl.validationFunction;
               scope.parameter.evaluate = evaluate;
 

@@ -1,203 +1,972 @@
 {
-  "name": "Wrf-arw",
-  "dbName": "wrf_arw",
-  "type": "Meteo",
-  "parametersCategories": [
-      {"name":"Domain", "value":1},
-      {"name":"Time Control", "value":2},
-      {"name":"Run Option", "value":3},
-      {"name":"Physics Option", "value":4},
-      {"name":"Diffusion and Dynamic Options", "value":5},
-      {"name":"Submit", "value":6}
-  ],
-  "parameters": [
-    {
-        "parameterType":"float",
-        "value":54,
-        "displayName":"Grid Spacing",
-        "dbName": "grid_spacing",
-        "required": true,
-        "description": "The dimension of the grid in the domains",
-        "editable": false,
-        "dependencies":["parental_grid_ratio"],
-        "computedResult":"return parameter.value*3;",
-        "parameterCategory":3,
-        "isValid" : "if(parameter.value<dependencies['parental_grid_ratio'].value){isValid.valid= false; isValid.message=parameter.displayName+' must be greater than '+dependencies['parental_grid_ratio'].displayName;}"
-    },
-    { "parameterType":"datetime",
-      "value":null,
-      "required": true,
-      "editable": false,
-      "displayName":"Start time",
-      "description": "Start date for the experiment",
-      "dbName": "start_time",
-      "dependencies":["end_time"],
-      "parameterCategory":2,
-      "hasDate": true,
-      "hasTime":true,
-      "computedResult":"return parameter.value;",
-      "isValid" :"if(dependencies['end_time'].value<parameter.value){isValid.valid= false; isValid.message = parameter.displayName + ' must be earlier than '+dependencies['end_time'].displayName;}"
-    },
-      {
-        "parameterType":"datetime",
-        "value":"Mon Oct 26 2015 00:00:00 GMT+0100 (CET)",
-        "displayName":"End time",
-        "dbName": "end_time",
-        "dependencies":["start_time"],
-        "description": "End date for the experiment",
-        "required": false,
-        "editable": false,
-        "parameterCategory":2,
-        "hasDate": true,
-        "hasTime":true,
-        "computedResult":"return parameter.value;",
-        "isValid" : "if(dependencies['start_time'].value>parameter.value){isValid.valid= false; isValid.message = parameter.displayName + ' must be greater than '+dependencies['start_time'].displayName;}"
-    },
-    {
-        "parameterType":"integer",
-        "value":18,
-        "required": true,
-        "editable": false,
-        "displayName":"Parental Grid Ratio",
-        "description": "Insert a description for your configuration",
-        "dbName": "parental_grid_ratio",
-        "parameterCategory":4,
-        "dependencies":["grid_spacing"],
-        "computedResult":"return parseInt(parameter.value)+dependencies['grid_spacing'].value;",
-        "isValid":"if(parameter.value<10) {isValid.valid= false; isValid.message=parameter.displayName+' must be bigger then 9';} "
-    },
-    {
-        "parameterType":"select",
-        "value":1,
-        "displayName":"Physics",
-        "description": "Insert a description for your configuration",
-        "editable": false,
-        "dbName": "physics",
-        "parameterCategory":4,
-        "values": [{"name":"Option 1", "value":0}, {"name":"Option 2", "value":1}],
-        "dependencies":[],
-        "computedResult":"return parameter.value",
-        "isValid":"if(parameter.value==0){isValid.valid=false; isValid.message='Select a value'}"
-    },
-    {
-        "parameterType":"domains",
-        "description": "The geographical place in which run your experiment",
-        "center": {"lat":44.496,"long":8.9209},
-        "mapZoom":8,
-        "parameterCategory":1,
-        "value":{
-          "domains": [
-          {
-            "id": 32569,
-            "southWest": {"lat":43.496, "long":8.0209},
-            "northEast": {"lat":46.496, "long":10.0209}
-          },
-          {
-            "id": 32570,
-            "southWest":{"lat":43.996, "long":8.6209},
-            "northEast":{"lat":45.496, "long":9.8209}
-          },
-          {
-            "id": 32571,
-            "southWest":{"lat":44.796, "long":9.2209},
-            "northEast":{"lat":45.096, "long":9.5209}
-          }
-        ],
-        "markers": [
-            {"lat":44.42593442145313, "long":8.914546966552734, "id": 234567}
-         ]
-        } ,
-        "displayName": "Domains",
-        "dbName": "wrfdomains",
-        "dependencies": [],
-        "editable": false,
-        "parameterCategory": 1,
-        "onlyNested": true,
-        "allowMarkersOutDomains": false,
-        "maxDomains": 2,
-        "maxMarkers": 2,
-        "required": {"markers":false, "domains":true},
-        "drawDomains": true,
-        "drawMarkers": true,
-        "computedResult": "var val = parameter.value.domains;var retString = '';for(var i=1;i<=val.length;i++){retString+='Domain number'+i+' - South-West: ('+val[i-1].southWest.lat+', '+val[i-1].southWest.long+') North-East: ('+val[i-1].northEast.lat+', '+val[i-1].northEast.long+')';}return retString;",
-        "isValid": "if(parameter.value.domains.length==4) isValid.valid=false; isValid.message = 'Length must be different from 4';"
-    },
-      {
-            "parameterType":"domains",
-            "center": {"lat":45.496,"long":8.9209},
-            "mapZoom":8,
-            "parameterCategory":1,
-            "value":{
-              "domains": [
-              {
-                "id": 32569,
-                "southWest": {"lat":45.496, "long":8.0209},
-                "northEast": {"lat":46.496, "long":10.0209}
-              },
-              {
-                "id": 32571,
-                "southWest":{"lat":44.796, "long":9.2209},
-                "northEast":{"lat":45.096, "long":9.5209}
-              }
-            ],
-            "markers": [
-                {"lat":44.42593442145313, "long":8.954546966552734, "id": 234567},
-                {"lat":46.42593442145313, "long":8.954546966552734, "id": 234568},
-                {"lat":44.9570, "long":9.4373, "id": 234569}
-             ]
-            } ,
-            "displayName": "Domains",
-            "dbName": "otherdomains",
-            "description": "The geographical place in which run your experiment 2",
+    "parametersCategories": [
+        {
+            "name": "Main",
+            "value": 0
+        }
+    ],
+    "parameters": [
+        {
+            "displayName": "EPIC_CAMERA",
+            "dbName": "epic_camera1479308719397",
+            "parameterCategory": 0,
             "dependencies": [],
-            "required": {"markers":true, "domains":false},
-            "editable": false,
-            "parameterCategory": 1,
-            "onlyNested": false,
-            "allowMarkersOutDomains": false,
-            "maxDomains": 3,
-            "maxMarkers": 3,
-            "drawDomains": true,
-            "drawMarkers": true,
-            "computedResult": "var val = parameter.value.domains;var retString = '';for(var i=1;i<=val.length;i++){retString+='Domain number'+i+' - South-West: ('+val[i-1].southWest.lat+', '+val[i-1].southWest.long+') North-East: ('+val[i-1].northEast.lat+', '+val[i-1].northEast.long+')';}return retString;",
-            "isValid": "if(parameter.value.domains.length==4) isValid.valid=false; isValid.message = 'Length must be different from 4';"
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": "",
+            "isDynamic": true,
+            "getDynamicValues": "var data = [{\"name\": \"ciao\",\"value\": 1}]; setTimeout(function(){cb(null, data);}, 2000);",
+            "namelistName": "DET",
+            "value": "2",
+            "values": [
+            ],
+            "parameterType": "select",
+            "description": "Select the EPIC camera(s) where the source detection will be performed"
         },
-     {
-        "parameterType":"text",
-        "value":"Prova",
-        "displayName":"Description",
-        "parameterCategory":6,
-        "dbName": "description",
-        "dependencies":[],
-        "editable": false,
-        "required": true,
-        "description": "Insert a description for your configuration",
-        "computedResult":"return parameter.value;",
-        "isValid":""
-    },
-     {
-       "parameterType":"fileupload",
-        "value":[
-          {
-            "fileName": "composer.json",
-            "data":"data:application/json;base64,ewogICAgInJlcXVpcmUiOiB7CiAgICAgICAgInNsaW0vc2xpbSI6ICIyLioiLAogICAgICAgICJqNG1pZS9pZGlvcm0iOiAiMS41LjEiLAogICAgICAgICJnaW5xL2dpbnEiOiAiMC4yLjIiLAogICAgICAgICJmbHluc2FybXkvc2xpbS1tb25vbG9nIjogIjEuMC4wIiwKICAgICAgICAianVzdGlucmFpbmJvdy9qc29uLXNjaGVtYSI6ICJ+MS4zIgogICAgfSwKICAgICJhdXRvbG9hZCI6IHsKICAgICAgICAicHNyLTQiOiB7CiAgICAgICAgICAgICJNeVxcIjogImNsYXNzZXMvIgogICAgICAgIH0KICAgIH0KfQo="
-          }
-        ],
-        "displayName":"Upload namelist",
-        "dbName": "upload",
-        "parameterCategory":5,
-        "editable": true,
-        "description": "this is the key setup to define a two-way nested (or one-way nested) run. When feedback is on, the values of the coarse domain are overwritten by the values of the variables (average of cell values for mass points, and average of the cell-face values for horizontal momentum points) in the nest at the coincident points. For masked fields, only the single point value at the collocating points is fed back. If the parent_grid_ratio is even, an arbitrary choice of  the southwest corner point value is used for feedback. This is the reason it is better to use an odd parent_grid_ratio with this option. When feedback is off , it is equivalent to a one-way nested run, since nest results are not reflected in the parent domain.",
-        "dependencies":[],
-        "computedResult":"return parameter.value;",
-        "isValid":"",
-        "maxSize":"3MB",
-        "maxUpload":5,
-        "minUpload":1,
-        "allowedExtensions": ""
-     }
+        {
+            "displayName": "EXTENSION_THRESHOLD",
+            "dbName": "extension_threshold1479308729148",
+            "parameterCategory": 0,
+            "dependencies": [],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": "if(parameter.value<0) {isValid.valid= false;isValid.message = 'The value must be positive';} else  if(parameter.value>1000) {isValid.valid= false;isValid.message = 'The value must be lower than or equal to 1000';}",
+            "value": 0,
+            "parameterType": "integer",
+            "namelistName": "ext_threshold",
+            "description": "Maximum source extension (image pixels - 0.25 arcsec)",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "EXTENSION_THRESHOLD",
+                                "dbName": "extension_threshold1479308729148",
+                                "unremovable": false,
+                                "parameterType": "integer",
+                                "namelistName": "ext_threshold",
+                                "description": "Maximum source extension (image pixels - 0.25 arcsec)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 0
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be positive"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "EXTENSION_THRESHOLD",
+                                "dbName": "extension_threshold1479308729148",
+                                "unremovable": false,
+                                "parameterType": "integer",
+                                "namelistName": "ext_threshold",
+                                "description": "Maximum source extension (image pixels - 0.25 arcsec)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 1000
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than or equal to 1000"
+                }
+            ]
+        },
+        {
+            "displayName": "TIME_INTERVAL_SELECTION",
+            "dbName": "time_interval_selection1479308741357",
+            "parameterCategory": 0,
+            "dependencies": ["time_interval_selection_bayesian1479308792488"],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(dependencies['time_interval_selection_bayesian1479308792488'].value=='bayesian' && parameter.value!='no') {isValid.valid= false;isValid.message = 'The value is incompatible with the value of TIME_INTERVAL_SELECTION_BAYESIAN';}",
+            "value": "no",
+            "parameterType": "select",
+            "values": [
+                {
+                    "name": "Fixed bins",
+                    "value": "binfixed"
+                },
+                {
+                    "name": "No",
+                    "value": "no"
+                }
+            ],
+            "namelistName": "type_anal_fixed",
+            "description": "Choose the method to select the time intervals where the source detection will be performed"
+        },
+        {
+            "displayName": "TIME_INTERVAL_SELECTION_BAYESIAN",
+            "dbName": "time_interval_selection_bayesian1479308792488",
+            "parameterCategory": 0,
+            "dependencies": ["max_time1479308936032", "region_size1479309128374", "sigma_threshold1479308996656", "close_to_catalogue_sources1479308822657", "time_interval_selection1479308741357"],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(dependencies['time_interval_selection1479308741357'].value=='binfixed' && parameter.value!='no') {isValid.valid= false;isValid.message = 'The value is incompatible with the value of TIME_INTERVAL_SELECTION';}",
+            "namelistName": "type_anal_bayesian",
+            "value": "bayesian",
+            "parameterType": "select",
+            "values": [
+                {
+                    "name": "Bayesian blocks",
+                    "value": "bayesian"
+                },
+                {
+                    "name": "No",
+                    "value": "no"
+                }
+            ],
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "TIME_INTERVAL_SELECTION_BAYESIAN",
+                                "dbName": "time_interval_selection_bayesian1479308792488",
+                                "unremovable": false,
+                                "parameterType": "select",
+                                "namelistName": "type_anal_bayesian",
+                                "description": "Choose the method to select the time intervals where the source detection will be performed"
+                            },
+                            "val2": {
+                                "parameterType": "select",
+                                "displayName": "Static Value",
+                                "dbName": "static_select",
+                                "isStatic": true,
+                                "message": [],
+                                "value": "no"
+                            },
+                            "operator": "=="
+                        }
+                    ],
+                    "deactivate": ["max_time1479308936032", "region_size1479309128374", "sigma_threshold1479308996656", "close_to_catalogue_sources1479308822657"]
+                }
+              ],
+            "description": "Choose the method to select the time intervals where the source detection will be performed",
+            "deactivation": "dependencies['close_to_catalogue_sources1479308822657'].deactive = false;dependencies['sigma_threshold1479308996656'].deactive = false; dependencies['max_time1479308936032'].deactive=false; dependencies['region_size1479309128374'].deactive=false; if(parameter.value=='no') {dependencies['max_time1479308936032'].deactive=true; dependencies['region_size1479309128374'].deactive=true;dependencies['sigma_threshold1479308996656'].deactive = true;dependencies['close_to_catalogue_sources1479308822657'].deactive = true;}"
+        },
+        {
+            "displayName": "DELTA_TIME",
+            "dbName": "delta_time1479308811216",
+            "parameterCategory": 0,
+            "dependencies": ["time_interval_selection1479308741357"],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(parameter.value>50000) {isValid.valid= false;isValid.message = 'The value must be lower than 50000';} else  if(parameter.value<10) {isValid.valid= false;isValid.message = 'The value must be higher than 10';}",
+            "namelistName": "deltat",
+            "value": 1000,
+            "parameterType": "integer",
+            "description": "Duration of the time intervals where the source detection will be performed (s)",
+            "deactivation":"parameter.deactive = false; if(dependencies['time_interval_selection1479308741357'].value=='no') parameter.deactive = true;",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "DELTA_TIME",
+                                "dbName": "delta_time1479308811216",
+                                "unremovable": false,
+                                "namelistName": "deltat",
+                                "parameterType": "integer",
+                                "description": "Duration of the time intervals where the source detection will be performed (s)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 50000
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than 50000"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "DELTA_TIME",
+                                "dbName": "delta_time1479308811216",
+                                "unremovable": false,
+                                "namelistName": "deltat",
+                                "parameterType": "integer",
+                                "description": "Duration of the time intervals where the source detection will be performed (s)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 10
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be higher than 10"
+                }
+            ]
+        },
+        {
+            "displayName": "CLOSE_TO_CATALOGUE_SOURCES",
+            "dbName": "close_to_catalogue_sources1479308822657",
+            "parameterCategory": 0,
+            "dependencies": [],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": "",
+            "value": "no",
+            "parameterType": "select",
+            "values": [
+                {
+                    "name": "Yes",
+                    "value": "yes"
+                },
+                {
+                    "name": "No",
+                    "value": "no"
+                }
+            ],
+            "description": "Extend the analysis to the region close to the reference catalogue sources",
+            "namelistName": "closetosrc"
+        },
+        {
+            "displayName": "SOFT_PROTONS_FILTER",
+            "dbName": "soft_protons_filter1479308835140",
+            "parameterCategory": 0,
+            "dependencies": [],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": "",
+            "value": "notSP",
+            "parameterType": "select",
+            "values": [
+                {
+                    "name": "No",
+                    "value": "notSP"
+                },
+                {
+                    "name": "Yes",
+                    "value": "SP"
+                }
+            ],
+            "namelistName": "filter0",
+            "description": "Filter out time intervals with high particle background"
+        },
+        {
+            "displayName": "BARYCENTER",
+            "dbName": "barycenter1479308865524",
+            "parameterCategory": 0,
+            "dependencies": [],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": "",
+            "namelistName": "barycentr",
+            "value": "yes",
+            "parameterType": "select",
+            "values": [
+                {
+                    "name": "Yes",
+                    "value": "yes"
+                },
+                {
+                    "name": "No",
+                    "value": "no"
+                }
+            ],
+            "description": "Convert event times into the Solar System reference frame"
+        },
+        {
+            "displayName": "POS_SYS_ERROR",
+            "dbName": "pos_sys_filter1479308875470",
+            "parameterCategory": 0,
+            "dependencies": [],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(parameter.value<1) {isValid.valid= false;isValid.message = 'The value must be higher than or equal to 1';} else  if(parameter.value>10) {isValid.valid= false;isValid.message = 'The value must be lower than or equal to 10';}",
+            "namelistName": "sist_err",
+            "value": 2,
+            "parameterType": "integer",
+            "description": "Systematic error on source positions for reference catalogue matching (arcsec)",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "POS_SYS_ERROR",
+                                "dbName": "pos_sys_filter1479308875470",
+                                "unremovable": false,
+                                "namelistName": "sist_err",
+                                "parameterType": "integer",
+                                "description": "Systematic error on source positions for reference catalogue matching (arcsec)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 1
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be higher than or equal to 1"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "POS_SYS_ERROR",
+                                "dbName": "pos_sys_filter1479308875470",
+                                "unremovable": false,
+                                "namelistName": "sist_err",
+                                "parameterType": "integer",
+                                "description": "Systematic error on source positions for reference catalogue matching (arcsec)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 10
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than or equal to 10"
+                }
+            ]
+        },
+        {
+            "displayName": "POS_SIGMA",
+            "dbName": "pos_sigma1479308915925",
+            "parameterCategory": 0,
+            "dependencies": [],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(parameter.value<1) {isValid.valid= false;isValid.message = 'The value must be higher than or equal to 1';} else  if(parameter.value>10) {isValid.valid= false;isValid.message = 'The value must be lower than or equal to 10';}",
+            "namelistName": "sig",
+            "value": 3,
+            "parameterType": "integer",
+            "description": "Maximum distance for reference catalogue matching (sigma)",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "POS_SIGMA",
+                                "dbName": "pos_sigma1479308915925",
+                                "unremovable": false,
+                                "namelistName": "sig",
+                                "parameterType": "integer",
+                                "description": "Maximum distance for reference catalogue matching (sigma)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 1
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be higher than or equal to 1"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "POS_SIGMA",
+                                "dbName": "pos_sigma1479308915925",
+                                "unremovable": false,
+                                "namelistName": "sig",
+                                "parameterType": "integer",
+                                "description": "Maximum distance for reference catalogue matching (sigma)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 10
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than or equal to 10"
+                }
+            ]
+        },
+        {
+            "displayName": "CATALOGUE_SOURCE_COUNTS",
+            "dbName": "catalogue_source_counts1479308929872",
+            "parameterCategory": 0,
+            "dependencies": [],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(parameter.value<0) {isValid.valid= false;isValid.message = 'The value must be positive';} else  if(parameter.value>10000) {isValid.valid= false;isValid.message = 'The value must be lower than or equal to 10000';}",
+            "value": 0,
+            "parameterType": "integer",
+            "namelistName": "cts_limit",
+            "description": "Maximum number of counts of the sources to be excluded from the reference catalogue",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "CATALOGUE_SOURCE_COUNTS",
+                                "dbName": "catalogue_source_counts1479308929872",
+                                "unremovable": false,
+                                "parameterType": "integer",
+                                "namelistName": "cts_limit",
+                                "description": "Maximum number of counts of the sources to be excluded from the reference catalogue"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 0
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be positive"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "CATALOGUE_SOURCE_COUNTS",
+                                "dbName": "catalogue_source_counts1479308929872",
+                                "unremovable": false,
+                                "parameterType": "integer",
+                                "namelistName": "cts_limit",
+                                "description": "Maximum number of counts of the sources to be excluded from the reference catalogue"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 10000
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than or equal to 10000"
+                }
+            ]
+        },
+        {
+            "displayName": "MAX_TIME",
+            "dbName": "max_time1479308936032",
+            "parameterCategory": 0,
+            "dependencies": [],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(parameter.value>50000) {isValid.valid= false;isValid.message = 'The value must be lower than or equal to 50000';} else  if(parameter.value<10) {isValid.valid= false;isValid.message = 'The value must be higher than or equal to 10';}",
+            "namelistName": "bayesian_max1",
+            "value": 5000,
+            "parameterType": "integer",
+            "description": "Maximum duration of the time intervals where the source detection will be performed (s)",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "MAX_TIME",
+                                "dbName": "max_time1479308936032",
+                                "unremovable": false,
+                                "namelistName": "bayesian_max1",
+                                "parameterType": "integer",
+                                "description": "Maximum duration of the time intervals where the source detection will be performed (s)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 50000
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than or equal to 50000"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "MAX_TIME",
+                                "dbName": "max_time1479308936032",
+                                "unremovable": false,
+                                "namelistName": "bayesian_max1",
+                                "parameterType": "integer",
+                                "description": "Maximum duration of the time intervals where the source detection will be performed (s)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 10
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be higher than or equal to 10"
+                }
+            ]
+        },
+        {
+            "displayName": "REGION_SIZE",
+            "dbName": "region_size1479309128374",
+            "parameterCategory": 0,
+            "dependencies": [],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(parameter.value>100) {isValid.valid= false;isValid.message = 'The value must be lower than or equal to 100';} else  if(parameter.value<10) {isValid.valid= false;isValid.message = 'The value must be higher than or equal to 10';}",
+            "namelistName": "regionsize",
+            "value": 30,
+            "parameterType": "integer",
+            "description": "Size of the boxes in which the bayesian blocks analysis will be performed (arcsec)",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "REGION_SIZE",
+                                "dbName": "region_size1479309128374",
+                                "unremovable": false,
+                                "namelistName": "regionsize",
+                                "parameterType": "integer",
+                                "description": "Size of the boxes in which the bayesian blocks analysis will be performed (arcsec)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 100
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than or equal to 100"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "REGION_SIZE",
+                                "dbName": "region_size1479309128374",
+                                "unremovable": false,
+                                "namelistName": "regionsize",
+                                "parameterType": "integer",
+                                "description": "Size of the boxes in which the bayesian blocks analysis will be performed (arcsec)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 10
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be higher than or equal to 10"
+                }
+            ]
+        },
+        {
+            "displayName": "PROBABILITY_THRESHOLD",
+            "dbName": "probability_threshold1479308947159",
+            "parameterCategory": 0,
+            "dependencies": ["time_interval_selection_bayesian1479308792488", "close_to_catalogue_sources1479308822657"],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(parameter.value>0.001) {isValid.valid= false;isValid.message = 'The value must be lower than or equal to 1e-3';} else  if(parameter.value<0.000001) {isValid.valid= false;isValid.message = 'The value must be higher than or equal to 1e-7';}",
+            "namelistName": "Ierror",
+            "value": 0.0001,
+            "parameterType": "float",
+            "description": "Probability threshold of the bayesian blocks analysis",
+            "deactivation":"parameter.deactive = false; if(dependencies['time_interval_selection_bayesian1479308792488'].value=='no' || dependencies['close_to_catalogue_sources1479308822657'].value=='no'){parameter.deactive=true}",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "PROBABILITY_THRESHOLD",
+                                "dbName": "probability_threshold1479308947159",
+                                "unremovable": false,
+                                "namelistName": "Ierror",
+                                "parameterType": "float",
+                                "description": "Probability threshold of the bayesian blocks analysis"
+                            },
+                            "val2": {
+                                "parameterType": "float",
+                                "displayName": "Static Value",
+                                "dbName": "static_float",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 0.001
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than or equal to 1e-3"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "PROBABILITY_THRESHOLD",
+                                "dbName": "probability_threshold1479308947159",
+                                "unremovable": false,
+                                "namelistName": "Ierror",
+                                "parameterType": "float",
+                                "description": "Probability threshold of the bayesian blocks analysis"
+                            },
+                            "val2": {
+                                "parameterType": "float",
+                                "displayName": "Static Value",
+                                "dbName": "static_float",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 0.000001
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be higher than or equal to 1e-7"
+                }
+            ]
+        },
+        {
+            "displayName": "SIGMA_THRESHOLD",
+            "dbName": "sigma_threshold1479308996656",
+            "parameterCategory": 0,
+            "dependencies": ["time_interval_selection_bayesian1479308792488", "close_to_catalogue_sources1479308822657"],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(parameter.value>100) {isValid.valid= false;isValid.message = 'The value must be lower than or equal to 100';} else  if(parameter.value<0) {isValid.valid= false;isValid.message = 'The value must be positive';}",
+            "namelistName": "stss_out",
+            "description": "Significance threshold for the spatial clustering analysis (sigma)",
+            "deactivation":"parameter.deactive = false; if(dependencies['time_interval_selection_bayesian1479308792488'].value=='no' || dependencies['close_to_catalogue_sources1479308822657'].value=='no'){parameter.deactive=true}",
+            "value": 5,
+            "parameterType": "integer",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "SIGMA_THRESHOLD",
+                                "dbName": "sigma_threshold1479308996656",
+                                "unremovable": false,
+                                "namelistName": "stss_out",
+                                "description": "Significance threshold for the spatial clustering analysis (sigma)",
+                                "parameterType": "integer"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 100
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than or equal to 100"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "SIGMA_THRESHOLD",
+                                "dbName": "sigma_threshold1479308996656",
+                                "unremovable": false,
+                                "namelistName": "stss_out",
+                                "description": "Significance threshold for the spatial clustering analysis (sigma)",
+                                "parameterType": "integer"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 0
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be positive"
+                }
+            ]
+        },
+        {
+            "displayName": "DELTA_TIME_CLOSE_TO_SOURCES",
+            "dbName": "delta_time_close_to_sources1479309019805",
+            "parameterCategory": 0,
+            "dependencies": ["time_interval_selection_bayesian1479308792488", "close_to_catalogue_sources1479308822657"],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(parameter.value>50000) {isValid.valid= false;isValid.message = 'The value must be lower than or equal to 50000';} else  if(parameter.value<10) {isValid.valid= false;isValid.message = 'The value must be higher than or equal to 10';}",
+            "value": 1000,
+            "parameterType": "integer",
+            "namelistName": "sftb",
+            "description": "Duration of the time intervals where the transient search will be performed (s)",
+            "deactivation":"parameter.deactive = false; if(dependencies['time_interval_selection_bayesian1479308792488'].value=='no' || dependencies['close_to_catalogue_sources1479308822657'].value=='no'){parameter.deactive=true}",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "DELTA_TIME_CLOSE_TO_SOURCES",
+                                "dbName": "delta_time_close_to_sources1479309019805",
+                                "unremovable": false,
+                                "parameterType": "integer",
+                                "namelistName": "sftb",
+                                "description": "Duration of the time intervals where the transient search will be performed (s)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 50000
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than or equal to 50000"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "DELTA_TIME_CLOSE_TO_SOURCES",
+                                "dbName": "delta_time_close_to_sources1479309019805",
+                                "unremovable": false,
+                                "parameterType": "integer",
+                                "namelistName": "sftb",
+                                "description": "Duration of the time intervals where the transient search will be performed (s)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 10
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be higher than or equal to 10"
+                }
+            ]
+        },
+        {
+            "displayName": "SIGMA_THRESHOLD_CLOSE_TO_SOURCES",
+            "dbName": "sigma_threshold_close_to_sources1479309045782",
+            "parameterCategory": 0,
+            "dependencies": ["time_interval_selection_bayesian1479308792488"],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": " if(parameter.value>100) {isValid.valid= false;isValid.message = 'The value must be lower than or equal to 100';} else  if(parameter.value<2) {isValid.valid= false;isValid.message = 'The value must be higher than or equal to 2';}",
+            "value": 5,
+            "parameterType": "integer",
+            "namelistName": "stss",
+            "description": "Significance threshold for the search (sigma)",
+            "deactivation":"parameter.deactive = false; if(dependencies['time_interval_selection_bayesian1479308792488'].value=='no'){parameter.deactive=true}",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "SIGMA_THRESHOLD_CLOSE_TO_SOURCES",
+                                "dbName": "sigma_threshold_close_to_sources1479309045782",
+                                "unremovable": false,
+                                "parameterType": "integer",
+                                "namelistName": "stss",
+                                "description": "Significance threshold for the search (sigma)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 100
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than or equal to 100"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "SIGMA_THRESHOLD_CLOSE_TO_SOURCES",
+                                "dbName": "sigma_threshold_close_to_sources1479309045782",
+                                "unremovable": false,
+                                "parameterType": "integer",
+                                "namelistName": "stss",
+                                "description": "Significance threshold for the search (sigma)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 2
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be higher than or equal to 2"
+                }
+            ]
+        },
+        {
+            "displayName": "MAX_TIME_CLOSE_TO_SOURCES",
+            "dbName": "max_time_close_to_sources1479309052304",
+            "parameterCategory": 0,
+            "dependencies": ["time_interval_selection_bayesian1479308792488"],
+            "required": true,
+            "unremovable": false,
+            "editable": true,
+            "computedResult": "(function(){return true;}())",
+            "isValid": "if(parameter.value>50000) {isValid.valid= false;isValid.message = 'The value must be lower than or equal to 50000';} else  if(parameter.value<2) {isValid.valid= false;isValid.message = 'The value must be higher than or equal to 2';}",
+            "namelistName": "bayesian_max2",
+            "value": 5000,
+            "parameterType": "integer",
+            "description": "Maximum duration of the time intervals where the source detection will be performed (s)",
+            "deactivation":"parameter.deactive = false; if(dependencies['time_interval_selection_bayesian1479308792488'].value=='no'){parameter.deactive=true}",
+            "expressions": [
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "MAX_TIME_CLOSE_TO_SOURCES",
+                                "dbName": "max_time_close_to_sources1479309052304",
+                                "unremovable": false,
+                                "namelistName": "bayesian_max2",
+                                "parameterType": "integer",
+                                "description": "Maximum duration of the time intervals where the source detection will be performed (s)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 50000
+                            },
+                            "operator": ">"
+                        }
+                    ],
+                    "message": "The value must be lower than or equal to 50000"
+                },
+                {
+                    "conditions": [
+                        {
+                            "val1": {
+                                "displayName": "MAX_TIME_CLOSE_TO_SOURCES",
+                                "dbName": "max_time_close_to_sources1479309052304",
+                                "unremovable": false,
+                                "namelistName": "bayesian_max2",
+                                "parameterType": "integer",
+                                "description": "Maximum duration of the time intervals where the source detection will be performed (s)"
+                            },
+                            "val2": {
+                                "parameterType": "integer",
+                                "displayName": "Static Value",
+                                "dbName": "static_int",
+                                "isStatic": true,
+                                "message": [],
+                                "value": 2
+                            },
+                            "operator": "<"
+                        }
+                    ],
+                    "message": "The value must be higher than or equal to 2"
+                }
 
-    ]
-
-
+            ]
+        }
+    ],
+    "type": "wp4",
+    "name": "WP4",
+    "dbName": "wp4",
+    "uploadFiles": []
 }
